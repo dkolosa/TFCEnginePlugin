@@ -28,7 +28,7 @@ namespace TFCEnginePlugin
     [ClassInterface(ClassInterfaceType.None)]
 
     public class TFCW :
-        ITFC,
+        ITFCW,
         IAgGatorPluginEngineModel,
         IAgUtPluginConfig
 
@@ -91,22 +91,22 @@ namespace TFCEnginePlugin
         private string m_Name = "TFCEnginePlugin"; // Plugin Significant
 
         //14 Thrust coeff.
-        private double m_alpha0 = 0;
-        private double m_alpha1 = 0.001;
-        private double m_alpha2 = 0.0001;
-        private double m_alpha3 = 0.001;
-        private double m_alpha4 = 0.002;
-        private double m_alpha5 = 0.00001;
-        private double m_alpha6 = 0.00001;
-        private double m_alpha7 = 0.001;
-        private double m_alpha8 = 0.0001;
-        private double m_alpha9 = 0.01;
-        private double m_alpha10 = 0.000001;
-        private double m_alpha11 = 0.0001;
-        private double m_alpha12 = 0.00001;
-        private double m_alpha13 = 0.01;
+        private double m_alpha0 = 0.0000000784;
+        private double m_alpha1 = 0.00000001545421321;
+        private double m_alpha2 = 0.000000000000111515412;
+        private double m_alpha3 = 0.012154745;
+        private double m_alpha4 = 0.02132422;
+        private double m_alpha5 = 0.11231651
+        private double m_alpha6 = -0.0001548751;
+        private double m_alpha7 = -0.000000011315473;
+        private double m_alpha8 = 0.0000000001134844;
+        private double m_alpha9 = 0.0011214571;
+        private double m_alpha10 = -0.0011234874;
+        private double m_alpha11 = 0.000121234;
+        private double m_alpha12 = 0.01212345;
+        private double m_alpha13 = -0.00019866574;
 
-        private double m_Isp = 12000;
+        private double m_Isp = 1200;
 
         public string Name
         {
@@ -193,7 +193,9 @@ namespace TFCEnginePlugin
 
                 eccAno = this.m_eccAno.Evaluate(result);
 
-                FW = Alpha9 + Alpha10 * Math.Cos(eccAno) + Alpha11 * Math.Cos(2 * eccAno) + Alpha12 * Math.Sin(eccAno) + Alpha13 * Math.Sin(2 * eccAno);
+                FW = Math.Abs(Alpha9 + Alpha10 * Math.Cos(eccAno) + Alpha11 * Math.Cos(2 * eccAno) + Alpha12 * Math.Sin(eccAno) + Alpha13 * Math.Sin(2 * eccAno));
+                //error on FR,W,S <=0 
+
 
                 result.SetThrustAndIsp(FW, Isp);
             }

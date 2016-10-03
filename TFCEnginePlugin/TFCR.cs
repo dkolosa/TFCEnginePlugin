@@ -88,23 +88,14 @@ namespace TFCEnginePlugin
         #region ITFC Interface Implementation
 
         //Variable for the TFC
-        private string m_Name = "TFCEnginePlugin"; // Plugin Significant
+        private string m_Name = "TFCEnginePluginR"; // Plugin Significant
 
         //14 Thrust coeff.
         private double m_alpha0 = 0.0000000784;
         private double m_alpha1 = 0.00000001545421321;
         private double m_alpha2 = 0.000000000000111515412;
         private double m_alpha3 = 0.012154745;
-        private double m_alpha4 = 0.02132422;
-        private double m_alpha5 = 0.11231651;
-        private double m_alpha6 = -0.0001548751;
-        private double m_alpha7 = -0.000000011315473;
-        private double m_alpha8 = 0.0000000001134844;
-        private double m_alpha9 = 0.0011214571;
-        private double m_alpha10 = -0.0011234874;
-        private double m_alpha11 = 0.000121234;
-        private double m_alpha12 = 0.01212345;
-        private double m_alpha13 = -0.00019866574;
+
 
         private double m_Isp = 1200;
 
@@ -124,16 +115,7 @@ namespace TFCEnginePlugin
         public double Alpha1 { get { return this.m_alpha1; } set { this.m_alpha1 = value; } }
         public double Alpha2 { get { return this.m_alpha2; } set { this.m_alpha2 = value; } } 
         public double Alpha3 { get { return this.m_alpha3; } set { this.m_alpha3 = value; } } 
-        public double Alpha4 { get { return this.m_alpha4; } set { this.m_alpha4 = value; } } 
-        public double Alpha5 { get { return this.m_alpha5; } set { this.m_alpha5 = value; } } 
-        public double Alpha6 { get { return this.m_alpha6; } set { this.m_alpha0 = value; } } 
-        public double Alpha7 { get { return this.m_alpha7; } set { this.m_alpha7 = value; } } 
-        public double Alpha8 { get { return this.m_alpha8; } set { this.m_alpha8 = value; } } 
-        public double Alpha9 { get { return this.m_alpha9; } set { this.m_alpha9 = value; } } 
-        public double Alpha10 { get { return this.m_alpha10; } set { this.m_alpha10 = value; } } 
-        public double Alpha11 { get { return this.m_alpha11; } set { this.m_alpha11 = value; } } 
-        public double Alpha12 { get { return this.m_alpha12; } set { this.m_alpha12 = value; } } 
-        public double Alpha13 { get { return this.m_alpha13; } set { this.m_alpha13 = value; } } 
+
 
         public double Isp
         {
@@ -236,16 +218,7 @@ namespace TFCEnginePlugin
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha1", "alpha1", "Alpha1", (int)AgEAttrAddFlags.eAddFlagNone);
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha2", "alpha2", "Alpha2", (int)AgEAttrAddFlags.eAddFlagNone);
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha3", "alpha3", "Alpha3", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha4", "alpha4", "Alpha4", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha5", "alpha5", "Alpha5", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha6", "alpha6", "Alpha6", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha7", "alpha7", "Alpha7", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha8", "alpha8", "Alpha8", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha9", "alpha9", "Alpha9", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha10", "alpha10", "Alpha10", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha11", "alpha11", "Alpha11", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha012", "alpha12", "Alpha12", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha13", "alpha13", "Alpha13", (int)AgEAttrAddFlags.eAddFlagNone);
+
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Isp", "Specific Impulse", "Isp", (int)AgEAttrAddFlags.eAddFlagNone);
                     }
 

@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace TFCEnginePlugin
 {
-    interface ITFCR
+    interface ITFCS
     {
         string Name { get; set; }
+        double Alpha4 { get; set; }
+        double Alpha5 { get; set; }
+        double Alpha6 { get; set; }
+        double Alpha7 { get; set; }
+        double Alpha8 { get; set; }
 
-        double Alpha0 { get; set; }
-        double Alpha1 { get; set; }
-        double Alpha2 { get; set; }
-        double Alpha3 { get; set; }
-    
         double Isp { get; set; }
 
     }

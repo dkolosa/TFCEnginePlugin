@@ -75,9 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ITFC.cs" />
-    <Compile Include="ITFCR.cs" />
-    <Compile Include="ITFCS.cs" />
-    <Compile Include="ITFCW.cs" />
     <Compile Include="TFCS.cs" />
     <Compile Include="TFCW.cs" />
     <Compile Include="TFCR.cs" />

@@ -126,7 +126,7 @@ namespace TFCEnginePlugin
         public double Alpha3 { get { return this.m_alpha3; } set { this.m_alpha3 = value; } } 
         public double Alpha4 { get { return this.m_alpha4; } set { this.m_alpha4 = value; } } 
         public double Alpha5 { get { return this.m_alpha5; } set { this.m_alpha5 = value; } } 
-        public double Alpha6 { get { return this.m_alpha6; } set { this.m_alpha0 = value; } } 
+        public double Alpha6 { get { return this.m_alpha6; } set { this.m_alpha6 = value; } } 
         public double Alpha7 { get { return this.m_alpha7; } set { this.m_alpha7 = value; } } 
         public double Alpha8 { get { return this.m_alpha8; } set { this.m_alpha8 = value; } } 
         public double Alpha9 { get { return this.m_alpha9; } set { this.m_alpha9 = value; } } 

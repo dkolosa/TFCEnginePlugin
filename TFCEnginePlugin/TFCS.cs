@@ -139,9 +139,7 @@ namespace TFCEnginePlugin
         public double Alpha13 { get { return this.m_alpha13; } set { this.m_alpha13 = value; } }
 
 
-        public double Isp
-        {
-            get
+        public double Isp{get
             {
                 return this.m_Isp;
             }
@@ -195,13 +193,14 @@ namespace TFCEnginePlugin
                 double eccAno;
                 double FS;
 
-                //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
 
                 eccAno = this.m_eccAno.Evaluate(result);
 
-                FS = Math.Abs(Alpha4 + Alpha5 * Math.Cos(eccAno) + Alpha6 * Math.Cos(2 * eccAno) + Alpha7 * Math.Sin(eccAno) + Alpha8 * Math.Sin(2 * eccAno));
+                FS = Math.Abs(Alpha4 + Alpha5 * Math.Cos(eccAno) + Alpha6 * Math.Cos(2 * eccAno) + 
+                     Alpha7 * Math.Sin(eccAno) + Alpha8 * Math.Sin(2 * eccAno));
                 //error on FR,W,S <=0 
 
+                Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
 
                 result.SetThrustAndIsp(FS, Isp);
             }

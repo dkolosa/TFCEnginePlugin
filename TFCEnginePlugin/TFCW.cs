@@ -196,7 +196,8 @@ namespace TFCEnginePlugin
 
                 eccAno = this.m_eccAno.Evaluate(result);
 
-                FW = Math.Abs(Alpha9 + Alpha10 * Math.Cos(eccAno) + Alpha11 * Math.Cos(2 * eccAno) + Alpha12 * Math.Sin(eccAno) + Alpha13 * Math.Sin(2 * eccAno));
+                FW = Math.Abs(Alpha9 + Alpha10 * Math.Cos(eccAno) + Alpha11 * Math.Cos(2 * eccAno) + 
+                    Alpha12 * Math.Sin(eccAno) + Alpha13 * Math.Sin(2 * eccAno));
                 //error on FR,W,S <=0 
 
 

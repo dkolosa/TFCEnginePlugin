@@ -1,6 +1,0 @@
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCAttitude\TFCAttitude\bin\Debug\TFCAttitude.dll
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCAttitude\TFCAttitude\bin\Debug\TFCAttitude.pdb
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCAttitude\TFCAttitude\bin\Debug\TFCAttitude.tlb
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCAttitude\TFCAttitude\obj\Debug\TFCAttitude.csprojResolveAssemblyReference.cache
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCAttitude\TFCAttitude\obj\Debug\TFCAttitude.dll
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCAttitude\TFCAttitude\obj\Debug\TFCAttitude.pdb

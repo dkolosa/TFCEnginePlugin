@@ -196,13 +196,16 @@ namespace TFCEnginePlugin
 
                 eccAno = this.m_eccAno.Evaluate(result);
 
-                //FR = Alpha0 + Alpha1 * Math.Cos(eccAno) + Alpha2 * Math.Cos(2 * eccAno) + Alpha3 * Math.Sin(eccAno);
+                FR = Alpha0 + Alpha1 * Math.Cos(eccAno) + Alpha2 * Math.Cos(2 * eccAno) + Alpha3 * Math.Sin(eccAno);
                 //error on FR,W,S < 0 
-                FR = 0;
+                
                 if (FR < 0)
                 {
                     //The thrust will error on negative in STK
                     FR = Math.Abs(FR);
+                } else
+                {
+                    FR = 0;
                 }
 
                 result.SetThrustAndIsp(FR, Isp);

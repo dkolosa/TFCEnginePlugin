@@ -242,17 +242,17 @@ namespace TFCEnginePlugin
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha1", "alpha1", "Alpha1", (int)AgEAttrAddFlags.eAddFlagNone);
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha2", "alpha2", "Alpha2", (int)AgEAttrAddFlags.eAddFlagNone);
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha3", "alpha3", "Alpha3", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha4", "alpha4", "Alpha4", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha5", "alpha5", "Alpha5", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha6", "alpha6", "Alpha6", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha7", "alpha7", "Alpha7", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha8", "alpha8", "Alpha8", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha9", "alpha9", "Alpha9", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha10", "alpha10", "Alpha10", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha11", "alpha11", "Alpha11", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha012", "alpha12", "Alpha12", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha13", "alpha13", "Alpha13", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Isp", "Specific Impulse", "Isp", (int)AgEAttrAddFlags.eAddFlagNone);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha4", "alpha4", "Alpha4", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha5", "alpha5", "Alpha5", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha6", "alpha6", "Alpha6", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha7", "alpha7", "Alpha7", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha8", "alpha8", "Alpha8", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha9", "alpha9", "Alpha9", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha10", "alpha10", "Alpha10", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha11", "alpha11", "Alpha11", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha012", "alpha12", "Alpha12", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha13", "alpha13", "Alpha13", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Isp", "Specific Impulse", "Isp", (int)AgEAttrAddFlags.eAddFlagReadOnly);
                     }
 
                     string config;

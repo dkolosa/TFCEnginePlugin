@@ -75,6 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ITFC.cs" />
+    <Compile Include="ITFCNeg.cs" />
+    <Compile Include="ITFCR.cs" />
     <Compile Include="TFCRNeg.cs" />
     <Compile Include="TFCS.cs" />
     <Compile Include="TFCW.cs" />

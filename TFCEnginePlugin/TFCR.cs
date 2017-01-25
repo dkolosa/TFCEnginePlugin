@@ -9,6 +9,7 @@ using AGI.Plugin;
 using AGI.Astrogator;
 using AGI.Astrogator.Plugin;
 using AGI.STK.Plugin;
+using System.IO;
 
 namespace TFCEnginePlugin
 {
@@ -91,10 +92,10 @@ namespace TFCEnginePlugin
         private string m_Name = "TFCEnginePluginR"; // Plugin Significant
 
         //14 Thrust coeff.
-        private double m_alpha0 = 0;
-        private double m_alpha1 = 0.001;
-        private double m_alpha2 = 0.0001;
-        private double m_alpha3 = 0.001;
+        public double m_alpha0 = 0;
+        public double m_alpha1 = 0.001;
+        public double m_alpha2 = 0.0001;
+        public double m_alpha3 = 0.001;
         private double m_alpha4 = 0;
         private double m_alpha5 = 0;
         private double m_alpha6 = 0;
@@ -105,7 +106,6 @@ namespace TFCEnginePlugin
         private double m_alpha11 = 0;
         private double m_alpha12 = 0;
         private double m_alpha13 = 0;
-
 
         private double m_Isp = 1200;
 
@@ -120,11 +120,14 @@ namespace TFCEnginePlugin
                 this.m_Name = value;
             }
         }
+
         //Create getters and setters for the TFC coeff.
-        public double Alpha0 { get { return this.m_alpha0; } set { this.m_alpha0 = value; } }
-        public double Alpha1 { get { return this.m_alpha1; } set { this.m_alpha1 = value; } }
-        public double Alpha2 { get { return this.m_alpha2; } set { this.m_alpha2 = value; } }
-        public double Alpha3 { get { return this.m_alpha3; } set { this.m_alpha3 = value; } }
+        public  double Alpha0 { get { return this.m_alpha0; } set { this.m_alpha0 = value; } }
+        public  double Alpha1 { get { return this.m_alpha1; } set { this.m_alpha1 = value; } }
+        public  double Alpha2 { get { return this.m_alpha2; } set { this.m_alpha2 = value; } }
+        public  double Alpha3 { get { return this.m_alpha3; } set { this.m_alpha3 = value; } }
+
+
         public double Alpha4 { get { return this.m_alpha4; } set { this.m_alpha4 = value; } }
         public double Alpha5 { get { return this.m_alpha5; } set { this.m_alpha5 = value; } }
         public double Alpha6 { get { return this.m_alpha6; } set { this.m_alpha6 = value; } }
@@ -135,7 +138,6 @@ namespace TFCEnginePlugin
         public double Alpha11 { get { return this.m_alpha11; } set { this.m_alpha11 = value; } }
         public double Alpha12 { get { return this.m_alpha12; } set { this.m_alpha12 = value; } }
         public double Alpha13 { get { return this.m_alpha13; } set { this.m_alpha13 = value; } }
-
 
         public double Isp
         {
@@ -194,26 +196,34 @@ namespace TFCEnginePlugin
 
                 Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
 
+                Debug.WriteLine("Alpha0: {0}\n Alpha1: {1}\n Alpha2: {2}\n Alpha3: {3}",
+                                Alpha0, Alpha1, Alpha2, Alpha3);
+
+
+
                 eccAno = this.m_eccAno.Evaluate(result);
 
-                FR = Alpha0 + Alpha1 * Math.Cos(eccAno) + Alpha2 * Math.Cos(2 * eccAno) + Alpha3 * Math.Sin(eccAno);
-                //error on FR,W,S < 0 
+                m_alpha0 = Alpha0;
+                m_alpha1 = Alpha1;
+                m_alpha2 = Alpha2;
+                m_alpha3 = Alpha3;
 
-                if (FR < 0 )
-                {
-                    //The thrust will error on negative in STK
+                WriteAlphaValues();
+
+                FR = Alpha0 + Alpha1 * Math.Cos(eccAno) + Alpha2 * Math.Cos(2 * eccAno) +
+                     Alpha3 * Math.Sin(eccAno);
+                //error on FR,W,S < 0
+                 
+                if (FR < 0)
                     FR = 0;
-                }
-
+                
                 result.SetThrustAndIsp(FR, Isp);
             }
-
             return true;
         }
 
         public void Free()
-        {
-        }
+        { }
         #endregion
 
         #region IAgUtPluginConfig Interface Implementation
@@ -242,16 +252,7 @@ namespace TFCEnginePlugin
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha1", "alpha1", "Alpha1", (int)AgEAttrAddFlags.eAddFlagNone);
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha2", "alpha2", "Alpha2", (int)AgEAttrAddFlags.eAddFlagNone);
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha3", "alpha3", "Alpha3", (int)AgEAttrAddFlags.eAddFlagNone);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha4", "alpha4", "Alpha4", (int)AgEAttrAddFlags.eAddFlagReadOnly);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha5", "alpha5", "Alpha5", (int)AgEAttrAddFlags.eAddFlagReadOnly);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha6", "alpha6", "Alpha6", (int)AgEAttrAddFlags.eAddFlagReadOnly);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha7", "alpha7", "Alpha7", (int)AgEAttrAddFlags.eAddFlagReadOnly);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha8", "alpha8", "Alpha8", (int)AgEAttrAddFlags.eAddFlagReadOnly);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha9", "alpha9", "Alpha9", (int)AgEAttrAddFlags.eAddFlagReadOnly);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha10", "alpha10", "Alpha10", (int)AgEAttrAddFlags.eAddFlagReadOnly);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha11", "alpha11", "Alpha11", (int)AgEAttrAddFlags.eAddFlagReadOnly);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha012", "alpha12", "Alpha12", (int)AgEAttrAddFlags.eAddFlagReadOnly);
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha13", "alpha13", "Alpha13", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                       
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Isp", "Specific Impulse", "Isp", (int)AgEAttrAddFlags.eAddFlagReadOnly);
                     }
 
@@ -283,5 +284,29 @@ namespace TFCEnginePlugin
             }
         }
         #endregion
+
+        private void WriteAlphaValues()
+        {
+            //Check the Current Directory
+            string wokingdir = Directory.GetCurrentDirectory();
+            Debug.WriteLine("The working Directory is: \n" + wokingdir);
+            //Read Alpha values from a File
+            try
+            {
+                string file = "alphaFile.txt";
+                using (StreamWriter sw = new StreamWriter(file))
+                {
+                    sw.WriteLine(m_alpha0);
+                    sw.WriteLine(m_alpha1);
+                    sw.WriteLine(m_alpha2);
+                    sw.WriteLine(m_alpha3);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
+        }
     }
 }

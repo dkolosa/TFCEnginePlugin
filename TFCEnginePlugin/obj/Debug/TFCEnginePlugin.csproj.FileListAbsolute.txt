@@ -5,3 +5,4 @@ C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\bin\Debu
 C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\bin\Debug\Agi.As.Gator.EngMdl.Plugin.CSharp.Examples.dll
 C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\obj\Debug\TFCEnginePlugin.dll
 C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\obj\Debug\TFCEnginePlugin.pdb
+C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\obj\Debug\TFCEnginePlugin.csprojResolveAssemblyReference.cache

@@ -188,7 +188,7 @@ namespace TFCEnginePlugin
 
                 eccAno = this.m_eccAno.Evaluate(result);
 
-               // GetAlphaValues();
+                GetAlphaValues();
                 /*
                 alphaR1 = this.m_alphaR1.Evaluate(result);
                 alphaR2 = this.m_alphaR2.Evaluate(result);

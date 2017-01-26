@@ -288,15 +288,18 @@ namespace TFCEnginePlugin
             string wokingdir = Directory.GetCurrentDirectory();
             Debug.WriteLine("The working Directory is: \n" + wokingdir);
             //Read Alpha values from a File
+            double[] alphas = { m_alpha0, m_alpha1, m_alpha2, m_alpha3 };
+            int i = 0;
             try
             {
                 string file = "alphaFile.txt";
                 using (StreamWriter sw = new StreamWriter(file))
                 {
-                    sw.WriteLine(m_alpha0);
-                    sw.WriteLine(m_alpha1);
-                    sw.WriteLine(m_alpha2);
-                    sw.WriteLine(m_alpha3);
+                    for (i = 0; i < 4; i++)
+                    {
+                        sw.WriteLine(alphas[i]);
+                    }
+        
                 }
             }
             catch (Exception e)

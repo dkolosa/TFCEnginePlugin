@@ -41,12 +41,12 @@ namespace TFCEnginePlugin
         private object m_AttrScope = null;
         private AgGatorPluginProvider m_gatorPrv = null;
         private AgGatorConfiguredCalcObject m_eccAno = null;
-
+        /*
         private AgGatorConfiguredCalcObject m_alphaR1 = null;
         private AgGatorConfiguredCalcObject m_alphaR2 = null;
         private AgGatorConfiguredCalcObject m_alphaR3 = null;
         private AgGatorConfiguredCalcObject m_alphaR4 = null;
-
+        */
 
         #endregion
 
@@ -188,33 +188,33 @@ namespace TFCEnginePlugin
 
                 eccAno = this.m_eccAno.Evaluate(result);
 
-                GetAlphaValues();
+               // GetAlphaValues();
                 /*
                 alphaR1 = this.m_alphaR1.Evaluate(result);
                 alphaR2 = this.m_alphaR2.Evaluate(result);
                 alphaR3 = this.m_alphaR3.Evaluate(result);
                 alphaR4 = this.m_alphaR4.Evaluate(result);
                 */
-
-
-
                 //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
 
                 Debug.WriteLine("Alpha0: {0}\n Alpha1: {1}\n Alpha2: {2}\n Alpha3: {3}\n EccAno: {4}",
                                 Alpha0, Alpha1, Alpha2, Alpha3, eccAno);
 
-
                 FR = m_alpha0 + m_alpha1 * Math.Cos(eccAno) + m_alpha2 * Math.Cos(2 * eccAno) +
                      m_alpha3 * Math.Sin(eccAno);
 
-               // FR = Alpha0 + Alpha1 * Math.Cos(eccAno) + Alpha2 * Math.Cos(2 * eccAno) +
-                 //    Alpha3 * Math.Sin(eccAno);
+                // FR = Alpha0 + Alpha1 * Math.Cos(eccAno) + Alpha2 * Math.Cos(2 * eccAno) +
+                //    Alpha3 * Math.Sin(eccAno);
                 //error on FR,W,S < 0 
                 //The thrust will error on negative in STK
                 if (FR < 0)
+                {
                     FR = Math.Abs(FR);
+                }
                 else
+                {
                     FR = 0;
+                }
                    
                 result.SetThrustAndIsp(FR, Isp);
             }

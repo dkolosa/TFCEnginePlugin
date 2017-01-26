@@ -199,23 +199,20 @@ namespace TFCEnginePlugin
                 Debug.WriteLine("Alpha0: {0}\n Alpha1: {1}\n Alpha2: {2}\n Alpha3: {3}",
                                 Alpha0, Alpha1, Alpha2, Alpha3);
 
-
-
                 eccAno = this.m_eccAno.Evaluate(result);
 
-                m_alpha0 = Alpha0;
-                m_alpha1 = Alpha1;
-                m_alpha2 = Alpha2;
-                m_alpha3 = Alpha3;
 
-                WriteAlphaValues();
+            //    WriteAlphaValues();
 
                 FR = Alpha0 + Alpha1 * Math.Cos(eccAno) + Alpha2 * Math.Cos(2 * eccAno) +
                      Alpha3 * Math.Sin(eccAno);
                 //error on FR,W,S < 0
                  
                 if (FR < 0)
+                {
                     FR = 0;
+                }
+                
                 
                 result.SetThrustAndIsp(FR, Isp);
             }

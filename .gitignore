@@ -2,3 +2,5 @@
 
 #config files
 .vs
+*.dll
+*.pdb

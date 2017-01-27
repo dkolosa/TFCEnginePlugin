@@ -156,10 +156,10 @@ namespace TFCEnginePlugin
                 {
                     this.m_eccAno = this.m_gatorPrv.ConfigureCalcObject("Eccentric_Anomaly");
                     /*
-                    this.m_alphar1 = this.m_gatorprv.configurecalcobject("alphar1");
-                    this.m_alphar2 = this.m_gatorprv.configurecalcobject("alphar2");
-                    this.m_alphar3 = this.m_gatorprv.configurecalcobject("alphar3");
-                    this.m_alphar4 = this.m_gatorprv.configurecalcobject("alphar4");
+                    this.m_alphar1 = this.m_gatorprv.configurecalcobject("AlphaR1");
+                    this.m_alphar2 = this.m_gatorprv.configurecalcobject("AlphaR2");
+                    this.m_alphar3 = this.m_gatorprv.configurecalcobject("AlphaR3");
+                    this.m_alphar4 = this.m_gatorprv.configurecalcobject("AlphaR4");
                     */
 
                     if (this.m_eccAno != null)
@@ -219,6 +219,15 @@ namespace TFCEnginePlugin
                 result.SetThrustAndIsp(FR, Isp);
             }
             return true;
+        }
+
+        public bool Update(AgGatorPluginResultState result)
+        {
+
+
+
+            return true;
+
         }
 
         public void Free()

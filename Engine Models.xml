@@ -16,6 +16,12 @@
 			<Plugin DisplayName = "Fourier Thrust Coefficient W reference" ProgID = "TFCEnginePlugin.TFCW"/>
 
 		</Category>
+		
+		<Category Name = "EOMFunc Plugins">
+
+			<Plugin DisplayName = "Kechichian LEO GEO TRULON" ProgID = "JScript.LEO_GEO_EQUI_TRULON.EOMFunc.Plugin.Wsc"/>
+
+	    </Category> 
 
 				
 			<!-- This tag to the left indicates the start of a comment block

@@ -55,7 +55,7 @@ var m_gatorProvider			= null;
 // Declare Global 'Attribute' Variables
 //======================================
 
-var m_Name = "JScript.TFCEngineValues.EOMFunc.wsc";
+var m_Name = "JScript.TFCEngineValues.EOMFunc.Wsc";
 
 //Calc obj used in the plugins
 var m_alphar1 = 0;

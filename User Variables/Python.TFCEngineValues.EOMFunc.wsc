@@ -6,7 +6,7 @@
 	<?component error="true" debug="true"?>
 	<registration
 		classid="{6813B9FD-94CC-4dcc-85C5-CF18A4B33E0B}"
-		progid="Python.TFCEngineValues.EOMFunc.wsc"
+		progid="Python.TFCEngineValues.EOMFunc.Plugin.wsc"
 		description="Python.TFCEngineValues.EOMFunc.wsc"
 		version="1.00"
 	>
@@ -27,6 +27,13 @@
 		<method name="Register">
 			<parameter name="AgAsEOMFuncPluginRegisterIntf"/>
 		</method>
+		<method name="SetIndices">
+			<parameter name="AgAsEOMFuncPluginSetIndicesIntf"/>
+		</method>
+		<method name="Calc">
+      <parameter name="EventType"/>
+      <parameter name="AgAsEOMFuncPluginStateVector"/>
+		</method>
 		<method name="Free"/>
 		<method name="GetPluginConfig">
 			<parameter name="AgAttrBuilder"/>
@@ -36,7 +43,7 @@
 		</method>
 	</public>
 
-	<script language="Python" src="Python.TFCEngineValues.EOMFunc.py"/>
+	<script language="python" src="Python.TFCEngineValues.EOMFunc.py"/>
 
 </component>
 

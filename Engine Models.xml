@@ -19,7 +19,7 @@
 		
 		<Category Name = "EOMFunc Plugins">
 
-			<Plugin DisplayName = "Kechichian LEO GEO TRULON" ProgID = "JScript.LEO_GEO_EQUI_TRULON.EOMFunc.Plugin.Wsc"/>
+			<Plugin DisplayName = "Kechichian LEO GEO TRULON" ProgID = "JScript.LEO_GEO_EQUI_TRULON.EOMFunc.Plugin.wsc"/>
 
 	    </Category> 
 

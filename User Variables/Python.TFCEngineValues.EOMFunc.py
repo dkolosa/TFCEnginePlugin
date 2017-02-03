@@ -158,6 +158,38 @@ def Register( AgAsEOMFuncPluginRegisterHandler ):
 
 """
 ===========================================================
+ SetIndices Method
+===========================================================
+"""
+
+def SetIndices( AgAsEOMFuncPluginSetIndicesHandler ):
+	# Assign index to costate variables
+    m_alphar1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR1")
+    m_alphar1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR1")
+
+    m_alphar2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR2")
+    m_alphar2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR2")
+
+    m_alphar3Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR3")
+    m_alphar3DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR3")
+
+    m_alphar4Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR4")
+    m_alphar4DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR4")
+
+    return true
+
+
+"""
+===========================================================
+ Calc Method
+===========================================================
+"""
+
+def Calc(event, AgAsEOMFuncPluginStateVector):
+	return true
+
+"""
+===========================================================
  Free Method
 ===========================================================
 """

@@ -42,6 +42,11 @@ namespace TFCEnginePlugin
         private AgGatorPluginProvider m_gatorPrv = null;
         private AgGatorConfiguredCalcObject m_eccAno = null;
 
+        private AgGatorConfiguredCalcObject m_AlphaR1 = null;
+        private AgGatorConfiguredCalcObject m_AlphaR2 = null;
+        private AgGatorConfiguredCalcObject m_AlphaR3 = null;
+        private AgGatorConfiguredCalcObject m_AlphaR4 = null;
+
         #endregion
 
         #region Life Cycle Methods
@@ -92,10 +97,12 @@ namespace TFCEnginePlugin
         private string m_Name = "TFCEnginePluginR"; // Plugin Significant
 
         //14 Thrust coeff.
-        public double m_alpha0 = 0;
-        public double m_alpha1 = 0.001;
-        public double m_alpha2 = 0.0001;
-        public double m_alpha3 = 0.001;
+        /*
+        private double m_alpha0 = 0;
+        private double m_alpha1 = 0.001;
+        private double m_alpha2 = 0.0001;
+        private double m_alpha3 = 0.001;
+        
         private double m_alpha4 = 0;
         private double m_alpha5 = 0;
         private double m_alpha6 = 0;
@@ -106,7 +113,7 @@ namespace TFCEnginePlugin
         private double m_alpha11 = 0;
         private double m_alpha12 = 0;
         private double m_alpha13 = 0;
-
+        */
         private double m_Isp = 1200;
 
         public string Name
@@ -122,11 +129,11 @@ namespace TFCEnginePlugin
         }
 
         //Create getters and setters for the TFC coeff.
+        /*
         public  double Alpha0 { get { return this.m_alpha0; } set { this.m_alpha0 = value; } }
         public  double Alpha1 { get { return this.m_alpha1; } set { this.m_alpha1 = value; } }
         public  double Alpha2 { get { return this.m_alpha2; } set { this.m_alpha2 = value; } }
         public  double Alpha3 { get { return this.m_alpha3; } set { this.m_alpha3 = value; } }
-
 
         public double Alpha4 { get { return this.m_alpha4; } set { this.m_alpha4 = value; } }
         public double Alpha5 { get { return this.m_alpha5; } set { this.m_alpha5 = value; } }
@@ -138,6 +145,7 @@ namespace TFCEnginePlugin
         public double Alpha11 { get { return this.m_alpha11; } set { this.m_alpha11 = value; } }
         public double Alpha12 { get { return this.m_alpha12; } set { this.m_alpha12 = value; } }
         public double Alpha13 { get { return this.m_alpha13; } set { this.m_alpha13 = value; } }
+        */
 
         public double Isp
         {
@@ -166,10 +174,14 @@ namespace TFCEnginePlugin
                 {
                     this.m_eccAno = this.m_gatorPrv.ConfigureCalcObject("Eccentric_Anomaly");
 
-                    if (this.m_eccAno != null)
-                    {
+                    this.m_AlphaR1 = this.m_gatorPrv.ConfigureCalcObject("AlphaR1");
+                    this.m_AlphaR2 = this.m_gatorPrv.ConfigureCalcObject("AlphaR2");
+                    this.m_AlphaR3 = this.m_gatorPrv.ConfigureCalcObject("AlphaR3");
+                    this.m_AlphaR4 = this.m_gatorPrv.ConfigureCalcObject("AlphaR4");
+
+                    if (this.m_eccAno != null && this.m_AlphaR1 != null && this.m_AlphaR2 != null
+                        && this.m_AlphaR3 != null && this.m_AlphaR4 != null)
                         return true;
-                    }
                 }
             }
 
@@ -191,23 +203,22 @@ namespace TFCEnginePlugin
 
             if (result != null)
             {
-                double eccAno;
-                double FR;
 
-                Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
+                double eccAno = this.m_eccAno.Evaluate(result);
+                double alphaR1 = this.m_AlphaR1.Evaluate(result);
+                double alphaR2 = this.m_AlphaR2.Evaluate(result);
+                double alphaR3 = this.m_AlphaR3.Evaluate(result);
+                double alphaR4 = this.m_AlphaR4.Evaluate(result);
 
-                Debug.WriteLine("Alpha0: {0}\n Alpha1: {1}\n Alpha2: {2}\n Alpha3: {3}",
-                                Alpha0, Alpha1, Alpha2, Alpha3);
+                //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
 
-                eccAno = this.m_eccAno.Evaluate(result);
+                Debug.WriteLine("Alpha0: {0}\nAlpha1: {1}\nAlpha2: {2}\nAlpha3: {3}\nEccAno: {4}",
+                                alphaR1, alphaR2, alphaR3, alphaR4, eccAno);
 
-
-            //    WriteAlphaValues();
-
-                FR = Alpha0 + Alpha1 * Math.Cos(eccAno) + Alpha2 * Math.Cos(2 * eccAno) +
-                     Alpha3 * Math.Sin(eccAno);
+                double FR = alphaR1 + alphaR2 * Math.Cos(eccAno) + alphaR3 * Math.Cos(2 * eccAno) +
+                            alphaR4 * Math.Sin(eccAno);
                 //error on FR,W,S < 0
-                 
+
                 if (FR < 0)
                 {
                     FR = 0;
@@ -245,11 +256,12 @@ namespace TFCEnginePlugin
                         //================
                         // Thrust Attributes
                         //================
+                        /*
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha0", "alpha0", "Alpha0", (int)AgEAttrAddFlags.eAddFlagNone);
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha1", "alpha1", "Alpha1", (int)AgEAttrAddFlags.eAddFlagNone);
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha2", "alpha2", "Alpha2", (int)AgEAttrAddFlags.eAddFlagNone);
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Alpha3", "alpha3", "Alpha3", (int)AgEAttrAddFlags.eAddFlagNone);
-                       
+                       */
                         builder.AddDoubleDispatchProperty(this.m_AttrScope, "Isp", "Specific Impulse", "Isp", (int)AgEAttrAddFlags.eAddFlagReadOnly);
                     }
 
@@ -281,32 +293,5 @@ namespace TFCEnginePlugin
             }
         }
         #endregion
-
-        private void WriteAlphaValues()
-        {
-            //Check the Current Directory
-            string wokingdir = Directory.GetCurrentDirectory();
-            Debug.WriteLine("The working Directory is: \n" + wokingdir);
-            //Read Alpha values from a File
-            double[] alphas = { m_alpha0, m_alpha1, m_alpha2, m_alpha3 };
-            int i = 0;
-            try
-            {
-                string file = "alphaFile.txt";
-                using (StreamWriter sw = new StreamWriter(file))
-                {
-                    for (i = 0; i < 4; i++)
-                    {
-                        sw.WriteLine(alphas[i]);
-                    }
-        
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-
-        }
     }
 }

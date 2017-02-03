@@ -43,8 +43,6 @@ var eEventTypesPostPropagate = 3;
 
 // Axes in which the delta-v is integrated.  This value can be changed on the 
 // propagator panel.
-var m_DeltaVAxes = "VNC(Earth)";
-
 
 var m_AgUtPluginSite		= null;
 var m_AgAttrScope			= null;
@@ -55,13 +53,13 @@ var m_gatorProvider			= null;
 // Declare Global 'Attribute' Variables
 //======================================
 
-var m_Name = "JScript.TFCEngineValues.EOMFunc.Wsc";
+var m_Name = "JScript.TFCEngineValues.EOMFunc.wsc";
 
 //Calc obj used in the plugins
-var m_alphar1 = 0;
-var m_alphar2 = 0;
-var m_alphar3 = 0;
-var m_alphar4 = 0;
+var m_alphar1 = 0.0;
+var m_alphar2 = 0.0;
+var m_alphar3 = 0.0;
+var m_alphar4 = 0.0;
 
 
 //========================
@@ -74,7 +72,13 @@ function GetPluginConfig( AgAttrBuilder )
 		m_AgAttrScope = AgAttrBuilder.NewScope();
 		
 		// Create an attribute for the delta-V axes, so it appears on the panel.
-		AgAttrBuilder.AddStringDispatchProperty( m_AgAttrScope, "TFCValues", "R coeff. in TFC Plugin", "Name", 0);
+		AgAttrBuilder.AddStringDispatchProperty( m_AgAttrScope, "PluginName", "Human readable plugin name or alias", "Name", eFlagNone );
+		/*
+		AgAttrBuilder.AddDoubleDispatchProperty(m_AgAttrScope, "AlphaR1", "TFC Alpha1", "AlphaR1", eFlagNone)		
+		AgAttrBuilder.AddDoubleDispatchProperty(m_AgAttrScope, "AlphaR2", "TFC Alpha2", "AlphaR2", eFlagNone)		
+		AgAttrBuilder.AddDoubleDispatchProperty(m_AgAttrScope, "AlphaR3", "TFC Alpha3", "AlphaR3", eFlagNone)		
+		AgAttrBuilder.AddDoubleDispatchProperty(m_AgAttrScope, "AlphaR4", "TFC Alpha4", "AlphaR4", eFlagNone)		
+		*/
 	}
 
 	return m_AgAttrScope;
@@ -126,7 +130,6 @@ function Init( AgUtPluginSite )
 				}
 			}
 		}
-	    return false;
 	}
 	
     return false;
@@ -138,11 +141,42 @@ function Init( AgUtPluginSite )
 function Register( AgAsEOMFuncPluginRegisterHandler )
 {
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR1");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR2");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR2");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR3");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR3");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR4");
+	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR4");	
+    return true;
+}
+
+//======================
+// SetIndices Function
+//======================
+function SetIndices( AgAsEOMFuncPluginSetIndicesHandler )
+{
+
+	//Assign index to costate variables
+    m_alphar1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR1"); 
+    m_alphar1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR1");  
+
+    m_alphar2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR2"); 
+    m_alphar2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR2");  
+
+    m_alphar3Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR3"); 
+    m_alphar3DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR3");  
+
+    m_alphar4Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR4"); 
+    m_alphar4DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR4");  
 
     return true;
+}
+
+
+function Calc(event ,AgAsEOMFuncPluginStateVector )
+{
+	return true;
 }
 
 //===========================================================
@@ -152,7 +186,7 @@ function Free()
 {
 	if( m_AgUtPluginSite != null )
 	{	
-		m_AgUtPluginSite 		= null
+		m_AgUtPluginSite = null
 	}
 	
 	return true;

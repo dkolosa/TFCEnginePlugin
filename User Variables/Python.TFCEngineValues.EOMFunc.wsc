@@ -5,7 +5,7 @@
 <component>
 	<?component error="true" debug="true"?>
 	<registration
-		classid="{6813B9FD-94CC-4dcc-85C5-CF18A4B33E0B}"
+		classid="{1D273237-FB09-4241-A76E-DD0F139F2234}"
 		progid="Python.TFCEngineValues.EOMFunc.Plugin.wsc"
 		description="Python.TFCEngineValues.EOMFunc.wsc"
 		version="1.00"
@@ -43,7 +43,7 @@
 		</method>
 	</public>
 
-	<script language="python" src="Python.TFCEngineValues.EOMFunc.py"/>
+	<script language="Python" src="Python.TFCEngineValues.EOMFunc.py"/>
 
 </component>
 

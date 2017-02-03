@@ -9,6 +9,9 @@
 ==========================================
 """
 
+import win32com.client
+
+
 eInertial 		= 0
 eFixed 			= 1
 eLVLH 			= 2
@@ -73,10 +76,10 @@ m_gatorProvider			= null
 m_Name = "Python.TFCEngineValues.EOMFunc.wsc"
 
 # Calc obj used in the plugins
-m_alphar1 = 0
-m_alphar2 = 0
-m_alphar3 = 0
-m_alphar4 = 0
+m_alphar1 = 0.0
+m_alphar2 = 0.0
+m_alphar3 = 0.0
+m_alphar4 = 0.0
 
 
 """
@@ -98,7 +101,7 @@ def GetPluginConfig( AgAttrBuilder ):
  VerifyPluginConfig method
 ===========================
 """
-def VerifyPluginConfig( AgUtPluginConfigVerifyResult )
+def VerifyPluginConfig( AgUtPluginConfigVerifyResult ):
 
     Result = true
     Message = "Ok"
@@ -149,10 +152,14 @@ def Init( AgUtPluginSite ):
 def Register( AgAsEOMFuncPluginRegisterHandler ):
 
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR1")
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR1")
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR2")
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR2")
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR3")
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR3")
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR4")
-
+	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR4")
+    
     return true
 
 

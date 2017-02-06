@@ -77,10 +77,12 @@
     <Compile Include="ITFC.cs" />
     <Compile Include="TFCRNeg.cs" />
     <Compile Include="TFCS.cs" />
+    <Compile Include="TFCSNeg.cs" />
     <Compile Include="TFCW.cs" />
     <Compile Include="TFCR.cs" />
     <Compile Include="TFC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TFCWNeg.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

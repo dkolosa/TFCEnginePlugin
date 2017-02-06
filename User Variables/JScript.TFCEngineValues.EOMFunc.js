@@ -2,6 +2,20 @@
 //  Copyright 2009, Analytical Graphics, Inc.          
 //=====================================================
 
+/** EOM function Plugin
+  * Functions:
+  *     GetPluginConfig
+  *     VerifyPluginConfig
+  *     Init
+  *     Register
+  *     SetIndices
+  *     Free
+  *     Calc
+  *     GetName
+  *     SetName
+  */
+
+
 //==========================================
 // Reference Frames Enumeration
 //==========================================
@@ -52,14 +66,29 @@ var m_gatorProvider			= null;
 //======================================
 // Declare Global 'Attribute' Variables
 //======================================
-
+//Name values must match the one in .wsc
 var m_Name = "JScript.TFCEngineValues.EOMFunc.wsc";
 
 //Calc obj used in the plugins
+//Radial
 var m_alphar1 = 0.0;
 var m_alphar2 = 0.0;
 var m_alphar3 = 0.0;
 var m_alphar4 = 0.0;
+
+//Transversal
+var m_alphaS0 = 0.0;
+var m_alphaS1 = 0.0;
+var m_alphaS2 = 0.0;
+var m_betaS1 = 0.0;
+var m_betaS2 = 0.0;
+
+//Normal
+var m_alphaW0 = 0.0;
+var m_alphaW1 = 0.0;
+var m_alphaW2 = 0.0;
+var m_betaW1 = 0.0;
+var m_betaW2 = 0.0;
 
 
 //========================
@@ -73,12 +102,6 @@ function GetPluginConfig( AgAttrBuilder )
 		
 		// Create an attribute for the delta-V axes, so it appears on the panel.
 		AgAttrBuilder.AddStringDispatchProperty( m_AgAttrScope, "PluginName", "Human readable plugin name or alias", "Name", eFlagNone );
-		/*
-		AgAttrBuilder.AddDoubleDispatchProperty(m_AgAttrScope, "AlphaR1", "TFC Alpha1", "AlphaR1", eFlagNone)		
-		AgAttrBuilder.AddDoubleDispatchProperty(m_AgAttrScope, "AlphaR2", "TFC Alpha2", "AlphaR2", eFlagNone)		
-		AgAttrBuilder.AddDoubleDispatchProperty(m_AgAttrScope, "AlphaR3", "TFC Alpha3", "AlphaR3", eFlagNone)		
-		AgAttrBuilder.AddDoubleDispatchProperty(m_AgAttrScope, "AlphaR4", "TFC Alpha4", "AlphaR4", eFlagNone)		
-		*/
 	}
 
 	return m_AgAttrScope;
@@ -99,6 +122,9 @@ function VerifyPluginConfig( AgUtPluginConfigVerifyResult )
 //======================
 // Init Method
 //======================
+/**
+  * Grabs the coefficients from STK User variables
+ */
 function Init( AgUtPluginSite )
 {
 	m_AgUtPluginSite = AgUtPluginSite;
@@ -114,19 +140,33 @@ function Init( AgUtPluginSite )
 			m_alphar2 = m_gatorProvider.ConfigureCalcObject("AlphaR2");
 			m_alphar3 = m_gatorProvider.ConfigureCalcObject("AlphaR3");
 			m_alphar4 = m_gatorProvider.ConfigureCalcObject("AlphaR4");
+
+			m_alphaS0 = m_gatorProvider.ConfigureCalcObject("AlphaS0");
+			m_alphaS1 = m_gatorProvider.ConfigureCalcObject("AlphaS1");
+			m_alphaS2 = m_gatorProvider.ConfigureCalcObject("AlphaS2");
+			m_betaS1 = m_gatorProvider.ConfigureCalcObject("BetaS1");
+			m_betaS2 = m_gatorProvider.ConfigureCalcObject("BetaS2");
+
+/*
+			m_alphaW0 = m_gatorProvider.ConfigureCalcObject("AlphaW0");
+			m_alphaW1 = m_gatorProvider.ConfigureCalcObject("AlphaW1");
+			m_alphaW2 = m_gatorProvider.ConfigureCalcObject("AlphaW2");
+			m_betaW1 = m_gatorProvider.ConfigureCalcObject("BetaW1");
+			m_betaW2 = m_gatorProvider.ConfigureCalcObject("BetaW2");
+*/
 			
 			//Check if value exists
-			if (m_alphar1 != null)
+			if (m_alphar1 != null && m_alphar2 != null && 
+				m_alphar3 != null && m_alphar4 != null)
 			{
-				if (m_alphar2 != null)
+				if(m_alphaS0 != null && m_alphaS1 != null && m_alphaS2 != null &&
+					m_betaS1 != null && m_betaS2 != null)
 				{
-					if (m_alphar3 != null)
-					{
-						if (m_alphar4 != null)
-						{
-							return true;
-						}
-					}
+				//	if(m_alphaW0 != null && m_alphaW1 != null && m_alphaW2 != null &&
+				//		m_betaW1 != null && m_betaW2 != null)
+				//	{
+						return true;
+					//}
 				}
 			}
 		}
@@ -138,6 +178,9 @@ function Init( AgUtPluginSite )
 //======================
 // Register Method
 //======================
+/**
+  *Register the variables to use with STK
+  */
 function Register( AgAsEOMFuncPluginRegisterHandler )
 {
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR1");
@@ -148,16 +191,43 @@ function Register( AgAsEOMFuncPluginRegisterHandler )
     AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR3");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR4");
 	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR4");	
+
+
+	AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaS0");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaS0");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaS1");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaS1");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaS2");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaS2");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaS1");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaS1");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaS2");
+	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaS2");	
+/*
+	AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaW0");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW0");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaW1");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW1");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaW2");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW2");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaW1");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaW1");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaW2");
+	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaW2");	
+*/
     return true;
 }
 
 //======================
 // SetIndices Function
 //======================
+/**
+  * Sets a time state for the integrator
+  */
 function SetIndices( AgAsEOMFuncPluginSetIndicesHandler )
 {
 
-	//Assign index to costate variables
+	//Radial
     m_alphar1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR1"); 
     m_alphar1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR1");  
 
@@ -170,10 +240,45 @@ function SetIndices( AgAsEOMFuncPluginSetIndicesHandler )
     m_alphar4Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR4"); 
     m_alphar4DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR4");  
 
+    //Transversal
+    m_alphaS0Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaS0"); 
+    m_alphaS0DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaS0");  
+
+    m_alphaS1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaS1"); 
+    m_alphaS1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaS1");  
+
+    m_alphaS2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaS2"); 
+    m_alphaS2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaS2");  
+
+    m_betaS1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaS1"); 
+    m_betaS1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaS1"); 
+
+	m_betaS2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaS2"); 
+    m_betaS2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaS2"); 
+
+    //normal
+    /*
+    m_alphaW0Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaW0"); 
+    m_alphaW0DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW0");  
+
+    m_alphaW1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaW1"); 
+    m_alphaW1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW1");  
+
+    m_alphaW2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaW2"); 
+    m_alphaW2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW2");  
+
+    m_betaW1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaW1"); 
+    m_betaW1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaW1"); 
+
+	m_betaW2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaW2"); 
+    m_betaW2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaW2"); 
+*/
     return true;
 }
 
-
+ /**
+   * Performs any calculations to the coefficients
+   */
 function Calc(event ,AgAsEOMFuncPluginStateVector )
 {
 	return true;

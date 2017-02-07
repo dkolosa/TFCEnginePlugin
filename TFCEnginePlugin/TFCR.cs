@@ -42,10 +42,10 @@ namespace TFCEnginePlugin
         private AgGatorPluginProvider m_gatorPrv = null;
         private AgGatorConfiguredCalcObject m_eccAno = null;
 
+        private AgGatorConfiguredCalcObject m_AlphaR0 = null;
         private AgGatorConfiguredCalcObject m_AlphaR1 = null;
         private AgGatorConfiguredCalcObject m_AlphaR2 = null;
-        private AgGatorConfiguredCalcObject m_AlphaR3 = null;
-        private AgGatorConfiguredCalcObject m_AlphaR4 = null;
+        private AgGatorConfiguredCalcObject m_BetaR1 = null;
 
         #endregion
 
@@ -138,13 +138,13 @@ namespace TFCEnginePlugin
                 {
                     this.m_eccAno = this.m_gatorPrv.ConfigureCalcObject("Eccentric_Anomaly");
 
+                    this.m_AlphaR0 = this.m_gatorPrv.ConfigureCalcObject("AlphaR0");
                     this.m_AlphaR1 = this.m_gatorPrv.ConfigureCalcObject("AlphaR1");
                     this.m_AlphaR2 = this.m_gatorPrv.ConfigureCalcObject("AlphaR2");
-                    this.m_AlphaR3 = this.m_gatorPrv.ConfigureCalcObject("AlphaR3");
-                    this.m_AlphaR4 = this.m_gatorPrv.ConfigureCalcObject("AlphaR4");
+                    this.m_BetaR1 = this.m_gatorPrv.ConfigureCalcObject("BetaR1");
 
-                    if (this.m_eccAno != null && this.m_AlphaR1 != null && this.m_AlphaR2 != null
-                        && this.m_AlphaR3 != null && this.m_AlphaR4 != null)
+                    if (this.m_eccAno != null && this.m_AlphaR0 != null && this.m_AlphaR1 != null
+                        && this.m_AlphaR2 != null && this.m_BetaR1 != null)
                         return true;
                 }
             }
@@ -169,18 +169,18 @@ namespace TFCEnginePlugin
             {
 
                 double eccAno = this.m_eccAno.Evaluate(result);
+                double alphaR0 = this.m_AlphaR0.Evaluate(result);
                 double alphaR1 = this.m_AlphaR1.Evaluate(result);
                 double alphaR2 = this.m_AlphaR2.Evaluate(result);
-                double alphaR3 = this.m_AlphaR3.Evaluate(result);
-                double alphaR4 = this.m_AlphaR4.Evaluate(result);
+                double betaR1 = this.m_BetaR1.Evaluate(result);
 
                 //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
 
                 //Debug.WriteLine("Alpha0: {0}\nAlpha1: {1}\nAlpha2: {2}\nAlpha3: {3}\nEccAno: {4}",
                  //               alphaR1, alphaR2, alphaR3, alphaR4, eccAno);
 
-                double FR = alphaR1 + alphaR2 * Math.Cos(eccAno) + alphaR3 * Math.Cos(2 * eccAno) +
-                            alphaR4 * Math.Sin(eccAno);
+                double FR = alphaR0 + alphaR1 * Math.Cos(eccAno) + alphaR2 * Math.Cos(2 * eccAno) +
+                            betaR1 * Math.Sin(eccAno);
                 //error on FR,W,S < 0
 
                 if (FR < 0)

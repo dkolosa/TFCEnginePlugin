@@ -38,30 +38,30 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Agi.As.Gator.EngMdl.Plugin.CSharp.Examples">
-      <HintPath>References\Agi.As.Gator.EngMdl.Plugin.CSharp.Examples.dll</HintPath>
+      <HintPath>..\References\Agi.As.Gator.EngMdl.Plugin.CSharp.Examples.dll</HintPath>
     </Reference>
     <Reference Include="AGI.Astrogator.Interop">
-      <HintPath>References\AGI.Astrogator.Interop.dll</HintPath>
+      <HintPath>..\References\AGI.Astrogator.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.Astrogator.Plugin.Interop">
-      <HintPath>References\AGI.Astrogator.Plugin.Interop.dll</HintPath>
+      <HintPath>..\References\AGI.Astrogator.Plugin.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.Attr.Interop">
-      <HintPath>References\AGI.Attr.Interop.dll</HintPath>
+      <HintPath>..\References\AGI.Attr.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.Plugin.Interop">
-      <HintPath>References\AGI.Plugin.Interop.dll</HintPath>
+      <HintPath>..\References\AGI.Plugin.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.STK.Plugin.Interop">
-      <HintPath>References\AGI.STK.Plugin.Interop.dll</HintPath>
+      <HintPath>..\References\AGI.STK.Plugin.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.VectorGeometryTool.Plugin.Interop">
-      <HintPath>References\AGI.VectorGeometryTool.Plugin.Interop.dll</HintPath>
+      <HintPath>..\References\AGI.VectorGeometryTool.Plugin.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -80,7 +80,6 @@
     <Compile Include="TFCSNeg.cs" />
     <Compile Include="TFCW.cs" />
     <Compile Include="TFCR.cs" />
-    <Compile Include="TFC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TFCWNeg.cs" />
   </ItemGroup>

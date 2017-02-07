@@ -71,10 +71,10 @@ var m_Name = "JScript.TFCEngineValues.EOMFunc.wsc";
 
 //Calc obj used in the plugins
 //Radial
+var m_alphar0 = 0.0;
 var m_alphar1 = 0.0;
 var m_alphar2 = 0.0;
-var m_alphar3 = 0.0;
-var m_alphar4 = 0.0;
+var m_betar1 = 0.0;
 
 //Transversal
 var m_alphaS0 = 0.0;
@@ -136,10 +136,10 @@ function Init( AgUtPluginSite )
 		if (m_gatorProvider != null)
 		{
 			//calc Objects
+			m_alphar0 = m_gatorProvider.ConfigureCalcObject("AlphaR0");
 			m_alphar1 = m_gatorProvider.ConfigureCalcObject("AlphaR1");
 			m_alphar2 = m_gatorProvider.ConfigureCalcObject("AlphaR2");
-			m_alphar3 = m_gatorProvider.ConfigureCalcObject("AlphaR3");
-			m_alphar4 = m_gatorProvider.ConfigureCalcObject("AlphaR4");
+			m_betar1 = m_gatorProvider.ConfigureCalcObject("BetaR1");
 
 			m_alphaS0 = m_gatorProvider.ConfigureCalcObject("AlphaS0");
 			m_alphaS1 = m_gatorProvider.ConfigureCalcObject("AlphaS1");
@@ -156,8 +156,8 @@ function Init( AgUtPluginSite )
 
 			
 			//Check if value exists
-			if (m_alphar1 != null && m_alphar2 != null && 
-				m_alphar3 != null && m_alphar4 != null)
+			if (m_alphar0 != null && m_alphar1 != null && 
+				m_alphar2 != null && m_betar1 != null)
 			{
 				if(m_alphaS0 != null && m_alphaS1 != null && m_alphaS2 != null &&
 					m_betaS1 != null && m_betaS2 != null)
@@ -183,14 +183,14 @@ function Init( AgUtPluginSite )
   */
 function Register( AgAsEOMFuncPluginRegisterHandler )
 {
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR0");
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR0");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR2");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR2");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR3");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR3");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR4");
-	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR4");	
+    AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaR1");
+	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaR1");	
 
 
 	AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaS0");
@@ -228,17 +228,17 @@ function SetIndices( AgAsEOMFuncPluginSetIndicesHandler )
 {
 
 	//Radial
-    m_alphar1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR1"); 
-    m_alphar1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR1");  
+    m_alphar1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR0"); 
+    m_alphar1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR0");  
 
-    m_alphar2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR2"); 
-    m_alphar2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR2");  
+    m_alphar2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR1"); 
+    m_alphar2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR1");  
 
-    m_alphar3Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR3"); 
-    m_alphar3DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR3");  
+    m_alphar3Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR2"); 
+    m_alphar3DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR2");  
 
-    m_alphar4Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR4"); 
-    m_alphar4DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR4");  
+    m_alphar4Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaR1"); 
+    m_alphar4DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaR1");  
 
     //Transversal
     m_alphaS0Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaS0"); 

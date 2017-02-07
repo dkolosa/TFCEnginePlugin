@@ -1,0 +1,41 @@
+<?xml version = "1.0"?>
+
+<!--
+      AGI Registry File for COM Servers. 
+-->
+
+<AGIRegistry version = "1.0">
+
+	<CategoryRegistry>
+		
+		<Category Name = "Engine Models">
+
+	
+			<Plugin DisplayName = "Fourier Thrust Coefficient R " 
+				ProgID = "TFCEnginePlugin.TFCR"/>
+			<Plugin DisplayName = "Fourier Thrust Coefficient R Negative" 
+				ProgID = "TFCEnginePlugin.TFCRNeg"/>
+
+
+			<Plugin DisplayName = "Fourier Thrust Coefficient S " 
+				ProgID = "TFCEnginePlugin.TFCS"/>
+			<Plugin DisplayName = "Fourier Thrust Coefficient S Negative " 
+				ProgID = "TFCEnginePlugin.TFCSNeg"/>
+
+			
+			<Plugin DisplayName = "Fourier Thrust Coefficient W "
+				ProgID = "TFCEnginePlugin.TFCW"/>
+			<Plugin DisplayName = "Fourier Thrust Coefficient W Negative " 
+				ProgID = "TFCEnginePlugin.TFCWNeg"/>
+			
+		</Category>
+		
+		
+		<Category Name = "EOMFunc Plugins">
+			<Plugin DisplayName = "TFC AlphaR EOM" 
+				ProgID ="JScript.TFCEngineValues.EOMFunc.Plugin.Wsc"/>
+	    </Category> 
+
+	</CategoryRegistry>
+
+</AGIRegistry>

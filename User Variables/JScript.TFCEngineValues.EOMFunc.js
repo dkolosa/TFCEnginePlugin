@@ -147,13 +147,13 @@ function Init( AgUtPluginSite )
 			m_betaS1 = m_gatorProvider.ConfigureCalcObject("BetaS1");
 			m_betaS2 = m_gatorProvider.ConfigureCalcObject("BetaS2");
 
-/*
+
 			m_alphaW0 = m_gatorProvider.ConfigureCalcObject("AlphaW0");
 			m_alphaW1 = m_gatorProvider.ConfigureCalcObject("AlphaW1");
 			m_alphaW2 = m_gatorProvider.ConfigureCalcObject("AlphaW2");
 			m_betaW1 = m_gatorProvider.ConfigureCalcObject("BetaW1");
 			m_betaW2 = m_gatorProvider.ConfigureCalcObject("BetaW2");
-*/
+
 			
 			//Check if value exists
 			if (m_alphar1 != null && m_alphar2 != null && 
@@ -162,11 +162,11 @@ function Init( AgUtPluginSite )
 				if(m_alphaS0 != null && m_alphaS1 != null && m_alphaS2 != null &&
 					m_betaS1 != null && m_betaS2 != null)
 				{
-				//	if(m_alphaW0 != null && m_alphaW1 != null && m_alphaW2 != null &&
-				//		m_betaW1 != null && m_betaW2 != null)
-				//	{
+					if(m_alphaW0 != null && m_alphaW1 != null && m_alphaW2 != null &&
+						m_betaW1 != null && m_betaW2 != null)
+					{
 						return true;
-					//}
+					}
 				}
 			}
 		}
@@ -203,7 +203,7 @@ function Register( AgAsEOMFuncPluginRegisterHandler )
     AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaS1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaS2");
 	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaS2");	
-/*
+
 	AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaW0");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW0");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaW1");
@@ -214,7 +214,7 @@ function Register( AgAsEOMFuncPluginRegisterHandler )
     AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaW1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaW2");
 	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaW2");	
-*/
+
     return true;
 }
 
@@ -257,7 +257,7 @@ function SetIndices( AgAsEOMFuncPluginSetIndicesHandler )
     m_betaS2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaS2"); 
 
     //normal
-    /*
+    
     m_alphaW0Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaW0"); 
     m_alphaW0DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW0");  
 
@@ -272,7 +272,7 @@ function SetIndices( AgAsEOMFuncPluginSetIndicesHandler )
 
 	m_betaW2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaW2"); 
     m_betaW2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaW2"); 
-*/
+
     return true;
 }
 

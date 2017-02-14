@@ -39,13 +39,13 @@ catch
     uiapp = actxserver('STK11.application');
     root = uiapp.Personality2;
     uiapp.visible = 1;
-    root.NewScenario('ASTG_OM_Test');
+    root.NewScenario('TFC_Test');
     scenario = root.CurrentScenario;
 end
 
 % Create a new satellite. See STK Programming Interface Help to see that
 % the enumeration for a Satellite object is 'eSatellite' with a value of 18
-sat = root.CurrentScenario.Children.New(18, 'ASTG_Sat');
+sat = root.CurrentScenario.Children.New(18, 'TFC_Sat');
 % or connect to an already existing satellite
 %sat = root.CurrentScenario.Children.Item('Satellite1');
 
@@ -131,6 +131,69 @@ Magenta = 'ff00ff';
 Black = '000000';
 White = 'ffffff';
 
+% %% Set the user variables
+% % Get the calculation objects folder
+compBrowser = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Calculation Objects');
+    % access the uservalues
+    uservariables = compBrowser.GetFolder('UserValues');
+        %Radial
+        AlphaR0 = uservariables.DuplicateComponent('User_value', 'AlphaR0')
+        AlphaR0.VariableName = 'AlphaR0';
+
+        AlphaR1 = uservariables.DuplicateComponent('User_value', 'AlphaR1')
+        AlphaR1.VariableName = 'AlphaR1';
+
+        AlphaR2 = uservariables.DuplicateComponent('User_value', 'AlphaR2')
+        AlphaR2.VariableName = 'AlphaR2';
+
+        BetaR1 = uservariables.DuplicateComponent('User_value', 'BetaR1')
+        BetaaR1.VariableName = 'BetaR1';
+
+        %Transverse
+        AlphaS0 = uservariables.DuplicateComponent('User_value', 'AlphaS0')
+        AlphaS0.VariableName = 'AlphaS0';
+
+        AlphaS1 = uservariables.DuplicateComponent('User_value', 'AlphaS1')
+        AlphaS1.VariableName = 'AlphaS1';
+
+        AlphaS2 = uservariables.DuplicateComponent('User_value', 'AlphaS2')
+        AlphaS2.VariableName = 'AlphaS2';
+
+        BetaS1 = uservariables.DuplicateComponent('User_value', 'BetaS1')
+        BetaS1.VariableName = 'BetaS1';
+
+        BetaS2 = uservariables.DuplicateComponent('User_value', 'BetaS2')
+        BetaS2.VariableName = 'BetaS2';
+
+        %Normal
+        AlphaW0 = uservariables.DuplicateComponent('User_value', 'AlphaW0')
+        AlphaW0.VariableName = 'AlphaW0';
+
+        AlphaW1 = uservariables.DuplicateComponent('User_value', 'AlphaW1')
+        AlphaW1.VariableName = 'AlphaW1';
+
+        AlphaW2 = uservariables.DuplicateComponent('User_value', 'AlphaW2')
+        AlphaW2.VariableName = 'AlphaW2';
+
+        BetaW1 = uservariables.DuplicateComponent('User_value', 'BetaW1')
+        BetaW1.VariableName = 'BetaW1';
+
+        BetaW2 = uservariables.DuplicateComponent('User_value', 'BetaW2')
+        BetaW2.VariableName = 'BetaW2';
+
+
+% %%set up the propogator in the component browser
+compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Propagators');
+
+    compPropgator.DuplicateComponent('Earth Point Mass', 'TFCProp');
+    TFCProp=
+
+% %set up the Thruster Set to create the TFC thruster set
+compThrusterSet = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Thruster Sets');
+TFCTrhust = compThrusterSet.DuplicateComponent('Thruster Set', 'TFC set');
+
+
+
 % Recall Stopping Conditions are also stored as a collection of items
 %propagate.StoppingConditions.Item('Duration').Properties.Trip = 7200;
 
@@ -141,11 +204,11 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
     %%% Define the Initial State %%%
 
-    ts.Segments.Insert('eVASegmentTypeInitialState','Inner Orbit','-');
+    ts.Segments.Insert('eVASegmentTypeInitialState','Initial State','-');
 
         %Configre Initial State
         % Keplerian elements and assign new initial values
-        initstate = MCS.Item('Inner Orbit');
+        initstate = ts.Segments.Item('Initial state');
         initstate.OrbitEpoch = scenario.StartTime;
         initstate.SetElementType('eVAElementTypeModKeplerian');
         initstate.Element.RadiusOfPeriapsis = 41620;
@@ -166,16 +229,16 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
     %%% Select Variables
 
-    tfcMan.SetManeuverType('eVAManeuverTypeImpulsive');
+    tfcMan.SetManeuverType('eVAManeuverTypeFinite');
     tfcMan.get
     tfcMan.invoke
-    % Create a handle to the impulsive properties of the maneuver
-    impulsive = tfcMan.Maneuver;
-    impulsive.SetAttitudeControlType('eVAAttitudeControlThrustVector');
+    % Create a handle to the finite properties of the maneuver
+    finite = tfcMan.Maneuver;
+    finite.SetAttitudeControlType('eVAAttitudeControlAttitude');
     % Create a handle to the Attitude Control - Thrust Vector properties of the
     % maneuver and set the appropriate axes
-    thrustVector = impulsive.AttitudeControl;
-    thrustVector.ThrustAxesName = 'LVLH'
+    thrustVector = finite.AttitudeControl;
+    % thrustVector.ThrustAxesName = 'LVLH'
 
 
     %%%
@@ -186,55 +249,47 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         % enabled as a control parameter. This is done by the
         % EnableControlParameter method which is available on each segment inside a
         % target sequence. 
-        tfcMan.EnableControlParameter('eVAControlManeuverImpulsiveCartesianX');
-
-
-    %%%
-    % Configure Results
-    %%%
-    % Segment Results, which can be used as targeter goals, are also stored in a collection
-    tfcMan.Results.Add('Keplerian Elems/Radius of Apoapsis');
-
+        % tfcMan.EnableControlParameter('eVAControlManeuverImpulsiveCartesianX');
 
     %%% Set up the Targeter
     %%%
     % Configure Targeting
     %%%
-        % Targter Profiles are also stored as a collection
-        dc = ts.Profiles.Item('Differential Corrector');
+    %     % Targter Profiles are also stored as a collection
+    %     dc = ts.Profiles.Item('Differential Corrector');
 
-        % Create a handle to the targeter control and set its properties
-        xControlParam = dc.ControlParameters.GetControlByPaths('DV1', 'ImpulsiveMnvr.Cartesian.X');
-        xControlParam.Enable = true;
-        xControlParam.MaxStep = 0.3;
+    %     % Create a handle to the targeter control and set its properties
+    %     xControlParam = dc.ControlParameters.GetControlByPaths('DV1', 'ImpulsiveMnvr.Cartesian.X');
+    %     xControlParam.Enable = true;
+    %     xControlParam.MaxStep = 0.3;
 
-        % Create a handle to the targeter results and set its properties
-        roaResult = dc.Results.GetResultByPaths('DV1', 'Radius Of Apoapsis');
-        roaResult.Enable = true;
-        roaResult.DesiredValue = 42238;
-        roaResult.Tolerance = 0.1;
+    %     % Create a handle to the targeter results and set its properties
+    %     roaResult = dc.Results.GetResultByPaths('DV1', 'Radius Of Apoapsis');
+    %     roaResult.Enable = true;
+    %     roaResult.DesiredValue = 42238;
+    %     roaResult.Tolerance = 0.1;
 
-        % Set final DC and targeter properties and run modes
-        dc.MaxIterations = 50;
-        dc.EnableDisplayStatus = true;
-        dc.Mode = 'eVAProfileModeIterate';
-        ts.Action = 'eVATargetSeqActionRunActiveProfiles';
+    %     % Set final DC and targeter properties and run modes
+    %     dc.MaxIterations = 50;
+    %     dc.EnableDisplayStatus = true;
+    %     dc.Mode = 'eVAProfileModeIterate';
+    %     ts.Action = 'eVATargetSeqActionRunActiveProfiles';
 
 
-    %%% Set up the Targeter
-    dc = ts.Profiles.Item('Differential Corrector');
-    xControlParam = dc.ControlParameters.GetControlByPaths('DV2', 'ImpulsiveMnvr.Cartesian.X');
-    xControlParam.Enable = true;
-    xControlParam.MaxStep = 0.3;
-    eccResult = dc.Results.GetResultByPaths('DV2', 'Eccentricity');
-    eccResult.Enable = true;
-    eccResult.DesiredValue = 0;
-    eccResult.Tolerance = 0.01;
+    % %%% Set up the Targeter
+    % dc = ts.Profiles.Item('Differential Corrector');
+    % xControlParam = dc.ControlParameters.GetControlByPaths('DV2', 'ImpulsiveMnvr.Cartesian.X');
+    % xControlParam.Enable = true;
+    % xControlParam.MaxStep = 0.3;
+    % eccResult = dc.Results.GetResultByPaths('DV2', 'Eccentricity');
+    % eccResult.Enable = true;
+    % eccResult.DesiredValue = 0;
+    % eccResult.Tolerance = 0.01;
 
-    % Set final DC and targeter properties and run modes
-    dc.EnableDisplayStatus = true;
-    dc.Mode = 'eVAProfileModeIterate';
-    ts.Action = 'eVATargetSeqActionRunActiveProfiles';
+    % % Set final DC and targeter properties and run modes
+    % dc.EnableDisplayStatus = true;
+    % dc.Mode = 'eVAProfileModeIterate';
+    % ts.Action = 'eVATargetSeqActionRunActiveProfiles';
 
 
 
@@ -260,54 +315,10 @@ ASTG.BeginRun;
 
 % Execute a single segment. Note that some kind of initial state segment
 % (Initial State, Launch, or Follow) should be run first.
-initstate.Run;
-propagate.Run;
-ts1 = MCS.Item('Start Transfer');
-ts1.Run;
-transferEllipse.Run;
+
 ts.Run;
-outerOrbit.Run;
+initstate.Run;
+tfcMan.Run;
 
 % Ends the MCS run
 ASTG.EndRun;
-
-% Segments have three structures which are useful for examining your
-% satellite and orbit parameters:
-%   Initial State -  The orbit and spacecraft state at the beginning epoch
-%   of the segment
-%   Final State   -  The orbit and spacecraft state ate the ending epoch of
-%   the segment
-%   Results       -  The value of any Calc Object selected by the user,
-%   evaluated at the ending epoch of the segment
-
-% Report the TA at the beginning of the Transfer Ellipse segment
-transferEllipse.InitialState.SetElementType('eVAElementTypeModKeplerian');
-transferEllipse.InitialState.Element.TrueAnomaly;
-transferEllipse.FinalState.SetElementType('eVAElementTypeModKeplerian');
-disp(['Transfer Ellipse True Anomaly: ' num2str(transferEllipse.FinalState.Element.TrueAnomaly) ' deg'] );
-
-% Report the TA at the beginning of the Transfer Ellipse segment, in the
-% Sun Inertial frame
-transferEllipse_IS_Sun_Inertial = transferEllipse.InitialState.GetInFrameName('CentralBody/Sun Inertial');
-transferEllipse_IS_Sun_Inertial.SetElementType('eVAElementTypeModKeplerian');
-disp(['Transfer Ellipse True Anomaly (Sun Inertial): ' num2str(transferEllipse_IS_Sun_Inertial.Element.TrueAnomaly) ' deg'] );
-
-% Add and report a Duration Result on the Transfer Ellipse segment
-transferEllipse.Results.Add('Time/Duration');
-ASTG.RunMCS;
-disp(['Transfer Ellipse Duration: ' num2str(transferEllipse.GetResultValue('Duration')) ' sec'] );
-
-%%% Accessing the Component Browser
-compCollection = root.CurrentScenario.ComponentDirectory.GetComponents('eComponentAstrogator');
-CalcObjs = compCollection.GetFolder('Calculation Objects');
-
-% Create a copy of the Cartesian Element X that is with respect to Mars
-CartElems = CalcObjs.GetFolder('Cartesian Elems');
-x = CartElems.Item('X');
-x.CloneObject;
-CartElems.Item('X').CloneObject;
-% When using the CloneObject method, the new name will simply be the old name with
-% a '1' added to the end
-Xmars = CartElems.Item('X1');
-Xmars.Name = 'X Mars';
-Xmars.CoordSystemName = 'CentralBody/Mars Inertial';

@@ -137,48 +137,48 @@ compBrowser = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').
     % access the uservalues
     uservariables = compBrowser.GetFolder('UserValues');
         %Radial
-        AlphaR0 = uservariables.DuplicateComponent('User_value', 'AlphaR0')
+        AlphaR0 = uservariables.DuplicateComponent('User_value', 'AlphaR0');
         AlphaR0.VariableName = 'AlphaR0';
 
-        AlphaR1 = uservariables.DuplicateComponent('User_value', 'AlphaR1')
+        AlphaR1 = uservariables.DuplicateComponent('User_value', 'AlphaR1');
         AlphaR1.VariableName = 'AlphaR1';
 
-        AlphaR2 = uservariables.DuplicateComponent('User_value', 'AlphaR2')
+        AlphaR2 = uservariables.DuplicateComponent('User_value', 'AlphaR2');
         AlphaR2.VariableName = 'AlphaR2';
 
-        BetaR1 = uservariables.DuplicateComponent('User_value', 'BetaR1')
+        BetaR1 = uservariables.DuplicateComponent('User_value', 'BetaR1');
         BetaaR1.VariableName = 'BetaR1';
 
         %Transverse
-        AlphaS0 = uservariables.DuplicateComponent('User_value', 'AlphaS0')
+        AlphaS0 = uservariables.DuplicateComponent('User_value', 'AlphaS0');
         AlphaS0.VariableName = 'AlphaS0';
 
-        AlphaS1 = uservariables.DuplicateComponent('User_value', 'AlphaS1')
+        AlphaS1 = uservariables.DuplicateComponent('User_value', 'AlphaS1');
         AlphaS1.VariableName = 'AlphaS1';
 
-        AlphaS2 = uservariables.DuplicateComponent('User_value', 'AlphaS2')
+        AlphaS2 = uservariables.DuplicateComponent('User_value', 'AlphaS2');
         AlphaS2.VariableName = 'AlphaS2';
 
-        BetaS1 = uservariables.DuplicateComponent('User_value', 'BetaS1')
+        BetaS1 = uservariables.DuplicateComponent('User_value', 'BetaS1');
         BetaS1.VariableName = 'BetaS1';
 
-        BetaS2 = uservariables.DuplicateComponent('User_value', 'BetaS2')
+        BetaS2 = uservariables.DuplicateComponent('User_value', 'BetaS2');
         BetaS2.VariableName = 'BetaS2';
 
         %Normal
-        AlphaW0 = uservariables.DuplicateComponent('User_value', 'AlphaW0')
+        AlphaW0 = uservariables.DuplicateComponent('User_value', 'AlphaW0');
         AlphaW0.VariableName = 'AlphaW0';
 
-        AlphaW1 = uservariables.DuplicateComponent('User_value', 'AlphaW1')
+        AlphaW1 = uservariables.DuplicateComponent('User_value', 'AlphaW1');
         AlphaW1.VariableName = 'AlphaW1';
 
-        AlphaW2 = uservariables.DuplicateComponent('User_value', 'AlphaW2')
+        AlphaW2 = uservariables.DuplicateComponent('User_value', 'AlphaW2');
         AlphaW2.VariableName = 'AlphaW2';
 
-        BetaW1 = uservariables.DuplicateComponent('User_value', 'BetaW1')
+        BetaW1 = uservariables.DuplicateComponent('User_value', 'BetaW1');
         BetaW1.VariableName = 'BetaW1';
 
-        BetaW2 = uservariables.DuplicateComponent('User_value', 'BetaW2')
+        BetaW2 = uservariables.DuplicateComponent('User_value', 'BetaW2');
         BetaW2.VariableName = 'BetaW2';
 
 
@@ -186,7 +186,7 @@ compBrowser = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').
 compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Propagators');
 
     compPropgator.DuplicateComponent('Earth Point Mass', 'TFCProp');
-    TFCProp=
+
 
 % %set up the Thruster Set to create the TFC thruster set
 compThrusterSet = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Thruster Sets');
@@ -208,7 +208,7 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
         %Configre Initial State
         % Keplerian elements and assign new initial values
-        initstate = ts.Segments.Item('Initial state');
+        initstate = ts.Segments.Item('Initial State');
         initstate.OrbitEpoch = scenario.StartTime;
         initstate.SetElementType('eVAElementTypeModKeplerian');
         initstate.Element.RadiusOfPeriapsis = 41620;
@@ -220,25 +220,30 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
 	%Define User Variables
 
-
-    % Sequences (including Target and Backward) have their own collection of
-    % segments
-
+    %Set the Maneuver Segment
     tfcMan = ts.Segments.Insert('eVASegmentTypeManeuver','TFC Maneuver','-');
-    tfcMan.Properties.Color = uint32(hex2dec(Red));
+        tfcMan.Properties.Color = uint32(hex2dec(Red));
 
-    %%% Select Variables
+        %%% Select Variables
 
-    tfcMan.SetManeuverType('eVAManeuverTypeFinite');
-    tfcMan.get
-    tfcMan.invoke
-    % Create a handle to the finite properties of the maneuver
-    finite = tfcMan.Maneuver;
-    finite.SetAttitudeControlType('eVAAttitudeControlAttitude');
-    % Create a handle to the Attitude Control - Thrust Vector properties of the
-    % maneuver and set the appropriate axes
-    thrustVector = finite.AttitudeControl;
-    % thrustVector.ThrustAxesName = 'LVLH'
+        tfcMan.SetManeuverType('eVAManeuverTypeFinite');
+
+        % Create a handle to the finite properties of the maneuver
+        finite = tfcMan.Maneuver;
+            finite.SetAttitudeControlType('eVAAttitudeControlAttitude');
+            %Set Engine type to Thruster set
+            finite.SetPropulsionMethod('eVAPropulsionMethodThrusterSet');
+            finite.PropulsionMethodValue= 'TFC set'
+            %Set the Propagator
+            finite.Propagator.PropagatorName = 'TFCProp'
+        % Create a handle to the Attitude Control
+        attitude = finite.AttitudeControl;
+            attitude.RefAxesName = 'Satellite LVLH(Earth)';
+
+        %Add results for the TFC targeter
+        finite.Results.Add('Keplerian Elems/Semimajor_Axis')
+        finite.Results.Add('Keplerian Elems/True_Anomaly')
+
 
 
     %%%

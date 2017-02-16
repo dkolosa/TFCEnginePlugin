@@ -186,13 +186,49 @@ compBrowser = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').
 compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Propagators');
 
     compPropgator.DuplicateComponent('Earth Point Mass', 'TFCProp');
-
+    TFCProp = compPropgator.Item('TFCProp');
+    TFCProp.PropagatorFunctions.Add('Plugins/TFC AlphaR EOM');
 
 % %set up the Thruster Set to create the TFC thruster set
 compThrusterSet = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Thruster Sets');
-TFCTrhust = compThrusterSet.DuplicateComponent('Thruster Set', 'TFC set');
+compThrusterSet.DuplicateComponent('Thruster Set', 'TFC set');
 
+    %Create a handle for the Thruster Set
+    TFCset = compThrusterSet.Item('TFC set');
+    TFCRSW = TFCset.Thruster;
+    %Clear Default Thrusters
+    TFCRSW.RemoveAll;
 
+    %Add the TFC thrusters
+    TFCThrusters = {'TFCR', 'TFCRNeg', 'TFCS', 'TFCSNeg', 'TFCW', 'TFCWNeg'};
+
+    for (i = 1: length(TFCThrusters))
+        TFCRSW.Add(TFCThrusters{i})
+    end
+
+    TFCR = TFCRSW.Item(TFCThrusters{1})
+    TFCR.EngineModelName = 'Fourier Thrust Coefficient R ';
+    TFCR.ThrusterDirection.AssignXYX(1,0,0);
+
+    TFCRNeg = TFCRSW.Item(TFCThrusters{2})
+    TFCRNeg.EngineModelName = 'Fourier Thrust Coefficient R Negative ';
+    TFCRNeg.ThrusterDirection.AssignXYX(-1,0,0);
+
+    TFCS = TFCRSW.Item(TFCThrusters{3})
+    TFCS.EngineModelName = 'Fourier Thrust Coefficient S ';
+    TFCS.ThrusterDirection.AssignXYX(0,1,0);
+
+    TFCSNeg = TFCRSW.Item(TFCThrusters{4})
+    TFCSNeg.EngineModelName = 'Fourier Thrust Coefficient S Negative ';
+    TFCSNeg.ThrusterDirection.AssignXYX(0,-1,0);
+
+    TFCW = TFCRSW.Item(TFCThrusters{5})
+    TFCW.EngineModelName = 'Fourier Thrust Coefficient W ';
+    TFCW.ThrusterDirection.AssignXYX(0,0,1);
+
+    TFCWNeg = TFCRSW.Item(TFCThrusters{6})
+    TFCW.EngineModelName = 'Fourier Thrust Coefficient W Negative ';
+    TFCWNeg.ThrusterDirection.AssignXYX(0,0,-1);
 
 % Recall Stopping Conditions are also stored as a collection of items
 %propagate.StoppingConditions.Item('Duration').Properties.Trip = 7200;
@@ -218,6 +254,9 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         initstate.Element.ArgOfPeriapsis = 0;
         initstate.Element.TrueAnomaly = 0;
 
+        %initialize User Variables
+        initUserVar = initstate.UserVariables %create handle
+        % initUserVar = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1'};
 	%Define User Variables
 
     %Set the Maneuver Segment
@@ -233,16 +272,17 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
             finite.SetAttitudeControlType('eVAAttitudeControlAttitude');
             %Set Engine type to Thruster set
             finite.SetPropulsionMethod('eVAPropulsionMethodThrusterSet');
-            finite.PropulsionMethodValue= 'TFC set'
+            finite.PropulsionMethodValue= 'TFC set';
             %Set the Propagator
-            finite.Propagator.PropagatorName = 'TFCProp'
+            finite.Propagator.PropagatorName = 'TFCProp';
+
         % Create a handle to the Attitude Control
         attitude = finite.AttitudeControl;
             attitude.RefAxesName = 'Satellite LVLH(Earth)';
 
         %Add results for the TFC targeter
-        finite.Results.Add('Keplerian Elems/Semimajor_Axis')
-        finite.Results.Add('Keplerian Elems/True_Anomaly')
+        finite.Results.Add('Keplerian Elems/Semimajor_Axis');
+        finite.Results.Add('Keplerian Elems/True_Anomaly');
 
 
 

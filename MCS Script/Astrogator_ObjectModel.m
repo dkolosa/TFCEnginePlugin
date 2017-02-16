@@ -110,6 +110,12 @@ ASTG.invoke
 MCS = ASTG.MainSequence;
 MCS.RemoveAll;
 
+TFCcoefficients = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1', 'AlphaS0', 'AlphaS1', 'AlphaS2', 'BetaS1', 'BetaS2', 'AlphaW0', 'AlphaW1', 'AlphaW2', 'BetaW1', 'BetaW2'};
+
+for (i = 1 : length(TFCcoefficients))
+    ASTG.Options.UserVariables.Add(TFCcoefficients{i});
+end
+
 
 % Object Model colors must be set with decimal values, but can be easily
 % converted from hex values. Here is a table with some example values for use within this script.
@@ -136,50 +142,40 @@ White = 'ffffff';
 compBrowser = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Calculation Objects');
     % access the uservalues
     uservariables = compBrowser.GetFolder('UserValues');
+
         %Radial
-        AlphaR0 = uservariables.DuplicateComponent('User_value', 'AlphaR0');
-        AlphaR0.VariableName = 'AlphaR0';
-
-        AlphaR1 = uservariables.DuplicateComponent('User_value', 'AlphaR1');
-        AlphaR1.VariableName = 'AlphaR1';
-
-        AlphaR2 = uservariables.DuplicateComponent('User_value', 'AlphaR2');
-        AlphaR2.VariableName = 'AlphaR2';
-
-        BetaR1 = uservariables.DuplicateComponent('User_value', 'BetaR1');
-        BetaaR1.VariableName = 'BetaR1';
+        AlphaR0 = uservariables.DuplicateComponent('User_value', TFCcoefficients{1});
+        AlphaR0.VariableName = TFCcoefficients{1};
+        AlphaR1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{2});
+        AlphaR1.VariableName = TFCcoefficients{2};
+        AlphaR2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{3});
+        AlphaR2.VariableName = TFCcoefficients{3};
+        BetaR1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{4});
+        BetaaR1.VariableName = TFCcoefficients{4};
 
         %Transverse
-        AlphaS0 = uservariables.DuplicateComponent('User_value', 'AlphaS0');
-        AlphaS0.VariableName = 'AlphaS0';
-
-        AlphaS1 = uservariables.DuplicateComponent('User_value', 'AlphaS1');
-        AlphaS1.VariableName = 'AlphaS1';
-
-        AlphaS2 = uservariables.DuplicateComponent('User_value', 'AlphaS2');
-        AlphaS2.VariableName = 'AlphaS2';
-
-        BetaS1 = uservariables.DuplicateComponent('User_value', 'BetaS1');
-        BetaS1.VariableName = 'BetaS1';
-
-        BetaS2 = uservariables.DuplicateComponent('User_value', 'BetaS2');
-        BetaS2.VariableName = 'BetaS2';
+        AlphaS0 = uservariables.DuplicateComponent('User_value', TFCcoefficients{5});
+        AlphaS0.VariableName = TFCcoefficients{5};
+        AlphaS1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{6});
+        AlphaS1.VariableName = TFCcoefficients{6};
+        AlphaS2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{7});
+        AlphaS2.VariableName = TFCcoefficients{7};
+        BetaS1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{8});
+        BetaS1.VariableName = TFCcoefficients{8};
+        BetaS2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{9});
+        BetaS2.VariableName = TFCcoefficients{9};
 
         %Normal
-        AlphaW0 = uservariables.DuplicateComponent('User_value', 'AlphaW0');
-        AlphaW0.VariableName = 'AlphaW0';
-
-        AlphaW1 = uservariables.DuplicateComponent('User_value', 'AlphaW1');
-        AlphaW1.VariableName = 'AlphaW1';
-
-        AlphaW2 = uservariables.DuplicateComponent('User_value', 'AlphaW2');
-        AlphaW2.VariableName = 'AlphaW2';
-
-        BetaW1 = uservariables.DuplicateComponent('User_value', 'BetaW1');
-        BetaW1.VariableName = 'BetaW1';
-
-        BetaW2 = uservariables.DuplicateComponent('User_value', 'BetaW2');
-        BetaW2.VariableName = 'BetaW2';
+        AlphaW0 = uservariables.DuplicateComponent('User_value', TFCcoefficients{10});
+        AlphaW0.VariableName = TFCcoefficients{10};
+        AlphaW1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{11});
+        AlphaW1.VariableName = TFCcoefficients{11};
+        AlphaW2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{12});
+        AlphaW2.VariableName = TFCcoefficients{12};
+        BetaW1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{13});
+        BetaW1.VariableName = TFCcoefficients{13};
+        BetaW2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{14});
+        BetaW2.VariableName = TFCcoefficients{14};
 
 
 % %%set up the propogator in the component browser
@@ -208,27 +204,27 @@ compThrusterSet.DuplicateComponent('Thruster Set', 'TFC set');
 
     TFCR = TFCRSW.Item(TFCThrusters{1})
     TFCR.EngineModelName = 'Fourier Thrust Coefficient R ';
-    TFCR.ThrusterDirection.AssignXYX(1,0,0);
+    TFCR.ThrusterDirection.AssignXYZ(1,0,0);
 
     TFCRNeg = TFCRSW.Item(TFCThrusters{2})
-    TFCRNeg.EngineModelName = 'Fourier Thrust Coefficient R Negative ';
-    TFCRNeg.ThrusterDirection.AssignXYX(-1,0,0);
+    TFCRNeg.EngineModelName = 'Fourier Thrust Coefficient R Negative';
+    TFCRNeg.ThrusterDirection.AssignXYZ(-1,0,0);
 
     TFCS = TFCRSW.Item(TFCThrusters{3})
     TFCS.EngineModelName = 'Fourier Thrust Coefficient S ';
-    TFCS.ThrusterDirection.AssignXYX(0,1,0);
+    TFCS.ThrusterDirection.AssignXYZ(0,1,0);
 
     TFCSNeg = TFCRSW.Item(TFCThrusters{4})
     TFCSNeg.EngineModelName = 'Fourier Thrust Coefficient S Negative ';
-    TFCSNeg.ThrusterDirection.AssignXYX(0,-1,0);
+    TFCSNeg.ThrusterDirection.AssignXYZ(0,-1,0);
 
     TFCW = TFCRSW.Item(TFCThrusters{5})
     TFCW.EngineModelName = 'Fourier Thrust Coefficient W ';
-    TFCW.ThrusterDirection.AssignXYX(0,0,1);
+    TFCW.ThrusterDirection.AssignXYZ(0,0,1);
 
     TFCWNeg = TFCRSW.Item(TFCThrusters{6})
     TFCW.EngineModelName = 'Fourier Thrust Coefficient W Negative ';
-    TFCWNeg.ThrusterDirection.AssignXYX(0,0,-1);
+    TFCWNeg.ThrusterDirection.AssignXYZ(0,0,-1);
 
 % Recall Stopping Conditions are also stored as a collection of items
 %propagate.StoppingConditions.Item('Duration').Properties.Trip = 7200;
@@ -256,7 +252,6 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
         %initialize User Variables
         initUserVar = initstate.UserVariables %create handle
-        % initUserVar = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1'};
 	%Define User Variables
 
     %Set the Maneuver Segment
@@ -280,10 +275,11 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         attitude = finite.AttitudeControl;
             attitude.RefAxesName = 'Satellite LVLH(Earth)';
 
-        %Add results for the TFC targeter
-        finite.Results.Add('Keplerian Elems/Semimajor_Axis');
-        finite.Results.Add('Keplerian Elems/True_Anomaly');
 
+        TargetResults = {'Keplerian Elems/Semimajor_Axis','Keplerian Elems/True_Anomaly', ...
+                        'Keplerian Elems/Inclination', 'Keplerian Elems/Eccentricity' };
+        %Add results for the TFC targeter
+        finite.Results.Add(TargetResults{1});
 
 
     %%%

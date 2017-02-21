@@ -61,7 +61,7 @@ ASTG = sat.Propagator;
 % In MATLAB, you can use the .get command to return a list of all
 % "attributes" or properties of a given object class. Examine the
 % Astrogator Object Model Diagram to see a depiction of these.
-ASTG.get
+ASTG.get;
 %    MainSequence: [1x1 Interface.AGI_STK_Astrogator_9.IAgVAMCSSegmentCollection]
 %         Options: [1x1 Interface.AGI_STK_Astrogator_9._IAgVAMCSOptions]
 %    AutoSequence: [1x1 Interface.AGI_STK_Astrogator_9.IAgVAAutomaticSequenceCollection]
@@ -69,7 +69,7 @@ ASTG.get
 % In MATLAB, you can use the .invoke command to return a list of all
 % "methods" or functions of a given object class. Examine the Astrogator
 % Object Model Diagram to see a depiction of these.
-ASTG.invoke
+ASTG.invoke;
 % 	RunMCS = void RunMCS(handle)
 % 	BeginRun = void BeginRun(handle)
 % 	EndRun = void EndRun(handle)
@@ -112,7 +112,7 @@ MCS.RemoveAll;
 
 TFCcoefficients = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1', 'AlphaS0', 'AlphaS1', 'AlphaS2', 'BetaS1', 'BetaS2', 'AlphaW0', 'AlphaW1', 'AlphaW2', 'BetaW1', 'BetaW2'};
 
-for (i = 1 : length(TFCcoefficients))
+    for (i = 1: length(TFCcoefficients))
     ASTG.Options.UserVariables.Add(TFCcoefficients{i});
 end
 
@@ -199,30 +199,30 @@ compThrusterSet.DuplicateComponent('Thruster Set', 'TFC set');
     TFCThrusters = {'TFCR', 'TFCRNeg', 'TFCS', 'TFCSNeg', 'TFCW', 'TFCWNeg'};
 
     for (i = 1: length(TFCThrusters))
-        TFCRSW.Add(TFCThrusters{i})
+        TFCRSW.Add(TFCThrusters{i});
     end
 
-    TFCR = TFCRSW.Item(TFCThrusters{1})
+    TFCR = TFCRSW.Item(TFCThrusters{1});
     TFCR.EngineModelName = 'Fourier Thrust Coefficient R ';
     TFCR.ThrusterDirection.AssignXYZ(1,0,0);
 
-    TFCRNeg = TFCRSW.Item(TFCThrusters{2})
+    TFCRNeg = TFCRSW.Item(TFCThrusters{2});
     TFCRNeg.EngineModelName = 'Fourier Thrust Coefficient R Negative';
     TFCRNeg.ThrusterDirection.AssignXYZ(-1,0,0);
 
-    TFCS = TFCRSW.Item(TFCThrusters{3})
+    TFCS = TFCRSW.Item(TFCThrusters{3});
     TFCS.EngineModelName = 'Fourier Thrust Coefficient S ';
     TFCS.ThrusterDirection.AssignXYZ(0,1,0);
 
-    TFCSNeg = TFCRSW.Item(TFCThrusters{4})
+    TFCSNeg = TFCRSW.Item(TFCThrusters{4});
     TFCSNeg.EngineModelName = 'Fourier Thrust Coefficient S Negative ';
     TFCSNeg.ThrusterDirection.AssignXYZ(0,-1,0);
 
-    TFCW = TFCRSW.Item(TFCThrusters{5})
+    TFCW = TFCRSW.Item(TFCThrusters{5});
     TFCW.EngineModelName = 'Fourier Thrust Coefficient W ';
     TFCW.ThrusterDirection.AssignXYZ(0,0,1);
 
-    TFCWNeg = TFCRSW.Item(TFCThrusters{6})
+    TFCWNeg = TFCRSW.Item(TFCThrusters{6});
     TFCW.EngineModelName = 'Fourier Thrust Coefficient W Negative ';
     TFCWNeg.ThrusterDirection.AssignXYZ(0,0,-1);
 
@@ -250,36 +250,102 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         initstate.Element.ArgOfPeriapsis = 0;
         initstate.Element.TrueAnomaly = 0;
 
+        
+
+        %[a0R, a1R, a2R, b2R, a0S, a1S, a2S, b1S, b2S, a0W, a1W, a2W, b1W, b2W]
+        % Essential TFC [a0R, a0S, a1S, b1Sb, a1W, b1W ]
+        alphaCoeff=[0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0, 0.1, 0.0];
+
         %initialize User Variables
-        initUserVar = initstate.UserVariables %create handle
-	%Define User Variables
+            %Radial 
+            userVariableAlphaR0 = initstate.UserVariables.Item('AlphaR0'); %create handle
+            userVariableAlphaR0.VariableValue = alphaCoeff(1);              %Set the initial value
+            userVariableAlphaR0.EnableControlParameter;
+
+            userVariableAlphaR1 = initstate.UserVariables.Item('AlphaR1');
+            userVariableAlphaR1.VariableValue = alphaCoeff(2);
+            userVariableAlphaR1.EnableControlParameter;
+
+            userVariableAlphaR2 = initstate.UserVariables.Item('AlphaR2');
+            userVariableAlphaR2.VariableValue = alphaCoeff(3);
+            userVariableAlphaR2.EnableControlParameter;
+
+
+            userVariableBetaR1 = initstate.UserVariables.Item('BetaR1');
+            userVariableBetaR1.VariableValue = alphaCoeff(4);
+            userVariableBetaR1.EnableControlParameter;
+
+
+            %Transverse
+            userVariableAlphaS0 = initstate.UserVariables.Item('AlphaS0');
+            userVariableAlphaS0.VariableValue = alphaCoeff(5);
+            userVariableAlphaS0.EnableControlParameter;
+
+            userVariableAlphaS1 = initstate.UserVariables.Item('AlphaS1');
+            userVariableAlphaS1.VariableValue = alphaCoeff(6);
+            userVariableAlphaR1.EnableControlParameter;
+
+
+            userVariableAlphaS2 = initstate.UserVariables.Item('AlphaS1');
+            userVariableAlphaS2.VariableValue = alphaCoeff(7);
+            userVariableAlphaS2.EnableControlParameter;
+
+            userVariableBetaS1 = initstate.UserVariables.Item('BetaS1');
+            userVariableBetaS1.VariableValue = alphaCoeff(8);
+            userVariableBetaS1.EnableControlParameter;
+
+            userVariableBetaS2 = initstate.UserVariables.Item('BetaS2');
+            userVariableBetaS2.VariableValue = alphaCoeff(9);
+            userVariableBetaS2.EnableControlParameter;
+
+
+            %Normal
+            userVariableAlphaW0 = initstate.UserVariables.Item('AlphaW0');
+            userVariableAlphaW0.VariableValue = alphaCoeff(10);
+            userVariableAlphaW0.EnableControlParameter;
+
+            userVariableAlphaW1 = initstate.UserVariables.Item('AlphaW1');
+            userVariableAlphaW1.VariableValue = alphaCoeff(11);
+            userVariableAlphaW1.EnableControlParameter;
+
+            userVariableAlphaW2 = initstate.UserVariables.Item('AlphaW2');
+            userVariableAlphaW2.VariableValue = alphaCoeff(12);
+            userVariableAlphaW2.EnableControlParameter;
+
+            userVariableBetaW1 = initstate.UserVariables.Item('BetaW1');
+            userVariableBetaW1.VariableValue = alphaCoeff(13);
+            userVariableBetaW1.EnableControlParameter;
+
+            userVariableBetaW2 = initstate.UserVariables.Item('BetaW2');
+            userVariableBetaW2.VariableValue = alphaCoeff(14);
+            userVariableBetaW2.EnableControlParameter;
 
     %Set the Maneuver Segment
     tfcMan = ts.Segments.Insert('eVASegmentTypeManeuver','TFC Maneuver','-');
         tfcMan.Properties.Color = uint32(hex2dec(Red));
-
-        %%% Select Variables
 
         tfcMan.SetManeuverType('eVAManeuverTypeFinite');
 
         % Create a handle to the finite properties of the maneuver
         finite = tfcMan.Maneuver;
             finite.SetAttitudeControlType('eVAAttitudeControlAttitude');
-            %Set Engine type to Thruster set
+            finite.AttitudeControl.RefAxesName='Satellite LVLH(Earth)';
             finite.SetPropulsionMethod('eVAPropulsionMethodThrusterSet');
-            finite.PropulsionMethodValue= 'TFC set';
+
+            %Set Engine type to Thruster set
+            % finite.PropulsionMethod = 'eVAPropulsionMethodThrusterSet';
+            finite.PropulsionMethodValue = 'TFC set';
             %Set the Propagator
             finite.Propagator.PropagatorName = 'TFCProp';
 
-        % Create a handle to the Attitude Control
-        attitude = finite.AttitudeControl;
-            attitude.RefAxesName = 'Satellite LVLH(Earth)';
-
+            manTargTime = finite.Propagator.StoppingConditions.Item('Duration').EnableControlParameter;
+            manTargTime.EnableControlParameter;
 
         TargetResults = {'Keplerian Elems/Semimajor_Axis','Keplerian Elems/True_Anomaly', ...
-                        'Keplerian Elems/Inclination', 'Keplerian Elems/Eccentricity' };
+                        'Keplerian Elems/Inclination', 'Keplerian Elems/Eccentricity'};
+        
         %Add results for the TFC targeter
-        finite.Results.Add(TargetResults{1});
+        tfcMan.Results.Add(TargetResults{3});
 
 
     %%%
@@ -296,41 +362,46 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
     %%%
     % Configure Targeting
     %%%
-    %     % Targter Profiles are also stored as a collection
-    %     dc = ts.Profiles.Item('Differential Corrector');
+        % Targter Profiles are also stored as a collection
+        dc = ts.Profiles.Item('Differential Corrector');
 
-    %     % Create a handle to the targeter control and set its properties
-    %     xControlParam = dc.ControlParameters.GetControlByPaths('DV1', 'ImpulsiveMnvr.Cartesian.X');
-    %     xControlParam.Enable = true;
-    %     xControlParam.MaxStep = 0.3;
+            %%% Set up the Targeter
+            alphaR0ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'AlphaR0');
+            alphaR0ControlParam.Enable = true;
+            alphaR0ControlParam.MaxStep = 0.3;
 
-    %     % Create a handle to the targeter results and set its properties
-    %     roaResult = dc.Results.GetResultByPaths('DV1', 'Radius Of Apoapsis');
-    %     roaResult.Enable = true;
-    %     roaResult.DesiredValue = 42238;
-    %     roaResult.Tolerance = 0.1;
+            alphaS0ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'AlphaS0');
+            alphaS0ControlParam.Enable = true;
+            alphaS0ControlParam.MaxStep = 0.3;        
 
-    %     % Set final DC and targeter properties and run modes
-    %     dc.MaxIterations = 50;
-    %     dc.EnableDisplayStatus = true;
-    %     dc.Mode = 'eVAProfileModeIterate';
-    %     ts.Action = 'eVATargetSeqActionRunActiveProfiles';
+            alphaS1ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'AlphaS1');
+            alphaS1ControlParam.Enable = true;
+            alphaS1ControlParam.MaxStep = 0.3;        
+
+            betaS1ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'BetaS1');
+            betaS1ControlParam.Enable = true;
+            betaS1ControlParam.MaxStep = 0.3;        
+
+            alphaW1ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'AlphaW1');
+            alphaW1ControlParam.Enable = true;
+            alphaW1ControlParam.MaxStep = 0.3;
+
+            betaW1ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'BetaW1');
+            betaW1ControlParam.Enable = true;
+            betaW1ControlParam.MaxStep = 0.3;
 
 
-    % %%% Set up the Targeter
-    % dc = ts.Profiles.Item('Differential Corrector');
-    % xControlParam = dc.ControlParameters.GetControlByPaths('DV2', 'ImpulsiveMnvr.Cartesian.X');
-    % xControlParam.Enable = true;
-    % xControlParam.MaxStep = 0.3;
-    % eccResult = dc.Results.GetResultByPaths('DV2', 'Eccentricity');
-    % eccResult.Enable = true;
-    % eccResult.DesiredValue = 0;
-    % eccResult.Tolerance = 0.01;
+            Result = dc.Results.GetResultByPaths('TFC Maneuver', 'Inclination');
+            Result.Enable = true;
+            Result.DesiredValue = 0;
+            Result.Tolerance = 0.1;
 
-    % % Set final DC and targeter properties and run modes
-    % dc.EnableDisplayStatus = true;
-    % dc.Mode = 'eVAProfileModeIterate';
-    % ts.Action = 'eVATargetSeqActionRunActiveProfiles';
+
+        % Set final DC and targeter properties and run modes
+        dc.MaxIterations = 100;
+        dc.EnableDisplayStatus = true;
+        dc.Mode = 'eVAProfileModeIterate';
+        ts.Action = 'eVATargetSeqActionRunActiveProfiles';
 
 
 
@@ -357,9 +428,9 @@ ASTG.BeginRun;
 % Execute a single segment. Note that some kind of initial state segment
 % (Initial State, Launch, or Follow) should be run first.
 
-ts.Run;
-initstate.Run;
-tfcMan.Run;
+% ts.Run;
+% initstate.Run;
+% tfcMan.Run;
 
 % Ends the MCS run
 ASTG.EndRun;

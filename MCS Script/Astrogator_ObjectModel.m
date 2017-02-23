@@ -183,7 +183,7 @@ compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator'
 
     compPropgator.DuplicateComponent('Earth Point Mass', 'TFCProp');
     TFCProp = compPropgator.Item('TFCProp');
-    TFCProp.PropagatorFunctions.Add('Plugins/TFC AlphaR EOM');
+    TFCProp.PropagatorFunctions.Add('Plugins/TFC Alpha EOM');
 
 % %set up the Thruster Set to create the TFC thruster set
 compThrusterSet = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Thruster Sets');

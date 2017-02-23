@@ -61,7 +61,7 @@ ASTG = sat.Propagator;
 % In MATLAB, you can use the .get command to return a list of all
 % "attributes" or properties of a given object class. Examine the
 % Astrogator Object Model Diagram to see a depiction of these.
-ASTG.get;
+% ASTG.get;
 %    MainSequence: [1x1 Interface.AGI_STK_Astrogator_9.IAgVAMCSSegmentCollection]
 %         Options: [1x1 Interface.AGI_STK_Astrogator_9._IAgVAMCSOptions]
 %    AutoSequence: [1x1 Interface.AGI_STK_Astrogator_9.IAgVAAutomaticSequenceCollection]
@@ -69,7 +69,7 @@ ASTG.get;
 % In MATLAB, you can use the .invoke command to return a list of all
 % "methods" or functions of a given object class. Examine the Astrogator
 % Object Model Diagram to see a depiction of these.
-ASTG.invoke;
+% ASTG.invoke;
 % 	RunMCS = void RunMCS(handle)
 % 	BeginRun = void BeginRun(handle)
 % 	EndRun = void EndRun(handle)
@@ -203,7 +203,7 @@ compThrusterSet.DuplicateComponent('Thruster Set', 'TFC set');
     end
 
     TFCR = TFCRSW.Item(TFCThrusters{1});
-    TFCR.EngineModelName = 'Fourier Thrust Coefficient R ';
+    TFCR.EngineModelName = 'Fourier Thrust Coefficient R';
     TFCR.ThrusterDirection.AssignXYZ(1,0,0);
 
     TFCRNeg = TFCRSW.Item(TFCThrusters{2});
@@ -211,26 +211,23 @@ compThrusterSet.DuplicateComponent('Thruster Set', 'TFC set');
     TFCRNeg.ThrusterDirection.AssignXYZ(-1,0,0);
 
     TFCS = TFCRSW.Item(TFCThrusters{3});
-    TFCS.EngineModelName = 'Fourier Thrust Coefficient S ';
+    TFCS.EngineModelName = 'Fourier Thrust Coefficient S';
     TFCS.ThrusterDirection.AssignXYZ(0,1,0);
 
     TFCSNeg = TFCRSW.Item(TFCThrusters{4});
-    TFCSNeg.EngineModelName = 'Fourier Thrust Coefficient S Negative ';
+    TFCSNeg.EngineModelName = 'Fourier Thrust Coefficient S Negative';
     TFCSNeg.ThrusterDirection.AssignXYZ(0,-1,0);
 
     TFCW = TFCRSW.Item(TFCThrusters{5});
-    TFCW.EngineModelName = 'Fourier Thrust Coefficient W ';
+    TFCW.EngineModelName = 'Fourier Thrust Coefficient W';
     TFCW.ThrusterDirection.AssignXYZ(0,0,1);
 
     TFCWNeg = TFCRSW.Item(TFCThrusters{6});
-    TFCW.EngineModelName = 'Fourier Thrust Coefficient W Negative ';
+    TFCWNeg.EngineModelName = 'Fourier Thrust Coefficient W Negative';
     TFCWNeg.ThrusterDirection.AssignXYZ(0,0,-1);
 
-% Recall Stopping Conditions are also stored as a collection of items
-%propagate.StoppingConditions.Item('Duration').Properties.Trip = 7200;
 
 %%% Define a Target Sequence
-
 % Insert a Target Sequence with a nested Maneuver segment
 ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
@@ -242,19 +239,38 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         % Keplerian elements and assign new initial values
         initstate = ts.Segments.Item('Initial State');
         initstate.OrbitEpoch = scenario.StartTime;
-        initstate.SetElementType('eVAElementTypeModKeplerian');
-        initstate.Element.RadiusOfPeriapsis = 41620;
-        initstate.Element.Eccentricity = 0;
-        initstate.Element.Inclination = 0;
+        initstate.SetElementType('eVAElementTypeKeplerian');
+        initstate.Element.SemiMajorAxis = 41620;
+        initstate.Element.Eccentricity = 0.001;
+        initstate.Element.Inclination = 0.001;
         initstate.Element.RAAN = 0;
-        initstate.Element.ArgOfPeriapsis = 0;
+        initstate.Element.ArgOfPeriapsis = 0.001;
         initstate.Element.TrueAnomaly = 0;
 
-        
+        D2R = pi/180;
+        days2Sec = 24*60^2;
+
+        a = initstate.Element.SemiMajorAxis;
+        e = initstate.Element.Eccentricity;
+        i = initstate.Element.Inclination * D2R;
+        Omega = initstate.Element.RAAN;
+        w = initstate.Element.ArgOfPeriapsis * D2R;
+        theta =  initstate.Element.TrueAnomaly;
+
+        atarg = a;
+        etarg = e;
+        itarg = 1 * D2R;
+        Omegatarg = Omega;
+        wtarg = w * D2R;
+        thetatarg = 0;
+        essentialTFC = true;
+        finalTime = 2 * (24*60^2);  %days
+
+        alphaCoeff = EstimateAlphas(a, e, i, Omega, w, theta, essentialTFC, atarg, etarg, itarg, Omegatarg, wtarg, thetatarg, finalTime);
 
         %[a0R, a1R, a2R, b2R, a0S, a1S, a2S, b1S, b2S, a0W, a1W, a2W, b1W, b2W]
         % Essential TFC [a0R, a0S, a1S, b1Sb, a1W, b1W ]
-        alphaCoeff=[0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0, 0.1, 0.0];
+        % alphaCoeff=[0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0];
 
         %initialize User Variables
             %Radial 
@@ -283,10 +299,10 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
             userVariableAlphaS1 = initstate.UserVariables.Item('AlphaS1');
             userVariableAlphaS1.VariableValue = alphaCoeff(6);
-            userVariableAlphaR1.EnableControlParameter;
+            userVariableAlphaS1.EnableControlParameter;
 
 
-            userVariableAlphaS2 = initstate.UserVariables.Item('AlphaS1');
+            userVariableAlphaS2 = initstate.UserVariables.Item('AlphaS2');
             userVariableAlphaS2.VariableValue = alphaCoeff(7);
             userVariableAlphaS2.EnableControlParameter;
 
@@ -330,17 +346,20 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         finite = tfcMan.Maneuver;
             finite.SetAttitudeControlType('eVAAttitudeControlAttitude');
             finite.AttitudeControl.RefAxesName='Satellite LVLH(Earth)';
-            finite.SetPropulsionMethod('eVAPropulsionMethodThrusterSet');
+            
+            %Set Engine type to Thruster set using the TFC thruster set
+            finite.SetPropulsionMethod('eVAPropulsionMethodThrusterSet', 'TFC set')
 
-            %Set Engine type to Thruster set
-            % finite.PropulsionMethod = 'eVAPropulsionMethodThrusterSet';
-            finite.PropulsionMethodValue = 'TFC set';
             %Set the Propagator
             finite.Propagator.PropagatorName = 'TFCProp';
 
-            manTargTime = finite.Propagator.StoppingConditions.Item('Duration').EnableControlParameter;
-            manTargTime.EnableControlParameter;
+            manTargTime = finite.Propagator.StoppingConditions.Item('Duration');
+            manTargTime.Properties.Trip = finalTime;
+            manTargTime.EnableControlParameter('eVAControlStoppingConditionTripValue');
 
+            % manTargTime.EnableControlParameter;
+
+        % Set the orbital element(s) you wish to target around
         TargetResults = {'Keplerian Elems/Semimajor_Axis','Keplerian Elems/True_Anomaly', ...
                         'Keplerian Elems/Inclination', 'Keplerian Elems/Eccentricity'};
         
@@ -366,42 +385,44 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         dc = ts.Profiles.Item('Differential Corrector');
 
             %%% Set up the Targeter
-            alphaR0ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'AlphaR0');
+            alphaR0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR0.VariableValue');
             alphaR0ControlParam.Enable = true;
             alphaR0ControlParam.MaxStep = 0.3;
 
-            alphaS0ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'AlphaS0');
+            alphaS0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS0.VariableValue');
             alphaS0ControlParam.Enable = true;
             alphaS0ControlParam.MaxStep = 0.3;        
 
-            alphaS1ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'AlphaS1');
+            alphaS1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS1.VariableValue');
             alphaS1ControlParam.Enable = true;
             alphaS1ControlParam.MaxStep = 0.3;        
 
-            betaS1ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'BetaS1');
+            betaS1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaS1.VariableValue');
             betaS1ControlParam.Enable = true;
             betaS1ControlParam.MaxStep = 0.3;        
 
-            alphaW1ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'AlphaW1');
+            alphaW1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW0.VariableValue');
             alphaW1ControlParam.Enable = true;
             alphaW1ControlParam.MaxStep = 0.3;
 
-            betaW1ControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'BetaW1');
+            betaW1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaW1.VariableValue');
             betaW1ControlParam.Enable = true;
             betaW1ControlParam.MaxStep = 0.3;
 
+            durationControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'FiniteMnvr.StoppingConditions.Duration.TripValue');
+            durationControlParam.Enable = true;
+            durationControlParam.MaxStep = 60;
 
             Result = dc.Results.GetResultByPaths('TFC Maneuver', 'Inclination');
             Result.Enable = true;
-            Result.DesiredValue = 0;
+            Result.DesiredValue = 1;
             Result.Tolerance = 0.1;
 
-
-        % Set final DC and targeter properties and run modes
-        dc.MaxIterations = 100;
-        dc.EnableDisplayStatus = true;
-        dc.Mode = 'eVAProfileModeIterate';
-        ts.Action = 'eVATargetSeqActionRunActiveProfiles';
+            % Set final DC and targeter properties and run modes
+            dc.MaxIterations = 500;
+            dc.EnableDisplayStatus = true;
+            dc.Mode = 'eVAProfileModeIterate';
+            ts.Action = 'eVATargetSeqActionRunActiveProfiles';
 
 
 
@@ -409,7 +430,7 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
 % Execute the MCS. This is the equivalent of clicking the "Run" arrow
 % button on the MCS toolbar.
-ASTG.RunMCS;
+% ASTG.RunMCS;
 
 % Single Segment Mode. There are times when, due to complex mission
 % requirements or even the designers preference, the Astrogator MCS
@@ -423,7 +444,7 @@ ASTG.RunMCS;
 % is usually best done with a Search Plugin.
 
 % Initialize the MCS for Single Segment Mode
-ASTG.BeginRun;
+% ASTG.BeginRun;
 
 % Execute a single segment. Note that some kind of initial state segment
 % (Initial State, Launch, or Follow) should be run first.
@@ -433,4 +454,4 @@ ASTG.BeginRun;
 % tfcMan.Run;
 
 % Ends the MCS run
-ASTG.EndRun;
+% ASTG.EndRun;

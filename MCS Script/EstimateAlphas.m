@@ -1,10 +1,12 @@
 %calculates G such that xdot = G*alpha + F, where the 6th element of x is M
 
-function alphas=find_G_M(a,e,i,w,ess)
+function alphas=EstimateAlphas(a, e, i, Omega, w, theta, ess, at, et, it, Omegat, wt, thetat, tf)
 
 	mu = 398600;
+	t0 = 0;
 	% alpha = [a0R a1R a2R b1R a0S a1S a2S b1S b2S a0W a1W a2W b1W b2W]'; %RSW
 	% alphaess = [a0R a0S a1S b1S b2S a1W b1W]
+
 
 	if(ess == true)
 
@@ -30,6 +32,24 @@ function alphas=find_G_M(a,e,i,w,ess)
 
 		G(6,1) = (3*e^2+1)/e;
 		G(6,4) = -((2-e^2)/e)*sqrt(1-e^2);
+
+		G = G*.5*(sqrt(a/mu));
+
+		init = [a, e, i, Omega, w, theta];
+		targ = [at, et, it, Omegat, wt, thetat];
+
+		alphaess = inv(G)*((targ - init)/(tf - t0))';
+
+		alphas = zeros(1,14);
+	
+		% alpha = [a0R a1R a2R b1R a0S a1S a2S b1S b2S a0W a1W a2W b1W b2W]'; %RSW
+		% alphaess = [a0R a0S a1S b1S b2S a1W b1W]
+		alphas(1) = alphaess(1);
+		alphas(5) = alphaess(2);  
+		alphas(6) = alphaess(3);
+		alphas(8) = alphaess(4);
+		alphas(10) = alphaess(5);
+		alphas(13) = alphaess(6);
 
 	else
 		
@@ -76,12 +96,6 @@ function alphas=find_G_M(a,e,i,w,ess)
 		G(6,3)=-.5*e^2; %a2R
 		G(6,:)=G(6,:)*sqrt(a/mu);
 		G(6,:)=G(6,:)+(1-sqrt(1-e^2))*(G(5,:)+G(4,:))+2*sqrt(1-e^2)*(sin(i/2))^2*G(4,:)-(G(5,:)+G(4,:));
-
 	end
+end
 
-	G = G*.5*(sqrt(a/mu));
-
-	init = [a, e, i, w];
-	targ = [at, et, it, wt];
-
-	alphas = inv(G)*((targ - init)/(tf - t0));

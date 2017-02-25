@@ -1,22 +1,13 @@
-% This script walks through the basic functions of the STK Astrogator Object
-% Model by building the Hohmann Transfer Using a Targeter tutorial
-% exercise, found in the STK Help. A version of this code using C# can be
-% found in <STK Install>\CodeSamples\CustomApplications\CSharp\HohmannTransferUsingTargeter
-
-%%%
-% Basic introduction to using the STK Object Model with MATLAB
-% More thorough examples can be found at the AGI Developer Network
-% http://adn.agi.com
-%%%
-
+% This script creates an Mission Control Sequence for STK based on 
+% Thrust Fourier Coefficients
 try
     % Grab an existing instance of STK
     uiapp = actxGetRunningServer('STK11.application');
-    %Attach to the STK Object Model
+    % Attach to the STK Object Model
     root = uiapp.Personality2;
     checkempty = root.Children.Count;
     if checkempty == 0
-        %If a Scenario is not open, create a new scenario
+        % If a Scenario is not open, create a new scenario
         uiapp.visible = 1;
         root.NewScenario('ASTG_OM_Test');
         scenario = root.CurrentScenario;
@@ -58,76 +49,11 @@ sat.SetPropagatorType('ePropagatorAstrogator')
 % for convenience
 ASTG = sat.Propagator;
 
-% In MATLAB, you can use the .get command to return a list of all
-% "attributes" or properties of a given object class. Examine the
-% Astrogator Object Model Diagram to see a depiction of these.
-% ASTG.get;
-%    MainSequence: [1x1 Interface.AGI_STK_Astrogator_9.IAgVAMCSSegmentCollection]
-%         Options: [1x1 Interface.AGI_STK_Astrogator_9._IAgVAMCSOptions]
-%    AutoSequence: [1x1 Interface.AGI_STK_Astrogator_9.IAgVAAutomaticSequenceCollection]
-
-% In MATLAB, you can use the .invoke command to return a list of all
-% "methods" or functions of a given object class. Examine the Astrogator
-% Object Model Diagram to see a depiction of these.
-% ASTG.invoke;
-% 	RunMCS = void RunMCS(handle)
-% 	BeginRun = void BeginRun(handle)
-% 	EndRun = void EndRun(handle)
-% 	ClearDWCGraphics = void ClearDWCGraphics(handle)
-% 	ResetAllProfiles = void ResetAllProfiles(handle)
-% 	ApplyAllProfileChanges = void ApplyAllProfileChanges(handle)
-% 	AppendRun = void AppendRun(handle)
-% 	AppendRunFromTime = void AppendRunFromTime(handle, Variant, AgEVAClearEphemerisDirection)
-% 	AppendRunFromState = void AppendRunFromState(handle, handle, AgEVAClearEphemerisDirection)
-% 	RunMCS2 = AgEVARunCode RunMCS2(handle)
-
-% At any place in the STK or Astrogator OM, use the .get or .invoke
-% commands to inspect the structure of the object model and help find the
-% desired properties or methods
-
-%%%
-% Adding and Removing segments
-%%%
-
-% Collections
-% In the OM, groupings of the same kind of object are referred to as
-% Collections. Examples include Sequences (including the MainSequence and
-% Target Sequences) which hold groups of segments, Segments which may hold
-% groups of Results, and Propagate Segments which may hold groups of
-% Stopping Conditions.
-% In general, all Collections have some similar properties and methods and
-% will be interacted with the same way. The most common elements of a
-% Collection interface are
-%   Item(argument) - returns a handle to a particular element of
-%   the collection
-%   Count - the number of elements in this collection
-%   Add(argument) or Insert(argument) - adds new elements to the collection
-%   Remove, RemoveAll - removes elements from the collection
-% Other methods like Cut, Copy, and Paste may be available depending on the
-% kind of collection
 
 % Create a handle to the MCS and remove all existing segments
 MCS = ASTG.MainSequence;
 MCS.RemoveAll;
 
-TFCcoefficients = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1', 'AlphaS0', 'AlphaS1', 'AlphaS2', 'BetaS1', 'BetaS2', 'AlphaW0', 'AlphaW1', 'AlphaW2', 'BetaW1', 'BetaW2'};
-
-    for (i = 1: length(TFCcoefficients))
-    ASTG.Options.UserVariables.Add(TFCcoefficients{i});
-end
-
-
-% Object Model colors must be set with decimal values, but can be easily
-% converted from hex values. Here is a table with some example values for use within this script.
-% Name     RGB            BGR            Hex      Decimal
-% Red     255, 0, 0      0, 0, 255      0000ff    255
-% Green   0, 255, 0      0, 255, 0      00ff00    65280
-% Blue    0, 0, 255      255, 0, 0      ff0000    16711680
-% Cyan    0, 255, 255    255, 255, 0    ffff00    16776960
-% Yellow  255, 255, 0    0, 255, 255    00ffff    65535
-% Magenta 255, 0, 255    255, 0, 255    ff00ff    16711935
-% Black   0, 0, 0        0, 0, 0        000000    0
-% White   255, 255, 255  255, 255, 255  ffffff    16777215
 Red = '0000ff';
 Green = '00ff00';
 Blue = 'ff0000';
@@ -137,102 +63,27 @@ Magenta = 'ff00ff';
 Black = '000000';
 White = 'ffffff';
 
-% %% Set the user variables
-% % Get the calculation objects folder
+TFCcoefficients = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1', 'AlphaS0', 'AlphaS1', 'AlphaS2', 'BetaS1', 'BetaS2', 'AlphaW0', 'AlphaW1', 'AlphaW2', 'BetaW1', 'BetaW2'};
+
 compBrowser = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Calculation Objects');
-    % access the uservalues
-    uservariables = compBrowser.GetFolder('UserValues');
 
-        %Radial
-        AlphaR0 = uservariables.DuplicateComponent('User_value', TFCcoefficients{1});
-        AlphaR0.VariableName = TFCcoefficients{1};
-        AlphaR1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{2});
-        AlphaR1.VariableName = TFCcoefficients{2};
-        AlphaR2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{3});
-        AlphaR2.VariableName = TFCcoefficients{3};
-        BetaR1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{4});
-        BetaaR1.VariableName = TFCcoefficients{4};
+SetUserVariables(ASTG, compBrowser, TFCcoefficients);
 
-        %Transverse
-        AlphaS0 = uservariables.DuplicateComponent('User_value', TFCcoefficients{5});
-        AlphaS0.VariableName = TFCcoefficients{5};
-        AlphaS1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{6});
-        AlphaS1.VariableName = TFCcoefficients{6};
-        AlphaS2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{7});
-        AlphaS2.VariableName = TFCcoefficients{7};
-        BetaS1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{8});
-        BetaS1.VariableName = TFCcoefficients{8};
-        BetaS2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{9});
-        BetaS2.VariableName = TFCcoefficients{9};
-
-        %Normal
-        AlphaW0 = uservariables.DuplicateComponent('User_value', TFCcoefficients{10});
-        AlphaW0.VariableName = TFCcoefficients{10};
-        AlphaW1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{11});
-        AlphaW1.VariableName = TFCcoefficients{11};
-        AlphaW2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{12});
-        AlphaW2.VariableName = TFCcoefficients{12};
-        BetaW1 = uservariables.DuplicateComponent('User_value', TFCcoefficients{13});
-        BetaW1.VariableName = TFCcoefficients{13};
-        BetaW2 = uservariables.DuplicateComponent('User_value', TFCcoefficients{14});
-        BetaW2.VariableName = TFCcoefficients{14};
-
-
-% %%set up the propogator in the component browser
+%% set up the propogator in the component browser
 compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Propagators');
-
     compPropgator.DuplicateComponent('Earth Point Mass', 'TFCProp');
     TFCProp = compPropgator.Item('TFCProp');
     TFCProp.PropagatorFunctions.Add('Plugins/TFC Alpha EOM');
 
-% %set up the Thruster Set to create the TFC thruster set
+%% set up the Thruster Set to create the TFC thruster set
 compThrusterSet = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Thruster Sets');
-compThrusterSet.DuplicateComponent('Thruster Set', 'TFC set');
-
-    %Create a handle for the Thruster Set
-    TFCset = compThrusterSet.Item('TFC set');
-    TFCRSW = TFCset.Thruster;
-    %Clear Default Thrusters
-    TFCRSW.RemoveAll;
-
-    %Add the TFC thrusters
-    TFCThrusters = {'TFCR', 'TFCRNeg', 'TFCS', 'TFCSNeg', 'TFCW', 'TFCWNeg'};
-
-    for (i = 1: length(TFCThrusters))
-        TFCRSW.Add(TFCThrusters{i});
-    end
-
-    TFCR = TFCRSW.Item(TFCThrusters{1});
-    TFCR.EngineModelName = 'Fourier Thrust Coefficient R';
-    TFCR.ThrusterDirection.AssignXYZ(1,0,0);
-
-    TFCRNeg = TFCRSW.Item(TFCThrusters{2});
-    TFCRNeg.EngineModelName = 'Fourier Thrust Coefficient R Negative';
-    TFCRNeg.ThrusterDirection.AssignXYZ(-1,0,0);
-
-    TFCS = TFCRSW.Item(TFCThrusters{3});
-    TFCS.EngineModelName = 'Fourier Thrust Coefficient S';
-    TFCS.ThrusterDirection.AssignXYZ(0,1,0);
-
-    TFCSNeg = TFCRSW.Item(TFCThrusters{4});
-    TFCSNeg.EngineModelName = 'Fourier Thrust Coefficient S Negative';
-    TFCSNeg.ThrusterDirection.AssignXYZ(0,-1,0);
-
-    TFCW = TFCRSW.Item(TFCThrusters{5});
-    TFCW.EngineModelName = 'Fourier Thrust Coefficient W';
-    TFCW.ThrusterDirection.AssignXYZ(0,0,1);
-
-    TFCWNeg = TFCRSW.Item(TFCThrusters{6});
-    TFCWNeg.EngineModelName = 'Fourier Thrust Coefficient W Negative';
-    TFCWNeg.ThrusterDirection.AssignXYZ(0,0,-1);
-
-
-%%% Define a Target Sequence
+    SetupThrusterSet(compThrusterSet);
+    
+%% Define a Target Sequence
 % Insert a Target Sequence with a nested Maneuver segment
 ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
-    %%% Define the Initial State %%%
-
+    %% Define the Initial State
     ts.Segments.Insert('eVASegmentTypeInitialState','Initial State','-');
 
         %Configre Initial State
@@ -257,84 +108,29 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         w = initstate.Element.ArgOfPeriapsis * D2R;
         theta =  initstate.Element.TrueAnomaly;
 
+        initialValues = [a, e, i ,Omega, w, theta];
+
         atarg = a;
         etarg = e;
         itarg = 1 * D2R;
         Omegatarg = Omega;
         wtarg = w * D2R;
         thetatarg = 0;
+
         essentialTFC = true;
         finalTime = 2 * (24*60^2);  %days
 
-        alphaCoeff = EstimateAlphas(a, e, i, Omega, w, theta, essentialTFC, atarg, etarg, itarg, Omegatarg, wtarg, thetatarg, finalTime);
+        targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
+
+        alphaCoeff = EstimateAlphas(initialValues, essentialTFC, targetValues, finalTime);
 
         %[a0R, a1R, a2R, b2R, a0S, a1S, a2S, b1S, b2S, a0W, a1W, a2W, b1W, b2W]
         % Essential TFC [a0R, a0S, a1S, b1Sb, a1W, b1W ]
+        
         % alphaCoeff=[0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0];
 
-        %initialize User Variables
-            %Radial 
-            userVariableAlphaR0 = initstate.UserVariables.Item('AlphaR0'); %create handle
-            userVariableAlphaR0.VariableValue = alphaCoeff(1);              %Set the initial value
-            userVariableAlphaR0.EnableControlParameter;
-
-            userVariableAlphaR1 = initstate.UserVariables.Item('AlphaR1');
-            userVariableAlphaR1.VariableValue = alphaCoeff(2);
-            userVariableAlphaR1.EnableControlParameter;
-
-            userVariableAlphaR2 = initstate.UserVariables.Item('AlphaR2');
-            userVariableAlphaR2.VariableValue = alphaCoeff(3);
-            userVariableAlphaR2.EnableControlParameter;
-
-
-            userVariableBetaR1 = initstate.UserVariables.Item('BetaR1');
-            userVariableBetaR1.VariableValue = alphaCoeff(4);
-            userVariableBetaR1.EnableControlParameter;
-
-
-            %Transverse
-            userVariableAlphaS0 = initstate.UserVariables.Item('AlphaS0');
-            userVariableAlphaS0.VariableValue = alphaCoeff(5);
-            userVariableAlphaS0.EnableControlParameter;
-
-            userVariableAlphaS1 = initstate.UserVariables.Item('AlphaS1');
-            userVariableAlphaS1.VariableValue = alphaCoeff(6);
-            userVariableAlphaS1.EnableControlParameter;
-
-
-            userVariableAlphaS2 = initstate.UserVariables.Item('AlphaS2');
-            userVariableAlphaS2.VariableValue = alphaCoeff(7);
-            userVariableAlphaS2.EnableControlParameter;
-
-            userVariableBetaS1 = initstate.UserVariables.Item('BetaS1');
-            userVariableBetaS1.VariableValue = alphaCoeff(8);
-            userVariableBetaS1.EnableControlParameter;
-
-            userVariableBetaS2 = initstate.UserVariables.Item('BetaS2');
-            userVariableBetaS2.VariableValue = alphaCoeff(9);
-            userVariableBetaS2.EnableControlParameter;
-
-
-            %Normal
-            userVariableAlphaW0 = initstate.UserVariables.Item('AlphaW0');
-            userVariableAlphaW0.VariableValue = alphaCoeff(10);
-            userVariableAlphaW0.EnableControlParameter;
-
-            userVariableAlphaW1 = initstate.UserVariables.Item('AlphaW1');
-            userVariableAlphaW1.VariableValue = alphaCoeff(11);
-            userVariableAlphaW1.EnableControlParameter;
-
-            userVariableAlphaW2 = initstate.UserVariables.Item('AlphaW2');
-            userVariableAlphaW2.VariableValue = alphaCoeff(12);
-            userVariableAlphaW2.EnableControlParameter;
-
-            userVariableBetaW1 = initstate.UserVariables.Item('BetaW1');
-            userVariableBetaW1.VariableValue = alphaCoeff(13);
-            userVariableBetaW1.EnableControlParameter;
-
-            userVariableBetaW2 = initstate.UserVariables.Item('BetaW2');
-            userVariableBetaW2.VariableValue = alphaCoeff(14);
-            userVariableBetaW2.EnableControlParameter;
+        SetInitialValues(initstate, TFCcoefficients, alphaCoeff)
+       
 
     %Set the Maneuver Segment
     tfcMan = ts.Segments.Insert('eVASegmentTypeManeuver','TFC Maneuver','-');
@@ -367,24 +163,16 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         tfcMan.Results.Add(TargetResults{3});
 
 
-    %%%
     % Turn on Controls for Search Profiles
-    %%%
 
-        % For the targeter to vary a given segment property, it must be
-        % enabled as a control parameter. This is done by the
-        % EnableControlParameter method which is available on each segment inside a
-        % target sequence. 
-        % tfcMan.EnableControlParameter('eVAControlManeuverImpulsiveCartesianX');
-
-    %%% Set up the Targeter
-    %%%
+    %% Set up the Targeter
     % Configure Targeting
     %%%
-        % Targter Profiles are also stored as a collection
+        % Targter Profile
         dc = ts.Profiles.Item('Differential Corrector');
 
             %%% Set up the Targeter
+
             alphaR0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR0.VariableValue');
             alphaR0ControlParam.Enable = true;
             alphaR0ControlParam.MaxStep = 0.3;
@@ -425,11 +213,8 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
             ts.Action = 'eVATargetSeqActionRunActiveProfiles';
 
 
-
-%%% Running and Analyzing the MCS
-
-% Execute the MCS. This is the equivalent of clicking the "Run" arrow
-% button on the MCS toolbar.
+%% Running and Analyzing the MCS
+% Execute the MCS.
 % ASTG.RunMCS;
 
 % Single Segment Mode. There are times when, due to complex mission
@@ -446,9 +231,7 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 % Initialize the MCS for Single Segment Mode
 % ASTG.BeginRun;
 
-% Execute a single segment. Note that some kind of initial state segment
-% (Initial State, Launch, or Follow) should be run first.
-
+% Execute a single segment.
 % ts.Run;
 % initstate.Run;
 % tfcMan.Run;

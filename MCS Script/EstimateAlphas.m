@@ -1,11 +1,25 @@
 %calculates G such that xdot = G*alpha + F, where the 6th element of x is M
 
-function alphas=EstimateAlphas(a, e, i, Omega, w, theta, ess, at, et, it, Omegat, wt, thetat, tf)
-
+function alphas=EstimateAlphas(initialValues, ess, targetValues, tf)
+	
 	mu = 398600;
 	t0 = 0;
 	% alpha = [a0R a1R a2R b1R a0S a1S a2S b1S b2S a0W a1W a2W b1W b2W]'; %RSW
 	% alphaess = [a0R a0S a1S b1S b2S a1W b1W]
+
+	a = initialValues(1);
+	e = initialValues(2);
+	i = initialValues(3);
+	Omega = initialValues(4);
+	w = initialValues(5);
+	theta = initialValues(6);
+
+	at = targetValues(1);
+	et = targetValues(2);
+	it = targetValues(3);
+	Omegat = targetValues(4);
+	wt = targetValues(5);
+	thetat = targetValues(6);
 
 
 	if(ess == true)

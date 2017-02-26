@@ -1,0 +1,28 @@
+install Enigne Models:
+	Open the TFCEnginePlugin solution file in Visual Studio as Administator
+	In the solution explorer window on the right, right click on Solution TFCEnginePlugin and select "Build Solution"
+
+install EOM plugin:
+	Open a cmd as administator
+	cd into TFCEnginePlugin\User Variables
+	cd C:\Users\user_name\TFCEnginePlugin_location\User Variables
+	type: regsvr32 JScript.TFCEngineValues.EOMFunc.wsc
+
+	A message should appear saying that the file was registered successfully
+
+Registering with STK:
+	Copy the TFC Engine Models.xml file into local STK plugins directory
+	C:\Users\user_name\Documents\STK 11 (x64)\Config\Plugins
+
+Verify Install:
+	Open a scenario in STK in the menu bar Utilities -> Component Browser
+	In the component browser look into the Engine Models folder, 
+	you should see six engine models starting with Thrust Fourier... in the entries
+
+	In the compoenent browser look into Propogator Functions -> Plugins
+	you should see TFC Alpha EOM in the entries
+
+
+Configure Scenario:
+	In the MCS scripts directory, run the TFC_driver.m script in MATLAB.
+	This script sets up the TFC thrusters and coefficients and sets up a targeting scenario. 

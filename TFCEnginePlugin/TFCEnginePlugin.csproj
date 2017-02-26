@@ -25,43 +25,44 @@
     <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Agi.As.Gator.EngMdl.Plugin.CSharp.Examples">
-      <HintPath>..\References\Agi.As.Gator.EngMdl.Plugin.CSharp.Examples.dll</HintPath>
+      <HintPath>References\Agi.As.Gator.EngMdl.Plugin.CSharp.Examples.dll</HintPath>
     </Reference>
     <Reference Include="AGI.Astrogator.Interop">
-      <HintPath>..\References\AGI.Astrogator.Interop.dll</HintPath>
+      <HintPath>References\AGI.Astrogator.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.Astrogator.Plugin.Interop">
-      <HintPath>..\References\AGI.Astrogator.Plugin.Interop.dll</HintPath>
+      <HintPath>References\AGI.Astrogator.Plugin.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.Attr.Interop">
-      <HintPath>..\References\AGI.Attr.Interop.dll</HintPath>
+      <HintPath>References\AGI.Attr.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.Plugin.Interop">
-      <HintPath>..\References\AGI.Plugin.Interop.dll</HintPath>
+      <HintPath>References\AGI.Plugin.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.STK.Plugin.Interop">
-      <HintPath>..\References\AGI.STK.Plugin.Interop.dll</HintPath>
+      <HintPath>References\AGI.STK.Plugin.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="AGI.VectorGeometryTool.Plugin.Interop">
-      <HintPath>..\References\AGI.VectorGeometryTool.Plugin.Interop.dll</HintPath>
+      <HintPath>References\AGI.VectorGeometryTool.Plugin.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />

@@ -1,0 +1,8 @@
+C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\bin\Release\TFCEnginePlugin.dll.config
+C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\bin\Release\TFCEnginePlugin.dll
+C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\bin\Release\TFCEnginePlugin.pdb
+C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\bin\Release\TFCEnginePlugin.tlb
+C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\bin\Release\Agi.As.Gator.EngMdl.Plugin.CSharp.Examples.dll
+C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\obj\Release\TFCEnginePlugin.csprojResolveAssemblyReference.cache
+C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\obj\Release\TFCEnginePlugin.dll
+C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\obj\Release\TFCEnginePlugin.pdb

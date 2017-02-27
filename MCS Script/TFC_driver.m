@@ -32,12 +32,12 @@ days2Sec = 24*60^2;    % Days to seconds
 
 % initial Orbit State
 % inital time is assuemd at 0
-a = initstate.Element.SemiMajorAxis; % km
-e = initstate.Element.Eccentricity;
-i = initstate.Element.Inclination * D2R; % degrees -> radians
-Omega = initstate.Element.RAAN * D2R; % degrees -> radians
-w = initstate.Element.ArgOfPeriapsis * D2R; % degrees -> radians
-theta =  initstate.Element.TrueAnomaly; % degrees -> radians
+a = 41126; % km
+e = 0.1;
+i = 1 * D2R; % degrees -> radians
+Omega = 0 * D2R; % degrees -> radians
+w = 0 * D2R; % degrees -> radians
+theta =  0; % degrees -> radians
 
 % target orbit state
 % Set the oe that are not being targeted to the initial state value

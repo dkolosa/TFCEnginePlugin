@@ -1,16 +1,29 @@
 install Enigne Models:
-	Open the TFCEnginePlugin solution file in Visual Studio as Administator
-	In the solution explorer window on the right, right click on Solution TFCEnginePlugin and select "Build Solution"
+	From the provided .dll:
+		-open cmd as administrator
+		-change directory to \bin
+		cd C:\Users\user_name\TFCEnginePlugin_location\bin
+		-run the following command (Note: use .Net version 4.x):
+			C:\Widows\Microsoft.Net\Framework64\v4.0.30319\RegAsm.exe /codebase TFCEnginePlugin.dll
+
+		A warning might appear: "RegASM RA000 ..."" this is ok, at the end of the warning it should say "Type registered correctly" The engine plugin is installed to your system.
+
+
+	From source:
+		Open the TFCEnginePlugin solution file in Visual Studio as Administator
+		In the solution explorer window on the right, right click on Solution TFCEnginePlugin and select "Build Solution"
+
+
 
 install EOM plugin:
 	Open a cmd as administator
-	cd into TFCEnginePlugin\User Variables
+	cd into User Variables
 	cd C:\Users\user_name\TFCEnginePlugin_location\User Variables
 	type: regsvr32 JScript.TFCEngineValues.EOMFunc.wsc
 
 	A message should appear saying that the file was registered successfully
 
-Registering with STK:
+Registering plugins with STK:
 	Copy the TFC Engine Models.xml file into local STK plugins directory
 	C:\Users\user_name\Documents\STK 11 (x64)\Config\Plugins
 

@@ -25,28 +25,25 @@
 D2R = pi/180;    % Degree to radians
 days2Sec = 24*60^2;    % Days to seconds
 
-
-
-
 %% set up inital and targeting states here
 
 % initial Orbit State
 % inital time is assuemd at 0
 a = 41126; % km
 e = 0.1;
-i = 1 * D2R; % degrees -> radians
-Omega = 0 * D2R; % degrees -> radians
-w = 0 * D2R; % degrees -> radians
-theta =  0; % degrees -> radians
+i = 0.01; % degrees
+Omega = 0.01; % degrees
+w = 0.01; % degrees
+theta =  0.01; % degrees
 
 % target orbit state
 % Set the oe that are not being targeted to the initial state value
 atarg = a; % km
 etarg = e;
-itarg = 1 * D2R; % degrees -> radians
-Omegatarg = Omega; % degrees -> radians
-wtarg = w * D2R; % degrees -> radians
-thetatarg = 0; % degrees -> radians
+itarg = 1; % degrees
+Omegatarg = Omega; % degrees
+wtarg = w; % degrees
+thetatarg = 0; % degrees
 
 essentialTFC = true;
 finalTime = 2 * days2Sec;  % days -> seconds
@@ -58,8 +55,8 @@ TFCcoefficients = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1', ...
                    'AlphaS0', 'AlphaS1', 'AlphaS2', 'BetaS1', 'BetaS2', ...
                    'AlphaW0', 'AlphaW1', 'AlphaW2', 'BetaW1', 'BetaW2'};
 
-initialValues = [a, e, i ,Omega, w, theta];
-targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
+initialValues = [a, e, i * D2R,Omega * D2R, w * D2R, theta * D2R];
+targetValues = [atarg, etarg, itarg * D2R, Omegatarg * D2R, wtarg * D2R, thetatarg * D2R];
 %%%%
 
 try
@@ -244,8 +241,8 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         % The oe being targeted
         Result = dc.Results.GetResultByPaths('TFC Maneuver', 'Inclination');
         Result.Enable = true;
-        Result.DesiredValue = itarg;
-        Result.Tolerance = 0.1;
+        Result.DesiredValue = itarg * R2D;
+        Result.Tolerance = 0.01;
 
         % Set final DC and targeter properties and run modes
         dc.MaxIterations = 500;
@@ -256,7 +253,20 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
 %% Running and Analyzing the MCS
 % Execute the MCS.
-% ASTG.RunMCS;
+ASTG.RunMCS;
+
+% Get results from the MCS segments
+% Segments have three structures which are useful for examining your
+% satellite and orbit parameters:
+%   Initial State -  The orbit and spacecraft state at the beginning epoch
+%   of the segment
+%   Final State   -  The orbit and spacecraft state ate the ending epoch of
+%   the segment
+%   Results       -  The value of any Calc Object selected by the user,
+%   evaluated at the ending epoch of the segment
+
+% disp(['Target arrival duration:' num2str(args)]);
+
 
 % Single Segment Mode. There are times when, due to complex mission
 % requirements or even the designers preference, the Astrogator MCS

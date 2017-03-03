@@ -43,10 +43,20 @@ etarg = e;
 itarg = 1; % degrees
 Omegatarg = Omega; % degrees
 wtarg = w; % degrees
-thetatarg = 0; % degrees
+thetatarg = 0.01; % degrees
 
 essentialTFC = true;
 finalTime = 2 * days2Sec;  % days -> seconds
+
+maxIterations = 500;
+checkSequence = true;   % Inspect MCS before running
+
+initialValues = [a, e, i * D2R,Omega * D2R, w * D2R, theta * D2R];
+targetValues = [atarg, etarg, itarg * D2R, Omegatarg * D2R, wtarg * D2R, thetatarg * D2R];
+
+
+%Select which TFCs to target
+
 
 
 %% Do NOT Edit will break scripting
@@ -55,9 +65,7 @@ TFCcoefficients = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1', ...
                    'AlphaS0', 'AlphaS1', 'AlphaS2', 'BetaS1', 'BetaS2', ...
                    'AlphaW0', 'AlphaW1', 'AlphaW2', 'BetaW1', 'BetaW2'};
 
-initialValues = [a, e, i * D2R,Omega * D2R, w * D2R, theta * D2R];
-targetValues = [atarg, etarg, itarg * D2R, Omegatarg * D2R, wtarg * D2R, thetatarg * D2R];
-%%%%
+%%%
 
 try
     % Grab an existing instance of STK
@@ -190,17 +198,15 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
             manTargTime.EnableControlParameter('eVAControlStoppingConditionTripValue');
 
         % the orbital element(s) you wish to target around
-        TargetResults = {'Keplerian Elems/Semimajor_Axis','Keplerian Elems/True_Anomaly', ...
-                        'Keplerian Elems/Inclination', 'Keplerian Elems/Eccentricity'};
-        
+        TargetResults = {'Keplerian Elems/Semimajor_Axis','Keplerian Elems/Eccentricity', ...
+                        'Keplerian Elems/Inclination', 'Keplerian Elems/Longitude_Of_Ascending_Node', ...
+                        'Keplerian Elems/Perigee', 'Keplerian Elems/True_Anomaly'};
+
         % Set the orbital element(s) you wish to target around
         %Add results for the TFC targeter
-        tfcMan.Results.Add(TargetResults{3});
-
-        % To add multiple elements to target around
-        % tfcMan.Results.Add(TargetResults{3});
-        % tfcMan.Results.Add(TargetResults{1});
-
+        for (i = 1 :length(TargetResults) )
+                tfcMan.Results.Add(TargetResults{i});
+        end
 
     % Turn on Controls for Search Profiles
 
@@ -214,6 +220,18 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         alphaR0ControlParam.Enable = true;
         alphaR0ControlParam.MaxStep = 0.3;
 
+        alphaR1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR1.VariableValue');
+        alphaR1ControlParam.Enable = true;
+        alphaR1ControlParam.MaxStep = 0.3;
+
+        betaR1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaR1.VariableValue');
+        betaR1ControlParam.Enable = true;
+        betaR1ControlParam.MaxStep = 0.3;
+
+        betaR2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaR2.VariableValue');
+        betaR2ControlParam.Enable = true;
+        betaR2ControlParam.MaxStep = 0.3;
+
         alphaS0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS0.VariableValue');
         alphaS0ControlParam.Enable = true;
         alphaS0ControlParam.MaxStep = 0.3;        
@@ -222,30 +240,104 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         alphaS1ControlParam.Enable = true;
         alphaS1ControlParam.MaxStep = 0.3;        
 
+        alphaS2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS2.VariableValue');
+        alphaS2ControlParam.Enable = true;
+        alphaS2ControlParam.MaxStep = 0.3;
+
         betaS1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaS1.VariableValue');
         betaS1ControlParam.Enable = true;
-        betaS1ControlParam.MaxStep = 0.3;        
+        betaS1ControlParam.MaxStep = 0.3;  
 
-        alphaW1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW0.VariableValue');
+        betaS2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaS2.VariableValue');
+        betaS2ControlParam.Enable = true;
+        betaS2ControlParam.MaxStep = 0.3;       
+
+
+        alphaW0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW0.VariableValue');
+        alphaW0ControlParam.Enable = true;
+        alphaW0ControlParam.MaxStep = 0.3;
+
+        alphaW1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW1.VariableValue');
         alphaW1ControlParam.Enable = true;
         alphaW1ControlParam.MaxStep = 0.3;
+
+        alphaW2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW2.VariableValue');
+        alphaW2ControlParam.Enable = true;
+        alphaW2ControlParam.MaxStep = 0.3;
 
         betaW1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaW1.VariableValue');
         betaW1ControlParam.Enable = true;
         betaW1ControlParam.MaxStep = 0.3;
 
+        betaW2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaW2.VariableValue');
+        betaW2ControlParam.Enable = true;
+        betaW2ControlParam.MaxStep = 0.3;
+
         durationControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'FiniteMnvr.StoppingConditions.Duration.TripValue');
         durationControlParam.Enable = true;
         durationControlParam.MaxStep = 60;
 
+
         % The oe being targeted
-        Result = dc.Results.GetResultByPaths('TFC Maneuver', 'Inclination');
-        Result.Enable = true;
-        Result.DesiredValue = itarg * R2D;
-        Result.Tolerance = 0.01;
+
+        Resulta = dc.Results.GetResultByPaths('TFC Maneuver', 'Semimajor_Axis');
+        if (initialValues(1) ~= targetValues(1))
+            Resulta.Enable = true;
+        else
+            Resulta.Enable = false;
+        end
+        Resulta.DesiredValue = targetValues(1);
+        Resulta.Tolerance = 0.1;
+
+        Resulte = dc.Results.GetResultByPaths('TFC Maneuver', 'Eccentricity');
+        if (initialValues(2) ~= targetValues(2))
+            Resulte.Enable = true;
+        else
+            Resulte.Enable = false;
+        end
+        Resulte.DesiredValue = targetValues(2);
+        Resulte.Tolerance = 0.01;        
+
+        ResultInc = dc.Results.GetResultByPaths('TFC Maneuver', 'Inclination');
+        if (initialValues(3) ~= targetValues(3))
+            ResultInc.Enable = true;
+        else
+            ResultInc.Enable = false;
+        end
+        ResultInc.DesiredValue = targetValues(3);
+        ResultInc.Tolerance = 0.01;
+
+        ResultOmega = dc.Results.GetResultByPaths('TFC Maneuver', 'Longitude_Of_Ascending_Node');
+        if (initialValues(4) ~= targetValues(4))
+            ResultOmega.Enable = true;
+        else
+            ResultOmega.Enable = false;
+        end
+        ResultOmega.DesiredValue = targetValues(1);
+        ResultOmega.Tolerance = 0.01;
+
+        Resultw = dc.Results.GetResultByPaths('TFC Maneuver', 'Argument_of_Periapsis');
+        if (initialValues(5) ~= targetValues(5))
+            Resultw.Enable = true;
+        else
+            Resultw.Enable = false;
+        end
+        Resultw.DesiredValue = targetValues(5);
+        Resultw.Tolerance = 0.01;
+
+        ResultTA = dc.Results.GetResultByPaths('TFC Maneuver', 'True_Anomaly');
+        if (initialValues(6) ~= targetValues(6))
+            ResultTA.Enable = true;
+        else
+            ResultTA.Enable = false;
+        end
+        ResultTA.DesiredValue = targetValues(6);
+        ResultTA.Tolerance = 0.01;
+
+
 
         % Set final DC and targeter properties and run modes
-        dc.MaxIterations = 500;
+        dc.MaxIterations = maxIterations;
         dc.EnableDisplayStatus = true;
         dc.Mode = 'eVAProfileModeIterate';
         ts.Action = 'eVATargetSeqActionRunActiveProfiles';
@@ -253,7 +345,10 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
 %% Running and Analyzing the MCS
 % Execute the MCS.
-ASTG.RunMCS;
+
+if (checkSequence == false)
+    ASTG.RunMCS;
+end
 
 % Get results from the MCS segments
 % Segments have three structures which are useful for examining your

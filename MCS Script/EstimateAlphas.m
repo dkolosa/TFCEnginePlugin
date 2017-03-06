@@ -2,6 +2,7 @@
 
 function alphas=EstimateAlphas(initialValues, ess, targetValues, tf)
 	
+	D2R = pi/180;    % Degree to radians
 	mu = 398600;
 	t0 = 0;
 	% alpha = [a0R a1R a2R b1R a0S a1S a2S b1S b2S a0W a1W a2W b1W b2W]'; %RSW
@@ -9,17 +10,17 @@ function alphas=EstimateAlphas(initialValues, ess, targetValues, tf)
 
 	a = initialValues(1);
 	e = initialValues(2);
-	i = initialValues(3);
-	Omega = initialValues(4);
-	w = initialValues(5);
-	theta = initialValues(6);
+	i = initialValues(3) * D2R;
+	Omega = initialValues(4) * D2R;
+	w = initialValues(5) * D2R;
+	theta = initialValues(6) * D2R;
 
 	at = targetValues(1);
 	et = targetValues(2);
-	it = targetValues(3);
-	Omegat = targetValues(4);
-	wt = targetValues(5);
-	thetat = targetValues(6);
+	it = targetValues(3) * D2R;
+	Omegat = targetValues(4) * D2R;
+	wt = targetValues(5) * D2R;
+	thetat = targetValues(6) * D2R;
 
 
 	if(ess == true)

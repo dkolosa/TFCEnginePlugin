@@ -22,6 +22,10 @@ function alphas=EstimateAlphas(initialValues, ess, targetValues, tf)
 	wt = targetValues(5) * D2R;
 	thetat = targetValues(6) * D2R;
 
+	init = [a, e, i, Omega, w, theta];
+	targ = [at, et, it, Omegat, wt, thetat];
+
+	alphas = zeros(1,14);
 
 	if(ess == true)
 
@@ -50,14 +54,8 @@ function alphas=EstimateAlphas(initialValues, ess, targetValues, tf)
 
 		G = G*.5*(sqrt(a/mu));
 
-		init = [a, e, i, Omega, w, theta];
-		targ = [at, et, it, Omegat, wt, thetat];
+		alphaess = (G^-1)*((targ - init)/(tf - t0))';
 
-		alphaess = inv(G)*((targ - init)/(tf - t0))';
-
-		alphas = zeros(1,14);
-	
-		% alpha = [a0R a1R a2R b1R a0S a1S a2S b1S b2S a0W a1W a2W b1W b2W]'; %RSW
 		% alphaess = [a0R a0S a1S b1S b2S a1W b1W]
 		alphas(1) = alphaess(1);
 		alphas(5) = alphaess(2);  
@@ -111,6 +109,11 @@ function alphas=EstimateAlphas(initialValues, ess, targetValues, tf)
 		G(6,3)=-.5*e^2; %a2R
 		G(6,:)=G(6,:)*sqrt(a/mu);
 		G(6,:)=G(6,:)+(1-sqrt(1-e^2))*(G(5,:)+G(4,:))+2*sqrt(1-e^2)*(sin(i/2))^2*G(4,:)-(G(5,:)+G(4,:));
+
+		alphaess = (G^-1)*((targ - init)/(tf - t0))';
+
+		% alpha = [a0R a1R a2R b1R a0S a1S a2S b1S b2S a0W a1W a2W b1W b2W]'; %RSW
+		alphas = alphaess;
+
 	end
 end
-

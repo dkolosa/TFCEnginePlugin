@@ -1,4 +1,4 @@
-function output = STKSetup(initialValues, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence)
+function STKSetup(initialValues, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence)
 
 %% Do NOT Edit will break scripting
 % Collection of the TFC coefficients, 
@@ -303,4 +303,6 @@ end
 % ASTG.EndRun;
 
 keyboard
+% Use dbcont to finish execution
+
 end

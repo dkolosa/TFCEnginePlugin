@@ -107,7 +107,7 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         alphaCoeff = EstimateAlphas(initialValues, essentialTFC, targetValues, finalTime);
 
         %[a0R, a1R, a2R, b2R, a0S, a1S, a2S, b1S, b2S, a0W, a1W, a2W, b1W, b2W]
-        % Essential TFC [a0R, a0S, a1S, b1Sb, a1W, b1W ]
+        % Essential TFC [a1R, b1R, a0S, b1S, a1W, b1W]
         
         % alphaCoeff=[0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0];
 

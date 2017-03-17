@@ -40,7 +40,7 @@ theta =  0.01; % degrees
 % Set the oe that are not being targeted to the initial state value
 atarg = a; % km
 etarg = e;
-itarg = 1; % degrees
+itarg = 1.1; % degrees
 Omegatarg = Omega; % degrees
 wtarg = w; % degrees
 thetatarg = 0.01; % degrees
@@ -55,8 +55,8 @@ checkSequence = true;   % Inspect MCS before running
 %[a0R, a1R, a2R, b1R, 
 % a0S, a1S, a2S, b1S, b2S
 % a0W, a1W, a2W, b1W, b2W]
-tfcTargets = [1, 0, 0, 1, ...
-              1, 1, 0, 1, 0, ...
+tfcTargets = [0, 1, 0, 1, ...
+              1, 0, 0, 1, 0, ...
               1, 0, 0, 1, 0];
 
 initialValues = [a, e, i, Omega, w, theta];

@@ -6,7 +6,7 @@ function alphas=EstimateAlphas(initialValues, ess, targetValues, tf)
 	mu = 398600;
 	t0 = 0;
 	% alpha = [a0R a1R a2R b1R a0S a1S a2S b1S b2S a0W a1W a2W b1W b2W]'; %RSW
-	% alphaess = [a0R a0S a1S b1S b2S a1W b1W]
+	% alphaess = [a1R b1R a0S b1S a1W b1W]
 
 	a = initialValues(1);
 	e = initialValues(2);
@@ -56,12 +56,12 @@ function alphas=EstimateAlphas(initialValues, ess, targetValues, tf)
 
 		alphaess = (G^-1)*((targ - init)/(tf - t0))';
 
-		% alphaess = [a0R a0S a1S b1S b2S a1W b1W]
-		alphas(1) = alphaess(1);
-		alphas(5) = alphaess(2);  
-		alphas(6) = alphaess(3);
+		% alphaess = [a1R b1R a0S b1S a1W b1W]
+		alphas(2) = alphaess(1);
+		alphas(4) = alphaess(2);  
+		alphas(5) = alphaess(3);
 		alphas(8) = alphaess(4);
-		alphas(10) = alphaess(5);
+		alphas(11) = alphaess(5);
 		alphas(13) = alphaess(6);
 
 	else

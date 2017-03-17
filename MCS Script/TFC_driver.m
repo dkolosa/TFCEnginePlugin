@@ -52,10 +52,10 @@ maxIterations = 500;
 checkSequence = true;   % Inspect MCS before running
 
 % Select the TFCs you wish to targeter to use (false = 0, true = 1)
-%[a0R, a1R, a2R, b2R, 
+%[a0R, a1R, a2R, b1R, 
 % a0S, a1S, a2S, b1S, b2S
 % a0W, a1W, a2W, b1W, b2W]
-tfcTargets = [1, 0, 0, 0, ...
+tfcTargets = [1, 0, 0, 1, ...
               1, 1, 0, 1, 0, ...
               1, 0, 0, 1, 0];
 

@@ -1,4 +1,4 @@
-function STKSetup(initialValues, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence)
+function results=STKSetup(initialValues, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence)
 
 %% Do NOT Edit will break scripting
 % Collection of the TFC coefficients, 
@@ -71,6 +71,9 @@ compBrowser = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').
 
 SetUserVariables(ASTG, compBrowser, TFCcoefficients);
 
+deltav = compBrowser.GetFolder('UserValues');
+
+
 % set up the propogator in the component browser
 compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Propagators');
     % Create a new force model from the built in Earth Point Mass model
@@ -140,7 +143,8 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         % the orbital element(s) you wish to target around
         TargetResults = {'Keplerian Elems/Semimajor_Axis','Keplerian Elems/Eccentricity', ...
                         'Keplerian Elems/Inclination', 'Keplerian Elems/Longitude_Of_Ascending_Node', ...
-                        'Keplerian Elems/Argument_of_Periapsis', 'Keplerian Elems/True_Anomaly'};
+                        'Keplerian Elems/Argument_of_Periapsis', 'Keplerian Elems/True_Anomaly', ...
+                        'Maneuver/DeltaV'};
 
         % Set the orbital element(s) you wish to target around
         %Add results for the TFC targeter
@@ -252,6 +256,9 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         ResultTA.DesiredValue = targetValues(6);
         ResultTA.Tolerance = 0.01;
 
+        ResultDV = dc.Resutls.GetResultByPaths('TFC Maneuver', 'DeltaV');
+        ResultDv.Enable = false;
+
 
         % Set final DC and targeter properties and run modes
         dc.MaxIterations = maxIterations;
@@ -278,7 +285,12 @@ end
 %   evaluated at the ending epoch of the segment
 
 % disp(['Target arrival duration:' num2str(args)]);
-
+% Get fuel for the initial state and final maneuver state
+initialFuelMass = initstate.InitialState.FuelMass;
+finalFuelMass = tfcMan.FinalState.FuelMass;
+% Obtain duration from maneuver
+duration = tfcMan.GetResultsValue('Duration');
+deltav = tfcMan.GetResultsValue('DeltaV');
 
 % Single Segment Mode. There are times when, due to complex mission
 % requirements or even the designers preference, the Astrogator MCS
@@ -304,5 +316,5 @@ end
 
 keyboard
 % Use dbcont to finish execution
-
+results = [finalFuelMass, duration, deltav]
 end

@@ -40,7 +40,7 @@ theta =  0.01; % degrees
 % Set the oe that are not being targeted to the initial state value
 atarg = a; % km
 etarg = e;
-itarg = 1.1; % degrees
+itarg = 1.00; % degrees
 Omegatarg = Omega; % degrees
 wtarg = w; % degrees
 thetatarg = 0.01; % degrees

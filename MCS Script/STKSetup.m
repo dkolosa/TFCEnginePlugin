@@ -243,7 +243,7 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
         ResultOmega = dc.Results.GetResultByPaths('TFC Maneuver', 'Longitude_Of_Ascending_Node');
         ResultOmega.Enable = initialValues(4) ~= targetValues(4);
-        ResultOmega.DesiredValue = targetValues(1);
+        ResultOmega.DesiredValue = targetValues(4);
         ResultOmega.Tolerance = 0.01;
 
         Resultw = dc.Results.GetResultByPaths('TFC Maneuver', 'Argument_of_Periapsis');
@@ -255,9 +255,6 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         ResultTA.Enable = initialValues(6) ~= targetValues(6);
         ResultTA.DesiredValue = targetValues(6);
         ResultTA.Tolerance = 0.01;
-
-        ResultDV = dc.Resutls.GetResultByPaths('TFC Maneuver', 'DeltaV');
-        ResultDv.Enable = false;
 
 
         % Set final DC and targeter properties and run modes
@@ -286,6 +283,7 @@ end
 
 % disp(['Target arrival duration:' num2str(args)]);
 % Get fuel for the initial state and final maneuver state
+keyboard
 initialFuelMass = initstate.InitialState.FuelMass;
 finalFuelMass = tfcMan.FinalState.FuelMass;
 % Obtain duration from maneuver
@@ -314,7 +312,7 @@ deltav = tfcMan.GetResultsValue('DeltaV');
 % Ends the MCS run
 % ASTG.EndRun;
 
-keyboard
+
 % Use dbcont to finish execution
 results = [finalFuelMass, duration, deltav]
 end

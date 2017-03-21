@@ -40,23 +40,23 @@ theta =  0.01; % degrees
 % Set the oe that are not being targeted to the initial state value
 atarg = a; % km
 etarg = e;
-itarg = 1.00; % degrees
-Omegatarg = Omega; % degrees
+itarg = i; % degrees
+Omegatarg = 20; % degrees
 wtarg = w; % degrees
-thetatarg = 0.01; % degrees
+thetatarg = theta; % degrees
 
 essentialTFC = true; % Use the essential TFC (6 TFCs) estimator 
 finalTime = 2 * days2Sec;  % days -> seconds
 
 maxIterations = 500;
-checkSequence = true;   % Inspect MCS before running
+checkSequence = false;   % Inspect MCS before running
 
 % Select the TFCs you wish to targeter to use (false = 0, true = 1)
 %[a0R, a1R, a2R, b1R, 
 % a0S, a1S, a2S, b1S, b2S
 % a0W, a1W, a2W, b1W, b2W]
-tfcTargets = [0, 1, 0, 1, ...
-              1, 0, 0, 1, 0, ...
+tfcTargets = [0, 0, 0, 0, ...
+              1, 0, 1, 1, 0, ...
               1, 0, 0, 1, 0];
 
 initialValues = [a, e, i, Omega, w, theta];

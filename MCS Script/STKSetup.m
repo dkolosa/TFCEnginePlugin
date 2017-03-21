@@ -1,4 +1,4 @@
-function results=STKSetup(initialValues, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence)
+function results=STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence)
 
 %% Do NOT Edit will break scripting
 % Collection of the TFC coefficients, 
@@ -105,6 +105,10 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         initstate.Element.RAAN = initialValues(4);
         initstate.Element.ArgOfPeriapsis = initialValues(5);
         initstate.Element.TrueAnomaly = initialValues(6);
+        
+        %Set the dry and fuel mass for the satellite
+        initstate.InitialState.DryMass = satMass(1);
+        initstate.InitialState.FuelMass = satMass(2);
 
         % Estimate coefficients
         alphaCoeff = EstimateAlphas(initialValues, essentialTFC, targetValues, finalTime);
@@ -283,12 +287,20 @@ end
 
 % disp(['Target arrival duration:' num2str(args)]);
 % Get fuel for the initial state and final maneuver state
-keyboard
-initialFuelMass = initstate.InitialState.FuelMass;
+
 finalFuelMass = tfcMan.FinalState.FuelMass;
+duration=tfcMan.GetResultValue('Duration');
+deltav = tfcMan.GetResultValue('DeltaV');
+
+disp(['Target arrival duration (seconds): ' num2str(duration)]);
+disp(['DeltaV (km/s): ' num2str(deltav)]);
+disp(['Final Fuel Mass: ' num2str(finalFuelMass)]);
+
+
+keyboard
+
 % Obtain duration from maneuver
-duration = tfcMan.GetResultsValue('Duration');
-deltav = tfcMan.GetResultsValue('DeltaV');
+
 
 % Single Segment Mode. There are times when, due to complex mission
 % requirements or even the designers preference, the Astrogator MCS
@@ -314,5 +326,5 @@ deltav = tfcMan.GetResultsValue('DeltaV');
 
 
 % Use dbcont to finish execution
-results = [finalFuelMass, duration, deltav]
+results = [finalFuelMass, duration, deltav];
 end

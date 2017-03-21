@@ -25,6 +25,11 @@
 global days2Sec
 days2Sec = 24*60^2;    % Days to seconds
 
+% Spacecraft Parameters
+dryMass = 3000; % kg
+fuelMass = 500; % kg
+satMass = [dryMass, fuelMass];
+
 %% set up inital and targeting states here
 
 % initial Orbit State
@@ -41,12 +46,12 @@ theta =  0.01; % degrees
 atarg = a; % km
 etarg = e;
 itarg = i; % degrees
-Omegatarg = 20; % degrees
+Omegatarg = 30; % degrees
 wtarg = w; % degrees
 thetatarg = theta; % degrees
 
 essentialTFC = true; % Use the essential TFC (6 TFCs) estimator 
-finalTime = 2 * days2Sec;  % days -> seconds
+finalTime = 4 * days2Sec;  % days -> seconds
 
 maxIterations = 500;
 checkSequence = false;   % Inspect MCS before running
@@ -55,13 +60,13 @@ checkSequence = false;   % Inspect MCS before running
 %[a0R, a1R, a2R, b1R, 
 % a0S, a1S, a2S, b1S, b2S
 % a0W, a1W, a2W, b1W, b2W]
-tfcTargets = [0, 0, 0, 0, ...
-              1, 0, 1, 1, 0, ...
+tfcTargets = [0, 1, 0, 1, ...
+              0, 1, 0, 1, 0, ...
               1, 0, 0, 1, 0];
 
 initialValues = [a, e, i, Omega, w, theta];
 targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
 
-STKSetup(initialValues, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence)
+STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence)
 %Select which TFCs to target
 

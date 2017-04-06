@@ -37,7 +37,7 @@ satMass = [dryMass, fuelMass];
 a = 41126; % km
 e = 0.1;
 i = 0.01; % degrees
-Omega = 0.01; % degrees
+Omega = 10.0; % degrees
 w = 0.01; % degrees
 theta =  0.01; % degrees
 
@@ -61,12 +61,12 @@ checkSequence = false;   % Inspect MCS before running
 % a0S, a1S, a2S, b1S, b2S
 % a0W, a1W, a2W, b1W, b2W]
 tfcTargets = [0, 1, 0, 1, ...
-              0, 1, 0, 1, 0, ...
+              1, 0, 0, 1, 0, ...
               1, 0, 0, 1, 0];
 
 initialValues = [a, e, i, Omega, w, theta];
 targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
 
-STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence)
-%Select which TFCs to target
+results = STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence);
 
+%The output is the [final fuel mass (kg), duration of trajectory (seconds), and delta V(km/s)]

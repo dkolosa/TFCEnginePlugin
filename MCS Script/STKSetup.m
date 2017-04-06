@@ -45,8 +45,12 @@ end
 % the enumeration for a Satellite object is 'eSatellite' with a value of 18
 sat = root.CurrentScenario.Children.New(18, 'TFC_Sat');
 
+% Create a client Satellite
+client = root.CurrentScenario.Children.New(18, 'Client');
+
 % Set the new Satellite to use Astrogator as the propagator
 sat.SetPropagatorType('ePropagatorAstrogator')
+client.SetPropagatorType('ePropagatorAstrogator')
 % Note that Astrogator satellites by default start with one Initial State
 % and one Propagate segment
 
@@ -54,9 +58,13 @@ sat.SetPropagatorType('ePropagatorAstrogator')
 % for convenience
 ASTG = sat.Propagator;
 
+clientASTG = client.Propagator;
+
 % Create a handle to the MCS and remove all existing segments
 MCS = ASTG.MainSequence;
 MCS.RemoveAll;
+
+MCSclient = clientASTG.MainSequence;
 
 Red = '0000ff';
 Green = '00ff00';
@@ -225,7 +233,7 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
 
         durationControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'FiniteMnvr.StoppingConditions.Duration.TripValue');
         durationControlParam.Enable = true;
-        durationControlParam.MaxStep = 60;
+        durationControlParam.MaxStep = 30;
 
 
         % The orbital elements being targeted
@@ -267,12 +275,37 @@ ts = MCS.Insert('eVASegmentTypeTargetSequence','TFC Target','-');
         dc.Mode = 'eVAProfileModeIterate';
         ts.Action = 'eVATargetSeqActionRunActiveProfiles';
 
+% Have the client satellite propogate around a fixed orbit (target orbit of TFC_Sat)
+client_initialState = MCSclient.Item('Initial State');
+    client_initialState.OrbitEpoch = scenario.StartTime;
+    client_initialState.SetElementType('eVAElementTypeKeplerian');
+    client_initialState.Element.SemiMajorAxis = targetValues(1);
+    client_initialState.Element.Eccentricity = targetValues(2);
+    client_initialState.Element.Inclination = targetValues(3);
+    client_initialState.Element.RAAN = targetValues(4);
+    client_initialState.Element.ArgOfPeriapsis = targetValues(5);
+    client_initialState.Element.TrueAnomaly = targetValues(6);
+
+% get the client propagator
+client_prop = MCSclient.Item('Propagate');
+    client_time = client_prop.StoppingConditions.Item('Duration');
+    client_time.Properties.Trip = finalTime;
+
 
 %% Running and Analyzing the MCS
 % Execute the MCS.
 
 if (checkSequence == false)
+    clientASTG.RunMCS;
     ASTG.RunMCS;
+
+    finalFuelMass = tfcMan.FinalState.FuelMass;
+    duration=tfcMan.GetResultValue('Duration');
+    deltav = tfcMan.GetResultValue('DeltaV');
+
+    disp(['Target arrival duration (seconds): ' num2str(duration)]);
+    disp(['DeltaV (km/s): ' num2str(deltav)]);
+    disp(['Final Fuel Mass: ' num2str(finalFuelMass)]);
 end
 
 % Get results from the MCS segments
@@ -288,6 +321,8 @@ end
 % disp(['Target arrival duration:' num2str(args)]);
 % Get fuel for the initial state and final maneuver state
 
+keyboard
+
 finalFuelMass = tfcMan.FinalState.FuelMass;
 duration=tfcMan.GetResultValue('Duration');
 deltav = tfcMan.GetResultValue('DeltaV');
@@ -295,12 +330,6 @@ deltav = tfcMan.GetResultValue('DeltaV');
 disp(['Target arrival duration (seconds): ' num2str(duration)]);
 disp(['DeltaV (km/s): ' num2str(deltav)]);
 disp(['Final Fuel Mass: ' num2str(finalFuelMass)]);
-
-
-keyboard
-
-% Obtain duration from maneuver
-
 
 % Single Segment Mode. There are times when, due to complex mission
 % requirements or even the designers preference, the Astrogator MCS

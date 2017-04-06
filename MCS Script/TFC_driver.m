@@ -54,7 +54,7 @@ essentialTFC = false; % Use the essential TFC (6 TFCs) estimator
 finalTime = 4 * days2Sec;  % days -> seconds
 
 maxIterations = 500;
-checkSequence = false;   % Inspect MCS before running
+checkSequence = true;   % Inspect MCS before running
 
 % Select the TFCs you wish to targeter to use (false = 0, true = 1)
 %[a0R, a1R, a2R, b1R, 
@@ -71,6 +71,8 @@ targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
 targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg;
                 atarg, etarg+0.1, itarg, Omegatarg, wtarg, thetatarg;
                 atarg, etarg+0.1, itarg, Omegatarg, wtarg, 20]
+
+finalTime = [4 , 2, 3] * days2Sec;
 
 results = STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence);
 

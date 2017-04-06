@@ -54,7 +54,7 @@ essentialTFC = true; % Use the essential TFC (6 TFCs) estimator
 finalTime = 4 * days2Sec;  % days -> seconds
 
 maxIterations = 500;
-checkSequence = false;   % Inspect MCS before running
+checkSequence = true;   % Inspect MCS before running
 
 % Select the TFCs you wish to targeter to use (false = 0, true = 1)
 %[a0R, a1R, a2R, b1R, 

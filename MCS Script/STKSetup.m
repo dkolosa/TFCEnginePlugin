@@ -85,7 +85,7 @@ deltav = compBrowser.GetFolder('UserValues');
 % set up the propogator in the component browser
 compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Propagators');
     % Create a new force model from the built in Earth Point Mass model
-    compPropgator.DuplicateComponent('Earth Point Mass', 'TFCProp');
+    compPropgator.DuplicateComponent('Earth HPOP Default v10', 'TFCProp');
     TFCProp = compPropgator.Item('TFCProp');
     % Add the plugin force model based on TFC coefficients
     % Additional force models can be added to increase complexity

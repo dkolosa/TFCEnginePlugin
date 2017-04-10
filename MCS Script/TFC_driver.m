@@ -46,9 +46,9 @@ theta =  0.01; % degrees
 atarg = a; % km
 etarg = e;
 itarg = i; % degrees
-Omegatarg = 30; % degrees
+Omegatarg = Omega; % degrees
 wtarg = w; % degrees
-thetatarg = theta; % degrees
+thetatarg = 10; % degrees
 
 essentialTFC = true; % Use the essential TFC (6 TFCs) estimator 
 finalTime = 4 * days2Sec;  % days -> seconds
@@ -61,20 +61,23 @@ checkSequence = true;   % Inspect MCS before running
 % a0S, a1S, a2S, b1S, b2S
 % a0W, a1W, a2W, b1W, b2W]
 tfcTargets = [0, 1, 0, 1, ...
-              1, 0, 0, 1, 0, ...
-              1, 0, 0, 1, 0];
+              1, 0, 1, 1, 0, ...
+              1, 0, 0, 0, 0];
 
-initialValues = [a, e, i, Omega, w, theta];
-targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
+% initialValues = [a, e, i, Omega, w, theta];
+% targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
 
 % Specify multiple targets and inital states
 targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg;
-                atarg, etarg+0.1, itarg, Omegatarg, wtarg, thetatarg;
-                atarg, etarg+0.1, itarg, Omegatarg, wtarg, 20];
+                atarg, etarg, itarg, Omegatarg, wtarg, 40;
+                atarg, etarg, itarg, Omegatarg, wtarg, 180];
+
 initialValues = [a, e, i, Omega, w, theta;
-                a, .01, i, Omega, w, theta;
-                a, .05, i, Omega, w, theta+30];
-finalTime = [4 , 2, 3] * days2Sec;
+                targetValues(1,:);
+                targetValues(2,:)];
+
+                
+finalTime = [4 , 2, 3] * days2Sec;  % Enter the number of days
 
 results = STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence);
 

@@ -73,7 +73,7 @@ Magenta = 'ff00ff';
 Black = '000000';
 White = 'ffffff';
 
-colors = {Green, Blue, Cyan, Yellow, Magenta}
+colors = {Green, Blue, Cyan, Yellow, Magenta};
 
 compBrowser = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Calculation Objects');
 
@@ -94,7 +94,7 @@ compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator'
 compThrusterSet = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Thruster Sets');
     SetupThrusterSet(compThrusterSet);
     
-tfc_target_name = 'TFC Target '
+tfc_target_name = 'TFC Target ';
 
 % Define a Target Sequence
 % Insert a Target Sequence with a nested Maneuver segment
@@ -138,7 +138,7 @@ for i = 1 : targ_rows
             
             % alphaCoeff=[0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0];
 
-            SetInitialValues(initstate, TFCcoefficients, alphaCoeff)
+            SetInitialValues(initstate, TFCcoefficients, alphaCoeff);
            
 
         %Set the Maneuver Segment
@@ -153,7 +153,7 @@ for i = 1 : targ_rows
                 finite.AttitudeControl.RefAxesName='Satellite LVLH(Earth)';
                 
                 % Set Engine type to Thruster set using the TFC thruster set
-                finite.SetPropulsionMethod('eVAPropulsionMethodThrusterSet', 'TFC set')
+                finite.SetPropulsionMethod('eVAPropulsionMethodThrusterSet', 'TFC set');
 
                 % Set the Propagator
                 finite.Propagator.PropagatorName = 'TFCProp';

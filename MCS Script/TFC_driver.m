@@ -20,7 +20,7 @@
     % Inputs: Astrogator inital state object
     %         Names of the TFC coefficients used by STK
     %         The value of the 14 Fourier Coefficients
-
+format short g
 %Constants
 global days2Sec
 days2Sec = 24*60^2;    % Days to seconds
@@ -71,9 +71,9 @@ targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
 targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg;
                 atarg, etarg+0.1, itarg, Omegatarg, wtarg, thetatarg;
                 atarg, etarg+0.1, itarg, Omegatarg, wtarg, 20];
-initalValues = [a, e, i, Omega, w, theta;
+initialValues = [a, e, i, Omega, w, theta;
                 a, .01, i, Omega, w, theta;
-                a, .05, i, Omega, w, theta+30]
+                a, .05, i, Omega, w, theta+30];
 finalTime = [4 , 2, 3] * days2Sec;
 
 results = STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence);

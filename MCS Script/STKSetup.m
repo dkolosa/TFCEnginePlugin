@@ -314,7 +314,7 @@ for(i = 1 : targ_rows)
 
     % get the client propagator
     client_prop = MCSclient.Item('Propagate');
-        client_prop.Properties.Color = uint32(hex2dec(colors{i}))
+        client_prop.Properties.Color = uint32(hex2dec(colors{i}));
         client_time = client_prop.StoppingConditions.Item('Duration');
         client_time.Properties.Trip = finalTime(i);
 

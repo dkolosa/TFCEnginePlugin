@@ -32,18 +32,18 @@ satMass = [dryMass, fuelMass];
 
 %% set up inital and targeting states here
 
-% initial Orbit State
+% first initial Orbit State
 % inital time is assuemd at 0
 a = 41126; % km
-e = 0.1;
-i = 0.01; % degrees
-Omega = 10.0; % degrees
-w = 0.01; % degrees
-theta =  0.01; % degrees
+e = 0.01;
+i = 0.10; % degrees
+Omega = 0.10; % degrees
+w = 0.10; % degrees
+theta =  0.10; % degrees
 
-% target orbit state
+% first target orbit state
 % Set the oe that are not being targeted to the initial state value
-atarg = a; % km
+atarg = a+1000; % km
 etarg = e;
 itarg = i; % degrees
 Omegatarg = Omega; % degrees
@@ -61,8 +61,8 @@ checkSequence = true;   % Inspect MCS before running
 % a0S, a1S, a2S, b1S, b2S
 % a0W, a1W, a2W, b1W, b2W]
 tfcTargets = [0, 1, 0, 1, ...
-              1, 0, 1, 1, 0, ...
-              1, 0, 0, 0, 0];
+              1, 0, 0, 1, 0, ...
+              0, 1, 0, 1, 0];
 
 % initialValues = [a, e, i, Omega, w, theta];
 % targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
@@ -72,12 +72,13 @@ targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg;
                 atarg, etarg, itarg, Omegatarg, wtarg, 40;
                 atarg, etarg, itarg, Omegatarg, wtarg, 180];
 
+% The initial values are set to the preceding target values
 initialValues = [a, e, i, Omega, w, theta;
                 targetValues(1,:);
                 targetValues(2,:)];
 
-                
-finalTime = [4 , 2, 3] * days2Sec;  % Enter the number of days
+% Use days
+finalTime = [2 , 4, 7] * days2Sec;  % Enter the number of days
 
 results = STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence);
 

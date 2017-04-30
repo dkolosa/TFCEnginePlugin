@@ -10,6 +10,13 @@ TFCcoefficients = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1', ...
 % Get the number of rows and cols from target states
 [targ_rows, targ_cols] = size(targetValues);
 [init_rows, init_cols] = size(initialValues);
+[time_rows, time_cols] = size(finalTime);
+
+% if (time_rows ~= targ_cols)
+%     msg = 'number of target states must match the number of transfer times';
+%     error(msg);
+% end
+
 try
     % Grab an existing instance of STK
     uiapp = actxGetRunningServer('STK11.application');
@@ -185,62 +192,62 @@ for i = 1 : targ_rows
             % Add more to use other coefficients 
             alphaR0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR0.VariableValue');
             alphaR0ControlParam.Enable = tfcTargets(1);
-            alphaR0ControlParam.MaxStep = 0.3;
+            alphaR0ControlParam.MaxStep = 1;
 
             alphaR1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR1.VariableValue');
             alphaR1ControlParam.Enable = tfcTargets(2);
-            alphaR1ControlParam.MaxStep = 0.3;
+            alphaR1ControlParam.MaxStep = 1;
 
             alphaR2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR2.VariableValue');
             alphaR2ControlParam.Enable = tfcTargets(3);
-            alphaR2ControlParam.MaxStep = 0.3;
+            alphaR2ControlParam.MaxStep = 1;
 
             betaR1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaR1.VariableValue');
             betaR1ControlParam.Enable = tfcTargets(4);
-            betaR1ControlParam.MaxStep = 0.3;
+            betaR1ControlParam.MaxStep = 1;
 
 
 
             alphaS0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS0.VariableValue');
             alphaS0ControlParam.Enable = tfcTargets(5);
-            alphaS0ControlParam.MaxStep = 0.3;        
+            alphaS0ControlParam.MaxStep = 1;        
 
             alphaS1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS1.VariableValue');
             alphaS1ControlParam.Enable = tfcTargets(6);
-            alphaS1ControlParam.MaxStep = 0.3;        
+            alphaS1ControlParam.MaxStep = 1;        
 
             alphaS2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS2.VariableValue');
             alphaS2ControlParam.Enable = tfcTargets(7);
-            alphaS2ControlParam.MaxStep = 0.3;
+            alphaS2ControlParam.MaxStep = 1;
 
             betaS1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaS1.VariableValue');
             betaS1ControlParam.Enable = tfcTargets(8);
-            betaS1ControlParam.MaxStep = 0.3;  
+            betaS1ControlParam.MaxStep = 1;  
 
             betaS2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaS2.VariableValue');
             betaS2ControlParam.Enable = tfcTargets(9);
-            betaS2ControlParam.MaxStep = 0.3;       
+            betaS2ControlParam.MaxStep = 1;       
 
 
             alphaW0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW0.VariableValue');
             alphaW0ControlParam.Enable = tfcTargets(10);
-            alphaW0ControlParam.MaxStep = 0.3;
+            alphaW0ControlParam.MaxStep = 1;
 
             alphaW1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW1.VariableValue');
             alphaW1ControlParam.Enable = tfcTargets(11);
-            alphaW1ControlParam.MaxStep = 0.3;
+            alphaW1ControlParam.MaxStep = 1;
 
             alphaW2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW2.VariableValue');
             alphaW2ControlParam.Enable = tfcTargets(12);
-            alphaW2ControlParam.MaxStep = 0.3;
+            alphaW2ControlParam.MaxStep = 1;
 
             betaW1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaW1.VariableValue');
             betaW1ControlParam.Enable = tfcTargets(13);
-            betaW1ControlParam.MaxStep = 0.3;
+            betaW1ControlParam.MaxStep = 1;
 
             betaW2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaW2.VariableValue');
             betaW2ControlParam.Enable = tfcTargets(14);
-            betaW2ControlParam.MaxStep = 0.3;
+            betaW2ControlParam.MaxStep = 1;
 
             durationControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'FiniteMnvr.StoppingConditions.Duration.TripValue');
             durationControlParam.Enable = true;
@@ -329,6 +336,7 @@ end
 
 if (checkSequence == true)
     keyboard
+    % type dbcont to proceed
 end
 
 % Get results from the MCS segments
@@ -345,16 +353,23 @@ end
 % Get fuel for the initial state and final maneuver state
 
     ASTG.RunMCS;
-    finalFuelMass = tfcMan.FinalState.FuelMass;
-    duration=tfcMan.GetResultValue('Duration');
-    deltav = tfcMan.GetResultValue('DeltaV');
 
-    disp(['Target arrival duration (seconds): ' num2str(duration)]);
-    disp(['DeltaV (km/s): ' num2str(deltav)]);
-    disp(['Final Fuel Mass: ' num2str(finalFuelMass)]);
+    for i = 1 : length(targ_rows)
+        % Obtain the targeter 
+        targSeq = strcat('TFC Target',num2str(i))
+        targetResults = MCS.Item(targSeq)
+        targMan = targetResults.Segments.Item('TFC Maneuver')
+        finalFuelMass = targMan.FinalState.FuelMass;
+        duration=targMan.GetResultValue('Duration');
+        deltav = targMan.GetResultValue('DeltaV');
+        disp(['Target: ' targSeq ] )
+        disp(['Target arrival duration (seconds): ' num2str(duration)]);
+        disp(['DeltaV (km/s): ' num2str(deltav)]);
+        disp(['Final Fuel Mass: ' num2str(finalFuelMass)]);
+    end
 
 
-% Single Segment Mode. There are times when, due to complex mission
+% Single Segment Mode. There are times  when, due to complex mission
 % requirements or even the designers preference, the Astrogator MCS
 % graphical interface may not be the most efficient solution. For these
 % times, Astrogator also supports executing segments and sequences individually, in any
@@ -376,7 +391,7 @@ end
 % Ends the MCS run
 % ASTG.EndRun;
 
-
+keyboard
 % Use dbcont to finish execution
 results = [finalFuelMass, duration, deltav];
 end

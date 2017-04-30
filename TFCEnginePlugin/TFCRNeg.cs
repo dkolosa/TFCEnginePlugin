@@ -156,15 +156,15 @@ namespace TFCEnginePlugin
                 double alphaR2 = this.m_AlphaR2.Evaluate(result);
                 double betaR1 = this.m_BetaR1.Evaluate(result);
                 
-                /*
-                Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
+                
+                //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
                 Debug.WriteLine("Alpha0: {0}\n Alpha1: {1}\n Alpha2: {2}\n Alpha3: {3}\n EccAno: {4}",
-                                alphaR1, alphaR2, alphaR3, alphaR4, eccAno);
-                */
+                                alphaR0, alphaR1, alphaR2, betaR1, eccAno);
+
 
                 double FR = alphaR0 + alphaR1 * Math.Cos(eccAno) + alphaR2 * Math.Cos(2 * eccAno) +
                             betaR1 * Math.Sin(eccAno);
-
+                
                 //error on FR,W,S < 0 
                 //The thrust will error on negative in STK
                 if (FR < 0)
@@ -175,7 +175,7 @@ namespace TFCEnginePlugin
                 {
                     FR = 0;
                 }
-                   
+                Debug.WriteLine("FR: {0}", FR);
                 result.SetThrustAndIsp(FR, Isp);
             }
             return true;

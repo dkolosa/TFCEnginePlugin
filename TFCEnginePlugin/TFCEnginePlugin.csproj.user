@@ -5,4 +5,8 @@
     <StartProgram>C:\Program Files\AGI\STK 11\bin\AgUiApplication.exe</StartProgram>
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\AGI\STK 11\bin\AgUiApplication.exe</StartProgram>
+  </PropertyGroup>
 </Project>

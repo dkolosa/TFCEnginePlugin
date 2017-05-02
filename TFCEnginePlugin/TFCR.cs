@@ -176,17 +176,15 @@ namespace TFCEnginePlugin
 
                 //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
 
-                Debug.WriteLine("Alpha0: {0}\nAlpha1: {1}\nAlpha2: {2}\nAlpha3: {3}\nEccAno: {4}",
-                                alphaR0, alphaR1, alphaR2, betaR1, eccAno);
+                //Debug.WriteLine("Alpha0: {0}\nAlpha1: {1}\nAlpha2: {2}\nAlpha3: {3}\nEccAno: {4}",
+                // alphaR0, alphaR1, alphaR2, betaR1, eccAno);
 
                 double FR = alphaR0 + alphaR1 * Math.Cos(eccAno) + alphaR2 * Math.Cos(2 * eccAno) +
                             betaR1 * Math.Sin(eccAno);
                 //error on FR,W,S < 0
 
                 if (FR < 0)
-                {
                     FR = 0;
-                }
 
                 Debug.WriteLine("FR: {0}", FR);
 

@@ -43,7 +43,7 @@ theta =  0.10; % degrees
 
 % first target orbit state
 % Set the oe that are not being targeted to the initial state value
-atarg = a+1000; % km
+atarg = a; % km
 etarg = e;
 itarg = i; % degrees
 Omegatarg = Omega; % degrees
@@ -68,17 +68,15 @@ tfcTargets = [0, 1, 0, 1, ...
 % targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
 
 % Specify multiple targets and inital states
-targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg;
-                atarg, etarg, itarg, Omegatarg, wtarg, 40;
-                atarg, etarg, itarg, Omegatarg, wtarg, 180];
+targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg; ...
+                atarg, etarg, itarg, Omegatarg, wtarg, 40];
 
 % The initial values are set to the preceding target values
-initialValues = [a, e, i, Omega, w, theta;
-                targetValues(1,:);
-                targetValues(2,:)];
+initialValues = [a, e, i, Omega, w, theta; ...
+                 targetValues(1,:)];
 
 % Use days
-finalTime = [2 , 4, 7] * days2Sec;  % Enter the number of days
+finalTime = [4, 7] * days2Sec;  % Enter the number of days
 
 results = STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence);
 

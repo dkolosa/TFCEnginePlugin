@@ -354,19 +354,19 @@ end
 
     ASTG.RunMCS;
 
-    for i = 1 : length(targ_rows)
-        % Obtain the targeter 
-        targSeq = strcat('TFC Target',num2str(i))
-        targetResults = MCS.Item(targSeq)
-        targMan = targetResults.Segments.Item('TFC Maneuver')
-        finalFuelMass = targMan.FinalState.FuelMass;
-        duration=targMan.GetResultValue('Duration');
-        deltav = targMan.GetResultValue('DeltaV');
-        disp(['Target: ' targSeq ] )
-        disp(['Target arrival duration (seconds): ' num2str(duration)]);
-        disp(['DeltaV (km/s): ' num2str(deltav)]);
-        disp(['Final Fuel Mass: ' num2str(finalFuelMass)]);
-    end
+    % for i = 1 : length(targ_rows)
+    %     % Obtain the targeter 
+    %     targSeq = strcat('TFC Target',num2str(i))
+    %     targetResults = MCS.Item(targSeq)
+    %     targMan = targetResults.Segments.Item('TFC Maneuver')
+    %     finalFuelMass = targMan.FinalState.FuelMass;
+    %     duration=targMan.GetResultValue('Duration');
+    %     deltav = targMan.GetResultValue('DeltaV');
+    %     disp(['Target: ' targSeq ] )
+    %     disp(['Target arrival duration (seconds): ' num2str(duration)]);
+    %     disp(['DeltaV (km/s): ' num2str(deltav)]);
+    %     disp(['Final Fuel Mass: ' num2str(finalFuelMass)]);
+    % end
 
 
 % Single Segment Mode. There are times  when, due to complex mission
@@ -393,5 +393,5 @@ end
 
 keyboard
 % Use dbcont to finish execution
-results = [finalFuelMass, duration, deltav];
+% results = [finalFuelMass, duration, deltav];
 end

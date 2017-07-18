@@ -6,7 +6,7 @@ install Enigne Models:
 		-run the following command (Note: use .Net version 4.x):
 			C:\Widows\Microsoft.Net\Framework64\v4.0.30319\RegAsm.exe /codebase TFCEnginePlugin.dll
 
-		A warning might appear: "RegASM RA000 ..."" this is ok, at the end of the warning it should say "Type registered correctly" The engine plugin is installed to your system.
+		A warning might appear: "RegASM RA000 ..."" this is ok. At the end of the warning it should say "Type registered correctly", if it does then the engine plugin is installed on your system.
 
 
 	From source:

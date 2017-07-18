@@ -181,6 +181,8 @@ for i = 1 : targ_rows
             for j = 1 :length(TargetResults)
                     tfcMan.Results.Add(TargetResults{j});
             end
+        
+        % tfcUpdate = ts.Segments.Insert('eVASegmentTypeUpdate', 'TFC Update', '-');
 
         % Turn on Controls for Search Profiles
 
@@ -199,6 +201,7 @@ for i = 1 : targ_rows
             alphaR1ControlParam.MaxStep = 1;
 
             alphaR2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR2.VariableValue');
+            
             alphaR2ControlParam.Enable = tfcTargets(3);
             alphaR2ControlParam.MaxStep = 1;
 

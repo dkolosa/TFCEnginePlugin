@@ -34,24 +34,23 @@ satMass = [dryMass, fuelMass];
 
 % first initial Orbit State
 % inital time is assuemd at 0
-a = 41126; % km
-e = 0.01;
-i = 0.10; % degrees
-Omega = 0.10; % degrees
-w = 0.10; % degrees
-theta =  0.10; % degrees
+a = 42164; % km
+e = 0.4;
+i = 10; % degrees
+Omega = 30; % degrees
+w = 30; % degrees
+theta =  30; % degrees
 
 % first target orbit state
 % Set the oe that are not being targeted to the initial state value
 atarg = a; % km
 etarg = e;
-itarg = i; % degrees
+itarg = 13; % degrees
 Omegatarg = Omega; % degrees
 wtarg = w; % degrees
-thetatarg = 10; % degrees
+thetatarg = theta; % degrees
 
 essentialTFC = true; % Use the essential TFC (6 TFCs) estimator 
-finalTime = 4 * days2Sec;  % days -> seconds
 
 maxIterations = 500;
 checkSequence = true;   % Inspect MCS before running
@@ -64,19 +63,26 @@ tfcTargets = [0, 1, 0, 1, ...
               1, 0, 0, 1, 0, ...
               0, 1, 0, 1, 0];
 
-% initialValues = [a, e, i, Omega, w, theta];
-% targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
+% Specify a single target
+targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
 
 % Specify multiple targets and inital states
-targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg; ...
-                atarg, etarg, itarg, Omegatarg, wtarg, 40];
+% targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg; ...
+%                 atarg, etarg, itarg, Omegatarg, wtarg, thetatarg+60; ...
+%                 atarg, etarg+.1, itarg+1, Omegatarg, wtarg, thetatarg+100];
 
-% The initial values are set to the preceding target values
-initialValues = [a, e, i, Omega, w, theta; ...
-                 targetValues(1,:)];
+
+
+initialValues = [a, e, i, Omega, w, theta];
+
+% The initial values are set to the previous client satellites
+% initialValues = [a, e, i, Omega, w, theta; ...
+%                  targetValues(1,:); ...
+%                  targetValues(2,:)];
 
 % Use days
-finalTime = [4, 7] * days2Sec;  % Enter the number of days
+finalTime = [2] * days2Sec;   % Enter the number of days
+% finalTime = [2, 4, 3] * days2Sec;  % For multiple clients
 
 results = STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence);
 

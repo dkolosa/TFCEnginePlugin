@@ -35,14 +35,14 @@
     %         The value of the 14 Fourier Coefficients
 format short g
 %Constants
-global days2Sec
+global days2Sec ISP
 days2Sec = 24*60^2;    % Days to seconds
 
 % Spacecraft Parameters
 dryMass = 3000; % kg
 fuelMass = 500; % kg
 satMass = [dryMass, fuelMass];
-
+ISP = 9000;     % Thruster ISP for all engine models
 %% set up inital and targeting states here
 
 % first initial Orbit State 

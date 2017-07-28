@@ -101,7 +101,7 @@ compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator'
 compThrusterSet = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Thruster Sets');
 compThrusterProperties = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Engine Models');
 %     SetupThrusterProperties(compThrusterProperties);
-    SetupThrusterSet(compThrusterSet);
+    SetupThrusterSet(compThrusterSet, compThrusterProperties);
     
 tfc_target_name = 'TFC Target ';
 

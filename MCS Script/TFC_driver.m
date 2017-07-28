@@ -48,10 +48,10 @@ ISP = 9000;     % Thruster ISP for all engine models
 % first initial Orbit State 
 % inital time is assuemd at 0
 a = 42164; % km
-e = 0.4;
-i = 10; % degrees
-Omega = 30; % degrees
-w = 30; % degrees
+e = 0.01;
+i = 0.01; % degrees
+Omega = 0.01; % degrees
+w = 0.01; % degrees
 theta =  30; % degrees
 
 % if using driver as a function
@@ -68,10 +68,10 @@ theta =  30; % degrees
 % Set the oe that are not being targeted to the initial state value
 atarg = a; % km
 etarg = e;
-itarg = 13; % degrees
+itarg = i; % degrees
 Omegatarg = Omega; % degrees
 wtarg = w; % degrees
-thetatarg = theta; % degrees
+thetatarg = 50; % degrees
 
 % if using driver as a function
 % atarg = oe_targ[1]; % km
@@ -90,9 +90,9 @@ checkSequence = true;   % Inspect MCS before running
 %[a0R, a1R, a2R, b1R, 
 % a0S, a1S, a2S, b1S, b2S
 % a0W, a1W, a2W, b1W, b2W]
-tfcTargets = [0, 1, 0, 1, ...
-              1, 0, 0, 1, 0, ...
-              0, 1, 0, 1, 0];
+tfcTargets = [1, 0, 0, 0, ...
+              0, 0, 0, 0, 0, ...
+              0, 0, 0, 0, 0];
 
 % Specify a single target
 targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];

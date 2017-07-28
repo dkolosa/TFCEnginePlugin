@@ -184,36 +184,36 @@ function Init( AgUtPluginSite )
 function Register( AgAsEOMFuncPluginRegisterHandler )
 {
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR0");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR0");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR0");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR1");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR1");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaR2");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR2");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaR2");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaR1");
-	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaR1");	
+	// AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaR1");	
 
 
 	AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaS0");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaS0");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaS0");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaS1");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaS1");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaS1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaS2");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaS2");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaS2");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaS1");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaS1");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaS1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaS2");
-	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaS2");	
+	// AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaS2");	
 
 	AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaW0");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW0");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW0");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaW1");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW1");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("AlphaW2");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW2");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("AlphaW2");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaW1");
-    AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaW1");
+    // AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaW1");
     AgAsEOMFuncPluginRegisterHandler.RegisterUserInput("BetaW2");
-	AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaW2");	
+	// AgAsEOMFuncPluginRegisterHandler.RegisterUserDerivativeOutput("BetaW2");	
 
     return true;
 }
@@ -229,49 +229,49 @@ function SetIndices( AgAsEOMFuncPluginSetIndicesHandler )
 
 	//Radial
     m_alphar1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR0"); 
-    m_alphar1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR0");  
+    // m_alphar1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR0");  
 
     m_alphar2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR1"); 
-    m_alphar2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR1");  
+    // m_alphar2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR1");  
 
     m_alphar3Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaR2"); 
-    m_alphar3DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR2");  
+    // m_alphar3DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaR2");  
 
     m_alphar4Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaR1"); 
-    m_alphar4DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaR1");  
+    // m_alphar4DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaR1");  
 
     //Transversal
     m_alphaS0Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaS0"); 
-    m_alphaS0DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaS0");  
+    // m_alphaS0DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaS0");  
 
     m_alphaS1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaS1"); 
-    m_alphaS1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaS1");  
+    // m_alphaS1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaS1");  
 
     m_alphaS2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaS2"); 
-    m_alphaS2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaS2");  
+    // m_alphaS2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaS2");  
 
     m_betaS1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaS1"); 
-    m_betaS1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaS1"); 
+    // m_betaS1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaS1"); 
 
 	m_betaS2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaS2"); 
-    m_betaS2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaS2"); 
+    // m_betaS2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaS2"); 
 
     //normal
     
     m_alphaW0Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaW0"); 
-    m_alphaW0DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW0");  
+    // m_alphaW0DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW0");  
 
     m_alphaW1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaW1"); 
-    m_alphaW1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW1");  
+    // m_alphaW1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW1");  
 
     m_alphaW2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("AlphaW2"); 
-    m_alphaW2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW2");  
+    // m_alphaW2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("AlphaW2");  
 
     m_betaW1Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaW1"); 
-    m_betaW1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaW1"); 
+    // m_betaW1DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaW1"); 
 
 	m_betaW2Index = AgAsEOMFuncPluginSetIndicesHandler.GetUserInputIndex("BetaW2"); 
-    m_betaW2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaW2"); 
+    // m_betaW2DerivIndex = AgAsEOMFuncPluginSetIndicesHandler.GetUserDerivativeOutputIndex("BetaW2"); 
 
     return true;
 }

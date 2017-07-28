@@ -2,7 +2,7 @@ function  SetupThrusterSet(compThrusterSet)
 	%set up the Thruster Set to create the TFC thruster set
 
 	compThrusterSet.DuplicateComponent('Thruster Set', 'TFC set');
-
+    
 	%Create a handle for the Thruster Set
 	    TFCset = compThrusterSet.Item('TFC set');
 	    TFCRSW = TFCset.Thruster;

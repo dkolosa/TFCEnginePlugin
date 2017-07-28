@@ -1,3 +1,16 @@
+% function results = TFC_driver(oe_initial, oe_targ, time)
+    %%Inputs%%
+    % oe _initial: initial orbital elements
+                 % [a, e, i, Omega, w, theta]
+    % oe_targ: Target orbital elements
+              % [a, e, i Omega, w, theta]
+    % time: Desired time duration of mission (days)
+
+    %%Outputs%%
+    % Final Fuel mass: mass of fuel remaining at the end of the misson
+    % Duration: Final duration of mission (seconds)
+    % DeltaV : DeltaV of the mission (km/s)
+
 % This script creates an Mission Control Sequence for STK based on 
 % Thrust Fourier Coefficients
 
@@ -32,7 +45,7 @@ satMass = [dryMass, fuelMass];
 
 %% set up inital and targeting states here
 
-% first initial Orbit State
+% first initial Orbit State 
 % inital time is assuemd at 0
 a = 42164; % km
 e = 0.4;
@@ -40,6 +53,16 @@ i = 10; % degrees
 Omega = 30; % degrees
 w = 30; % degrees
 theta =  30; % degrees
+
+% if using driver as a function
+% a = oe_initial[1];
+% e = oe_initial[2];
+% i = oe_initial[3];
+% Omega = oe_initial[4];
+% w = oe_initial[5];
+% theta = oe_initial[6];
+
+
 
 % first target orbit state
 % Set the oe that are not being targeted to the initial state value
@@ -49,6 +72,14 @@ itarg = 13; % degrees
 Omegatarg = Omega; % degrees
 wtarg = w; % degrees
 thetatarg = theta; % degrees
+
+% if using driver as a function
+% atarg = oe_targ[1]; % km
+% etarg = oe_targ[2];
+% itarg = oe_targ[3]; % degrees
+% Omegatarg = oe_targ[4]; % degrees
+% wtarg = oe_targ[5]; % degrees
+% thetatarg = oe_targ[6]; % degrees
 
 essentialTFC = true; % Use the essential TFC (6 TFCs) estimator 
 
@@ -71,8 +102,6 @@ targetValues = [atarg, etarg, itarg, Omegatarg, wtarg, thetatarg];
 %                 atarg, etarg, itarg, Omegatarg, wtarg, thetatarg+60; ...
 %                 atarg, etarg+.1, itarg+1, Omegatarg, wtarg, thetatarg+100];
 
-
-
 initialValues = [a, e, i, Omega, w, theta];
 
 % The initial values are set to the previous client satellites
@@ -86,4 +115,4 @@ finalTime = [2] * days2Sec;   % Enter the number of days
 
 results = STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence);
 
-%The output is the [final fuel mass (kg), duration of trajectory (seconds), and delta V(km/s)]
+% end

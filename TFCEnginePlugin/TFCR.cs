@@ -220,7 +220,7 @@ namespace TFCEnginePlugin
                         // Thrust Attributes
                         //================
 
-                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Isp", "Specific Impulse", "Isp", (int)AgEAttrAddFlags.eAddFlagReadOnly);
+                        builder.AddDoubleDispatchProperty(this.m_AttrScope, "Isp", "Specific Impulse", "Isp", (int)AgEAttrAddFlags.eAddFlagNone);
                     }
 
                     string config;

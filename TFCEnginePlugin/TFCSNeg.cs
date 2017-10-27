@@ -40,6 +40,7 @@ namespace TFCEnginePlugin
         private object m_AttrScope = null;
         private AgGatorPluginProvider m_gatorPrv = null;
         private AgGatorConfiguredCalcObject m_eccAno = null;
+        private AgGatorConfiguredCalcObject m_mass = null;
 
         private AgGatorConfiguredCalcObject m_AlphaS0 = null;
         private AgGatorConfiguredCalcObject m_AlphaS1 = null;
@@ -139,6 +140,7 @@ namespace TFCEnginePlugin
                 {
                     //this.m_argOfLat = this.m_gatorPrv.ConfigureCalcObject("Argument_of_Latitude");
                     this.m_eccAno = this.m_gatorPrv.ConfigureCalcObject("Eccentric_Anomaly");
+                    this.m_mass = this.m_gatorPrv.ConfigureCalcObject("Total_Mass");
 
                     this.m_AlphaS0 = this.m_gatorPrv.ConfigureCalcObject("AlphaS0");
                     this.m_AlphaS1 = this.m_gatorPrv.ConfigureCalcObject("AlphaS1");
@@ -147,7 +149,7 @@ namespace TFCEnginePlugin
                     this.m_BetaS2 = this.m_gatorPrv.ConfigureCalcObject("BetaS2");
 
 
-                    if (this.m_eccAno != null && this.m_AlphaS0 != null && this.m_AlphaS1 != null
+                    if (this.m_eccAno != null && this.m_mass != null && this.m_AlphaS0 != null && this.m_AlphaS1 != null
                         && this.m_AlphaS2 != null && this.m_BetaS1 != null && this.m_BetaS2 != null)
                     {
                         return true;
@@ -174,6 +176,7 @@ namespace TFCEnginePlugin
             {
 
                 double eccAno = this.m_eccAno.Evaluate(result);
+                double mass = this.m_mass.Evaluate(result);
 
                 double alphaS0 = this.m_AlphaS0.Evaluate(result);
                 double alphaS1 = this.m_AlphaS1.Evaluate(result);
@@ -187,16 +190,15 @@ namespace TFCEnginePlugin
                 //error on FR,W,S <=0 
 
                 if (FS < 0)
-                {
                     FS = Math.Abs(FS);
-                } else
-                {
+                else
                     FS = 0;
-                }
 
                 //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
-
-                result.SetThrustAndIsp(FS, Isp);
+                double thrust = FS * mass;
+                if (mass < 0)
+                    mass = Math.Abs(mass);
+                result.SetThrustAndIsp(thrust, Isp);
             }
 
             return true;

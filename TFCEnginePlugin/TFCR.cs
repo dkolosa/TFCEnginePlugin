@@ -41,6 +41,7 @@ namespace TFCEnginePlugin
         private object m_AttrScope = null;
         private AgGatorPluginProvider m_gatorPrv = null;
         private AgGatorConfiguredCalcObject m_eccAno = null;
+        private AgGatorConfiguredCalcObject m_mass = null;
 
         private AgGatorConfiguredCalcObject m_AlphaR0 = null;
         private AgGatorConfiguredCalcObject m_AlphaR1 = null;
@@ -137,13 +138,14 @@ namespace TFCEnginePlugin
                 if (this.m_gatorPrv != null)
                 {
                     this.m_eccAno = this.m_gatorPrv.ConfigureCalcObject("Eccentric_Anomaly");
+                    this.m_mass = this.m_gatorPrv.ConfigureCalcObject("Total_Mass");
 
                     this.m_AlphaR0 = this.m_gatorPrv.ConfigureCalcObject("AlphaR0");
                     this.m_AlphaR1 = this.m_gatorPrv.ConfigureCalcObject("AlphaR1");
                     this.m_AlphaR2 = this.m_gatorPrv.ConfigureCalcObject("AlphaR2");
                     this.m_BetaR1 = this.m_gatorPrv.ConfigureCalcObject("BetaR1");
 
-                    if (this.m_eccAno != null && this.m_AlphaR0 != null && this.m_AlphaR1 != null
+                    if (this.m_eccAno != null && this.m_mass != null && this.m_AlphaR0 != null && this.m_AlphaR1 != null
                         && this.m_AlphaR2 != null && this.m_BetaR1 != null)
                         return true;
                 }
@@ -168,7 +170,10 @@ namespace TFCEnginePlugin
             if (result != null)
             {
 
-                double eccAno = this.m_eccAno.Evaluate(result);
+                double mass = this.m_mass.Evaluate(result);
+
+                double eccAno = (double)this.m_eccAno.Evaluate(result);
+
                 double alphaR0 = this.m_AlphaR0.Evaluate(result);
                 double alphaR1 = this.m_AlphaR1.Evaluate(result);
                 double alphaR2 = this.m_AlphaR2.Evaluate(result);
@@ -188,7 +193,7 @@ namespace TFCEnginePlugin
 
                 Debug.WriteLine("FR: {0}", FR);
 
-                result.SetThrustAndIsp(FR, Isp);
+                result.SetThrustAndIsp(FR*mass, Isp);
             }
             return true;
         }

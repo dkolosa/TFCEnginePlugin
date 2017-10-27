@@ -48,19 +48,25 @@ function  SetupThrusterSet(compThrusterSet, compThrusterProperties)
 
 	    TFCR = TFCRSW.Item(TFCThrusters{1});
 	    TFCR.EngineModelName = TFC_ISP{1};
-	    TFCR.ThrusterDirection.AssignXYZ(1,0,0);
+	    %TFCR.ThrusterDirection.AssignXYZ(1,0,0);
+		TFCR.ThrusterDirection.AssignXYZ(0,1,0);
+
 
 	    TFCRNeg = TFCRSW.Item(TFCThrusters{2});
 	    TFCRNeg.EngineModelName = TFC_ISP{2};
-	    TFCRNeg.ThrusterDirection.AssignXYZ(-1,0,0);
+	    %TFCRNeg.ThrusterDirection.AssignXYZ(-1,0,0);
+		TFCRNeg.ThrusterDirection.AssignXYZ(0,-1,0);
+
 
 	    TFCS = TFCRSW.Item(TFCThrusters{3});
 	    TFCS.EngineModelName = TFC_ISP{3};
-	    TFCS.ThrusterDirection.AssignXYZ(0,1,0);
+		TFCS.ThrusterDirection.AssignXYZ(1,0,0);
+	    %TFCS.ThrusterDirection.AssignXYZ(0,1,0);
 
 	    TFCSNeg = TFCRSW.Item(TFCThrusters{4});
 	    TFCSNeg.EngineModelName = TFC_ISP{4};
 	    TFCSNeg.ThrusterDirection.AssignXYZ(0,-1,0);
+	    TFCSNeg.ThrusterDirection.AssignXYZ(-1,0,0);
 
 	    TFCW = TFCRSW.Item(TFCThrusters{5});
 	    TFCW.EngineModelName = TFC_ISP{5};

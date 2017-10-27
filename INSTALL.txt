@@ -1,5 +1,16 @@
+
+NOTE: Any changes in plugins/configuration requries a restart of STK
+
 install Enigne Models:
-	From the provided .dll:
+
+	From provided binaries:
+		Open the TFC Engine Models.xml
+		edit the ENTITY path variable to the location of the engine plugin bin directory
+		
+
+
+	###########################Deprecated################################
+	From the provided .dll (using registry and admin priviliges):
 		-open cmd as administrator
 		-change directory to \bin
 		cd C:\Users\user_name\TFCEnginePlugin_location\bin
@@ -7,7 +18,7 @@ install Enigne Models:
 			C:\Widows\Microsoft.Net\Framework64\v4.0.30319\RegAsm.exe /codebase TFCEnginePlugin.dll
 
 		A warning might appear: "RegASM RA000 ..."" this is ok. At the end of the warning it should say "Type registered correctly", if it does then the engine plugin is installed on your system.
-
+	#####################################################################
 
 	From source:
 		Open the TFCEnginePlugin solution file in Visual Studio as Administator

@@ -6,6 +6,13 @@ TFCcoefficients = {'AlphaR0', 'AlphaR1', 'AlphaR2', 'BetaR1', ...
                    'AlphaS0', 'AlphaS1', 'AlphaS2', 'BetaS1', 'BetaS2', ...
                    'AlphaW0', 'AlphaW1', 'AlphaW2', 'BetaW1', 'BetaW2'};
 %%%
+RE = 6371;
+D2R = pi/180;
+
+totalTime = 0;
+
+% temp phasein a
+a_phase = 41064;
 
 % Get the number of rows and cols from target states
 [targ_rows, targ_cols] = size(targetValues);
@@ -70,7 +77,6 @@ ASTG = sat.Propagator;
 MCS = ASTG.MainSequence;
 MCS.RemoveAll;
 
-
 Red = '0000ff';
 Green = '00ff00';
 Blue = 'ff0000';
@@ -101,8 +107,16 @@ compPropgator = scenario.ComponentDirectory.GetComponents('eComponentAstrogator'
 compThrusterSet = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Thruster Sets');
 compThrusterProperties = scenario.ComponentDirectory.GetComponents('eComponentAstrogator').GetFolder('Engine Models');
 %     SetupThrusterProperties(compThrusterProperties);
-    SetupThrusterSet(compThrusterSet, compThrusterProperties);
-    
+SetupThrusterSet(compThrusterSet, compThrusterProperties);
+             
+initstate = MCS.Insert('eVASegmentTypeInitialState','Initial State','-');
+initstate.OrbitEpoch = scenario.StartTime;
+%Configre Initial State
+% Keplerian elements and assign new initial values
+create_initial_state(initstate, initialValues(1,:),satMass);
+% alphaCoeff = EstimateAlphas(initialValues(1,:), essentialTFC, targetValues(1,:), finalTime(1));
+% SetInitialValues(initstate, TFCcoefficients, alphaCoeff);
+
 tfc_target_name = 'TFC Target ';
 
 % Define a Target Sequence
@@ -111,192 +125,73 @@ for i = 1 : targ_rows
 
     tfc_target = targetValues(i,:);
 
-    %Check for multiple inital states
-    if (init_rows > 1)
-        tfc_initial = initialValues(i,:);
-    else
-        tfc_initial = initialValues;
-    end
+    % The total time is used for setting the target duration for each satellite
+    totalTime = totalTime + finalTime(i);
+
+    % %Check for multiple inital states
+    % if (init_rows > 1)
+    %     tfc_initial = initialValues(i,:);
+    % else
+    %     tfc_initial = initialValues;
+    % end
     
-
+    % Define a target sequence for the TFC satellite
     ts = MCS.Insert('eVASegmentTypeTargetSequence',strcat(tfc_target_name,int2str(i)),'-');
-        % Define the Initial State
-        ts.Segments.Insert('eVASegmentTypeInitialState','Initial State','-');
+        phase_in = true;
+        % Define the Initial State only for the inital setup, then use update segments
 
-            %Configre Initial State
-            % Keplerian elements and assign new initial values
-            initstate = ts.Segments.Item('Initial State');
-            initstate.OrbitEpoch = scenario.StartTime;
-            initstate.SetElementType('eVAElementTypeKeplerian');
-            initstate.Element.SemiMajorAxis = tfc_initial(1);
-            initstate.Element.Eccentricity = tfc_initial(2);
-            initstate.Element.Inclination = tfc_initial(3);
-            initstate.Element.RAAN = tfc_initial(4);
-            initstate.Element.ArgOfPeriapsis = tfc_initial(5);
-            initstate.Element.TrueAnomaly = tfc_initial(6);
-            
-            %Set the dry and fuel mass for the satellite
-            initstate.InitialState.DryMass = satMass(1);
-            initstate.InitialState.FuelMass = satMass(2);
+        % Estimate coefficients
+        % Use time segment of the target maneuver to estimate the coeff.
+        % alphaCoeff = EstimateAlphas(tfc_initial, essentialTFC, tfc_target, finalTime(i));
 
-            % Estimate coefficients
-            alphaCoeff = EstimateAlphas(tfc_initial, essentialTFC, tfc_target, finalTime(i));
+        %[a0R, a1R, a2R, b1R, a0S, a1S, a2S, b1S, b2S, a0W, a1W, a2W, b1W, b2W]
+        % Essential TFC [a1R, b1R, a0S, b1S, a1W, b1W]
+        
+        % alphaCoeff=[0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0];
+        x0 = [initialValues(1), initialValues(2), initialValues(3)*D2R, initialValues(4)*D2R, initialValues(5)*D2R, initialValues(6)*D2R];
+        xT = [((tfc_target(1)-RE)+(tfc_target(2)-RE))/2-1000 , tfc_target(3), tfc_target(4)*D2R, tfc_target(5)*D2R, tfc_target(6)*D2R, tfc_target(7)*D2R];
+        ess_tfc = find_c_ess2(x0, xT,0,finalTime(i));
+        %[a0R b1R a0S b1S a1W b1W]
+        alphaCoeff = [ess_tfc(1), 0, 0, ess_tfc(2), ess_tfc(3), 0,0, ess_tfc(4), 0,0,ess_tfc(5),0,ess_tfc(6),0];
 
-            %[a0R, a1R, a2R, b2R, a0S, a1S, a2S, b1S, b2S, a0W, a1W, a2W, b1W, b2W]
-            % Essential TFC [a1R, b1R, a0S, b1S, a1W, b1W]
-            
-            % alphaCoeff=[0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0];
-
-            SetInitialValues(initstate, TFCcoefficients, alphaCoeff);
+        ts.Segments.Insert('eVASegmentTypeUpdate','Update','-');
+            updateTFC = ts.Segments.Item('Update');
+            SetInitialValues(updateTFC, TFCcoefficients, alphaCoeff);
+        % end
            
-
         %Set the Maneuver Segment
         tfcMan = ts.Segments.Insert('eVASegmentTypeManeuver','TFC Maneuver','-');
-            tfcMan.Properties.Color = uint32(hex2dec(Red));
-
-            tfcMan.SetManeuverType('eVAManeuverTypeFinite');
-
-            % Create a handle to the finite properties of the maneuver
-            finite = tfcMan.Maneuver;
-                finite.SetAttitudeControlType('eVAAttitudeControlAttitude');
-                finite.AttitudeControl.RefAxesName='Satellite LVLH(Earth)';
-                
-                % Set Engine type to Thruster set using the TFC thruster set
-                finite.SetPropulsionMethod('eVAPropulsionMethodThrusterSet', 'TFC set');
-
-                % Set the Propagator
-                finite.Propagator.PropagatorName = 'TFCProp';
-
-                % Get the duration and set it to the desired final time
-                manTargTime = finite.Propagator.StoppingConditions.Item('Duration');
-                manTargTime.Properties.Trip = finalTime(i);
-                manTargTime.EnableControlParameter('eVAControlStoppingConditionTripValue');
-
-            % the orbital element(s) you wish to target around
-            TargetResults = {'Keplerian Elems/Semimajor_Axis','Keplerian Elems/Eccentricity', ...
-                            'Keplerian Elems/Inclination', 'Keplerian Elems/Longitude_Of_Ascending_Node', ...
-                            'Keplerian Elems/Argument_of_Periapsis', 'Keplerian Elems/True_Anomaly', ...
-                            'Maneuver/DeltaV'};
-
-            % Set the orbital element(s) you wish to target around
-            %Add results for the TFC targeter
-            for j = 1 :length(TargetResults)
-                    tfcMan.Results.Add(TargetResults{j});
-            end
-        
-        % tfcUpdate = ts.Segments.Insert('eVASegmentTypeUpdate', 'TFC Update', '-');
-
-        % Turn on Controls for Search Profiles
+            tfcMan.Properties.Color = uint32(hex2dec(Cyan));
+            SetupManeuver(tfcMan, totalTime);
 
         % Set up and configure targeter
         % Targter Profile
         dc = ts.Profiles.Item('Differential Corrector');
+        % Determine phase-out semi-major axis
+        setupOptimizer(dc, tfcTargets,tfc_target, maxIterations, phase_in, a_phase);
 
-            % Set up the Targeter
-            % Add more to use other coefficients 
-            alphaR0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR0.VariableValue');
-            alphaR0ControlParam.Enable = tfcTargets(1);
-            alphaR0ControlParam.MaxStep = 1;
+    
+    ts_out = MCS.Insert('eVASegmentTypeTargetSequence','Phase Out','-');
+        phase_in = false;
+        % alphaCoeff=[0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0];
+        x0 = [initialValues(1), initialValues(2), initialValues(3)*D2R, initialValues(4)*D2R, initialValues(5)*D2R, initialValues(6)*D2R];
+        xT = [((tfc_target(1)-RE)+(tfc_target(2)-RE))/2 , tfc_target(3), tfc_target(4)*D2R, tfc_target(5)*D2R, tfc_target(6)*D2R, tfc_target(7)*D2R];
+        ess_tfc = find_c_ess2(x0, xT,0,finalTime(i));
+        %[a0R b1R a0S b1S a1W b1W]
+        alphaCoeff = [ess_tfc(1), 0, 0, ess_tfc(2), ess_tfc(3), 0,0, ess_tfc(4), 0,0,ess_tfc(5),0,ess_tfc(6),0];
 
-            alphaR1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR1.VariableValue');
-            alphaR1ControlParam.Enable = tfcTargets(2);
-            alphaR1ControlParam.MaxStep = 1;
+        % [a e i \Omega \w \theta
 
-            alphaR2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaR2.VariableValue');
-            
-            alphaR2ControlParam.Enable = tfcTargets(3);
-            alphaR2ControlParam.MaxStep = 1;
+        ts_out.Segments.Insert('eVASegmentTypeUpdate','Update','-');
+            updateTFC_out = ts_out.Segments.Item('Update');
+            SetInitialValues(updateTFC_out, TFCcoefficients, alphaCoeff);
 
-            betaR1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaR1.VariableValue');
-            betaR1ControlParam.Enable = tfcTargets(4);
-            betaR1ControlParam.MaxStep = 1;
-
-
-
-            alphaS0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS0.VariableValue');
-            alphaS0ControlParam.Enable = tfcTargets(5);
-            alphaS0ControlParam.MaxStep = 1;        
-
-            alphaS1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS1.VariableValue');
-            alphaS1ControlParam.Enable = tfcTargets(6);
-            alphaS1ControlParam.MaxStep = 1;        
-
-            alphaS2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaS2.VariableValue');
-            alphaS2ControlParam.Enable = tfcTargets(7);
-            alphaS2ControlParam.MaxStep = 1;
-
-            betaS1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaS1.VariableValue');
-            betaS1ControlParam.Enable = tfcTargets(8);
-            betaS1ControlParam.MaxStep = 1;  
-
-            betaS2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaS2.VariableValue');
-            betaS2ControlParam.Enable = tfcTargets(9);
-            betaS2ControlParam.MaxStep = 1;       
-
-
-            alphaW0ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW0.VariableValue');
-            alphaW0ControlParam.Enable = tfcTargets(10);
-            alphaW0ControlParam.MaxStep = 1;
-
-            alphaW1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW1.VariableValue');
-            alphaW1ControlParam.Enable = tfcTargets(11);
-            alphaW1ControlParam.MaxStep = 1;
-
-            alphaW2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.AlphaW2.VariableValue');
-            alphaW2ControlParam.Enable = tfcTargets(12);
-            alphaW2ControlParam.MaxStep = 1;
-
-            betaW1ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaW1.VariableValue');
-            betaW1ControlParam.Enable = tfcTargets(13);
-            betaW1ControlParam.MaxStep = 1;
-
-            betaW2ControlParam = dc.ControlParameters.GetControlByPaths('Initial State', 'UserVariables.BetaW2.VariableValue');
-            betaW2ControlParam.Enable = tfcTargets(14);
-            betaW2ControlParam.MaxStep = 1;
-
-            durationControlParam = dc.ControlParameters.GetControlByPaths('TFC Maneuver', 'FiniteMnvr.StoppingConditions.Duration.TripValue');
-            durationControlParam.Enable = true;
-            durationControlParam.MaxStep = 30;
-
-
-            % The orbital elements being targeted
-
-            Resulta = dc.Results.GetResultByPaths('TFC Maneuver', 'Semimajor_Axis');
-            Resulta.Enable = tfc_initial(1) ~= tfc_target(1);
-            Resulta.DesiredValue = tfc_target(1);
-            Resulta.Tolerance = 0.1;
-
-            Resulte = dc.Results.GetResultByPaths('TFC Maneuver', 'Eccentricity');
-            Resulte.Enable = tfc_initial(2) ~= tfc_target(2);
-            Resulte.DesiredValue = tfc_target(2);
-            Resulte.Tolerance = 0.01;        
-
-            ResultInc = dc.Results.GetResultByPaths('TFC Maneuver', 'Inclination');
-            ResultInc.Enable = tfc_initial(3) ~= tfc_target(3);
-            ResultInc.DesiredValue = tfc_target(3);
-            ResultInc.Tolerance = 0.01;
-
-            ResultOmega = dc.Results.GetResultByPaths('TFC Maneuver', 'Longitude_Of_Ascending_Node');
-            ResultOmega.Enable = tfc_initial(4) ~= tfc_target(4);
-            ResultOmega.DesiredValue = tfc_target(4);
-            ResultOmega.Tolerance = 0.01;
-
-            Resultw = dc.Results.GetResultByPaths('TFC Maneuver', 'Argument_of_Periapsis');
-            Resultw.Enable = tfc_initial(5) ~= tfc_target(5);
-            Resultw.DesiredValue = tfc_target(5);
-            Resultw.Tolerance = 0.01;
-
-            ResultTA = dc.Results.GetResultByPaths('TFC Maneuver', 'True_Anomaly');
-            ResultTA.Enable = tfc_initial(6) ~= tfc_target(6);
-            ResultTA.DesiredValue = tfc_target(6);
-            ResultTA.Tolerance = 0.01;
-
-
-            % Set final DC and targeter properties and run modes
-            dc.MaxIterations = maxIterations;
-            dc.EnableDisplayStatus = true;
-            dc.Mode = 'eVAProfileModeIterate';
-            ts.Action = 'eVATargetSeqActionRunActiveProfiles';
+        tfcMan_out = ts_out.Segments.Insert('eVASegmentTypeManeuver','TFC Maneuver','-');
+            tfcMan_out.Properties.Color = uint32(hex2dec(Cyan));
+            SetupManeuver(tfcMan_out, totalTime);
+        
+        dc_out = ts_out.Profiles.Item('Differential Corrector');
+            setupOptimizer(dc_out, tfcTargets,tfc_target, maxIterations, phase_in, a_phase);
 
 end
 
@@ -317,12 +212,14 @@ for(i = 1 : targ_rows)
     client_initialState = MCSclient.Item('Initial State');
         client_initialState.OrbitEpoch = scenario.StartTime;
         client_initialState.SetElementType('eVAElementTypeKeplerian');
-        client_initialState.Element.SemiMajorAxis = initial_client(1);
-        client_initialState.Element.Eccentricity = initial_client(2);
-        client_initialState.Element.Inclination = initial_client(3);
-        client_initialState.Element.RAAN = initial_client(4);
-        client_initialState.Element.ArgOfPeriapsis = initial_client(5);
-        client_initialState.Element.TrueAnomaly = initial_client(6);
+        client_initialState.Element.ApoapsisAltitudeSize = initial_client(1);
+        client_initialState.Element.PeriapsisAltitudeSize = initial_client(2);
+        % client_initialState.Element.SemiMajorAxis = initial_client(1);
+        client_initialState.Element.Eccentricity = initial_client(3);
+        client_initialState.Element.Inclination = initial_client(4);
+        client_initialState.Element.RAAN = initial_client(5);
+        client_initialState.Element.ArgOfPeriapsis = initial_client(6);
+        client_initialState.Element.TrueAnomaly = initial_client(7);
 
     % get the client propagator
     client_prop = MCSclient.Item('Propagate');

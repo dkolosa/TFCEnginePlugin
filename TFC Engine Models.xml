@@ -19,8 +19,32 @@
 		    />
 			</Category> -->
 		
-		<Category Name="Engine Models">
-			<DotNetPlugin
+
+
+		<!-- Use with Windows all windows versions  -->
+			<Category Name = "Engine Models">
+				<Plugin DisplayName = "Fourier Thrust Coefficient R" 
+					ProgID = "TFCEnginePlugin.TFCR"/>
+				<Plugin DisplayName = "Fourier Thrust Coefficient R Negative" 
+					ProgID = "TFCEnginePlugin.TFCRNeg"/>
+
+
+				<Plugin DisplayName = "Fourier Thrust Coefficient S" 
+					ProgID = "TFCEnginePlugin.TFCS"/>
+				<Plugin DisplayName = "Fourier Thrust Coefficient S Negative" 
+					ProgID = "TFCEnginePlugin.TFCSNeg"/>
+
+				
+				<Plugin DisplayName = "Fourier Thrust Coefficient W"
+					ProgID = "TFCEnginePlugin.TFCW"/>
+				<Plugin DisplayName = "Fourier Thrust Coefficient W Negative" 
+					ProgID = "TFCEnginePlugin.TFCWNeg"/>
+		</Category> -->
+
+			<!-- Tested and only works with  Windows 7 -->
+		<!-- <Category Name="Engine Models"> -->
+
+			<!-- <DotNetPlugin
 				DisplayName="Fourier Thrust Coefficient R"
 				TypeName="TFCEnginePlugin.TFCR"
 				AssemblyName="TFCEnginePlugin"
@@ -60,9 +84,9 @@
 				TypeName="TFCEnginePlugin.TFCWNeg"
 				AssemblyName="TFCEnginePlugin"
 				CodeBase="C:\Users\DKolosa\Documents\STK 11 (x64)\Config\Plugins\Debug"
-			/>
+			/> -->
 
-		</Category>
+		<!-- </Category> -->
 		
 		<Category Name = "EOMFunc Plugins">
 			<Plugin DisplayName = "TFC Alpha EOM" 

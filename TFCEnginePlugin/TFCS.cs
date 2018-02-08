@@ -197,8 +197,6 @@ namespace TFCEnginePlugin
                 //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
                 double thrust = FS * mass;
 
-                if (mass < 0)
-                    mass = Math.Abs(mass);
                 result.SetThrustAndIsp(thrust, Isp);
             }
 

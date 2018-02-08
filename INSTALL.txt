@@ -4,27 +4,26 @@ NOTE: Any changes in plugins/configuration requries a restart of STK
 install Enigne Models:
 
 	From provided binaries:
-		Open the TFC Engine Models.xml
-		edit the ENTITY path variable to the location of the engine plugin bin directory
-		
+		Using non admin access (WINDOWS 7 ONLY)
+		Engine plugins located: TFCEnginePlugin\bin\Debug
+		copy TFC Engine Models.xml and Debug Folder into C:\Users\Your_user_name\Documents\STK 11 (x64)\Config\Plugin
+		In the TFC Engine Models.xml plugin change the codebase for the Engine model category to the location of the Debug Folder in your system. (C:\Users\Your_user_name\Documents\STK 11 (x64)\Config\Plugin\Debug)
 
-
-	###########################Deprecated################################
-	From the provided .dll (using registry and admin priviliges):
+		Using admin rights (Works with all Windows versions)
 		-open cmd as administrator
 		-change directory to \bin
-		cd C:\Users\user_name\TFCEnginePlugin_location\bin
+		cd C:\Users\user_name\TFCEnginePlugin_location\bin\Debug
 		-run the following command (Note: use .Net version 4.x):
-			C:\Widows\Microsoft.Net\Framework64\v4.0.30319\RegAsm.exe /codebase TFCEnginePlugin.dll
+			C:\Windows\Microsoft.Net\Framework64\v4.0.30319\RegAsm.exe /codebase TFCEnginePlugin.dll
 
-		A warning might appear: "RegASM RA000 ..."" this is ok. At the end of the warning it should say "Type registered correctly", if it does then the engine plugin is installed on your system.
-	#####################################################################
+		A warning might appear: "RegASM RA000 ..."" this is ok, at the end of the warning it should say "Type registered correctly" The engine plugin is installed to your system.
+
+
+
 
 	From source:
 		Open the TFCEnginePlugin solution file in Visual Studio as Administator
 		In the solution explorer window on the right, right click on Solution TFCEnginePlugin and select "Build Solution"
-
-
 
 install EOM plugin:
 	Open a cmd as administator
@@ -33,10 +32,6 @@ install EOM plugin:
 	type: regsvr32 JScript.TFCEngineValues.EOMFunc.wsc
 
 	A message should appear saying that the file was registered successfully
-
-Registering plugins with STK:
-	Copy the TFC Engine Models.xml file into local STK plugins directory
-	C:\Users\user_name\Documents\STK 11 (x64)\Config\Plugins
 
 Verify Install:
 	Open a scenario in STK in the menu bar Utilities -> Component Browser

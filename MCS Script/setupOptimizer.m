@@ -3,7 +3,7 @@ function dc = setupOptimizer(dc, tfcTargets, tfc_target, maxIterations, phase_in
     % Set up the Targeter
     % Add more to use other coefficients 
     maxstep = 1e-7;
-    perturbation = 1e-7;
+    perturbation = 1e-6;
 
     
     alphaR0ControlParam = dc.ControlParameters.GetControlByPaths('Update', 'UserVariables.AlphaR0.VariableVal');
@@ -100,16 +100,6 @@ function dc = setupOptimizer(dc, tfcTargets, tfc_target, maxIterations, phase_in
         % Resulta.DesiredValue = tfc_target(1);
         Resulta .DesiredValue = a_phase;
         Resulta.Tolerance = 0.1;
-
-        % Resulta = dc.Results.GetResultByPaths('TFC Maneuver', 'Altitude_Of_Apoapsis');
-        % Resulta.Enable = 1;
-        % Resulta.DesiredValue = tfc_target(1);
-        % Resulta.Tolerance = 0.1;
-
-        % Resulta = dc.Results.GetResultByPaths('TFC Maneuver', 'Altitude_Of_Periapsis');
-        % Resulta.Enable = 1;
-        % Resulta.DesiredValue = tfc_target(1);
-        % Resulta.Tolerance = 0.1;
 
         Resulte = dc.Results.GetResultByPaths('TFC Maneuver', 'Eccentricity');
         Resulte.Enable = 0;

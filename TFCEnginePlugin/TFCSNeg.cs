@@ -138,7 +138,6 @@ namespace TFCEnginePlugin
 
                 if (this.m_gatorPrv != null)
                 {
-                    //this.m_argOfLat = this.m_gatorPrv.ConfigureCalcObject("Argument_of_Latitude");
                     this.m_eccAno = this.m_gatorPrv.ConfigureCalcObject("Eccentric_Anomaly");
                     this.m_mass = this.m_gatorPrv.ConfigureCalcObject("Total_Mass");
 
@@ -194,10 +193,8 @@ namespace TFCEnginePlugin
                 else
                     FS = 0;
 
-                //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
                 double thrust = FS * mass;
-                if (mass < 0)
-                    mass = Math.Abs(mass);
+            
                 result.SetThrustAndIsp(thrust, Isp);
             }
 

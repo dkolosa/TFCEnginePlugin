@@ -8,7 +8,7 @@ initstate.SetElementType('eVAElementTypeKeplerian');
 initstate.Element.SemiMajorAxis = tfc_initial(1);
 initstate.Element.Eccentricity = tfc_initial(2);
 initstate.Element.Inclination = tfc_initial(3);
-initstate.Element.LAN = tfc_initial(4);
+initstate.Element.RAAN = tfc_initial(4);
 initstate.Element.ArgOfPeriapsis = tfc_initial(5);
 initstate.Element.TrueAnomaly = tfc_initial(6);
 

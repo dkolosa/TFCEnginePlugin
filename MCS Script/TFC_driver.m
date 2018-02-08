@@ -37,6 +37,7 @@
     % Inputs: Astrogator inital state object
     %         Names of the TFC coefficients used by STK
     %         The value of the 14 Fourier Coefficients
+
 format short g
 %Constants
 global days2Sec ISP
@@ -52,11 +53,11 @@ ISP = 9000;     % Thruster ISP for all engine models
 % first initial Orbit State 
 % inital time is assuemd at 0
 a = 42164; % km
-e = 0.01;
-i = 0.01; % degrees
-Omega = 0.01; % degrees
-w = 0.01; % degrees
-theta =  30; % degrees
+e = 0.00067;
+i = 0.32; % degrees
+Omega = 269.4; % degrees
+w = 146.5; % degrees
+theta =  360-74.8; % degrees
 
 % if using driver as a function
 % a = oe_initial[1];
@@ -70,12 +71,12 @@ theta =  30; % degrees
 
 % first target orbit state
 % Set the oe that are not being targeted to the initial state value
-atarg = a; % km
-etarg = e;
-itarg = i; % degrees
-Omegatarg = Omega; % degrees
-wtarg = w; % degrees
-thetatarg = 50; % degrees
+% atarg = a; % km
+% etarg = e;
+% itarg = i; % degrees
+% Omegatarg = Omega; % degrees
+% wtarg = w; % degrees
+% thetatarg = 50; % degrees
 
 % if using driver as a function
 % atarg = oe_targ[1]; % km
@@ -101,8 +102,8 @@ tfcTargets = [1, 0, 0, 1, ...
 % Specify a single target
 % [apoapsis alt, peri alt, ecc, inc, perigee, RAAN, tru ana]
 
-targetValues = [35816, 35759, 0.0006796, 0.32, 269.4, 146.5, -74.8; ...
-                35798, 35775, 0.0002808, 0.14, 102.8, 116.4, -104.7];
+targetValues = [35798, 35775, 0.0002808, 0.14, 102.8, 116.4, 360-104.7; ...
+                35794, 35778, 0.000189, 0.07, 294.6, 107.4, 360-135.4];
 
 % Specify multiple targets and inital states
 % targetValues = [aatarg, artarg, itarg, Omegatarg, wtarg, thetatarg; ...
@@ -117,7 +118,7 @@ initialValues = [a, e, i, Omega, w, theta];
 %                  targetValues(2,:)];
 
 % Use days
-finalTime = [2.5, 2] * days2Sec;   % Enter the number of days
+finalTime = [5, 2] * days2Sec;   % Enter the number of days
 % finalTime = [2, 4, 3] * days2Sec;  % For multiple clients
 
 results = STKSetup(initialValues, satMass, targetValues, finalTime, essentialTFC, tfcTargets, maxIterations, checkSequence);

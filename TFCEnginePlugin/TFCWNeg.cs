@@ -191,7 +191,9 @@ namespace TFCEnginePlugin
                 else
                     FW = 0;
 
-                result.SetThrustAndIsp(FW*mass, Isp);
+                double thrust = FW * mass;
+
+                result.SetThrustAndIsp(thrust, Isp);
             }
 
             return true;

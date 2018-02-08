@@ -5,11 +5,3 @@ C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\bin\Debug\Agi.As.Gator.EngM
 C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\obj\Debug\TFCEnginePlugin.csprojResolveAssemblyReference.cache
 C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\obj\Debug\TFCEnginePlugin.dll
 C:\Users\Dan\Desktop\tfcengineplugin\TFCEnginePlugin\obj\Debug\TFCEnginePlugin.pdb
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\bin\Debug\TFCEnginePlugin.dll.config
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\bin\Debug\TFCEnginePlugin.dll
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\bin\Debug\TFCEnginePlugin.pdb
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\bin\Debug\TFCEnginePlugin.tlb
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\bin\Debug\Agi.As.Gator.EngMdl.Plugin.CSharp.Examples.dll
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\obj\Debug\TFCEnginePlugin.csprojResolveAssemblyReference.cache
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\obj\Debug\TFCEnginePlugin.dll
-C:\Users\DKolosa\Documents\STK 11 (x64)\TFCEnginePlugin\TFCEnginePlugin\obj\Debug\TFCEnginePlugin.pdb

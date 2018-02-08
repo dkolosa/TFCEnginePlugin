@@ -172,7 +172,7 @@ namespace TFCEnginePlugin
 
                 double mass = this.m_mass.Evaluate(result);
 
-                double eccAno = (double)this.m_eccAno.Evaluate(result);
+                double eccAno = this.m_eccAno.Evaluate(result);
 
                 double alphaR0 = this.m_AlphaR0.Evaluate(result);
                 double alphaR1 = this.m_AlphaR1.Evaluate(result);
@@ -191,9 +191,9 @@ namespace TFCEnginePlugin
                 if (FR < 0)
                     FR = 0;
 
-                Debug.WriteLine("FR: {0}", FR);
+                double thrust = FR * mass;
 
-                result.SetThrustAndIsp(FR*mass, Isp);
+                result.SetThrustAndIsp(thrust, Isp);
             }
             return true;
         }

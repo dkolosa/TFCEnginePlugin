@@ -40,6 +40,7 @@ namespace TFCEnginePlugin
         private object m_AttrScope = null;
         private AgGatorPluginProvider m_gatorPrv = null;
         private AgGatorConfiguredCalcObject m_eccAno = null;
+        private AgGatorConfiguredCalcObject m_mass = null;
 
         private AgGatorConfiguredCalcObject m_AlphaW0 = null;
         private AgGatorConfiguredCalcObject m_AlphaW1 = null;
@@ -136,6 +137,7 @@ namespace TFCEnginePlugin
                 if (this.m_gatorPrv != null)
                 {
                     this.m_eccAno = this.m_gatorPrv.ConfigureCalcObject("Eccentric_Anomaly");
+                    this.m_mass = this.m_gatorPrv.ConfigureCalcObject("Total_Mass");
 
                     this.m_AlphaW0 = this.m_gatorPrv.ConfigureCalcObject("AlphaW0");
                     this.m_AlphaW1 = this.m_gatorPrv.ConfigureCalcObject("AlphaW1");
@@ -143,7 +145,7 @@ namespace TFCEnginePlugin
                     this.m_BetaW1 = this.m_gatorPrv.ConfigureCalcObject("BetaW1");
                     this.m_BetaW2 = this.m_gatorPrv.ConfigureCalcObject("BetaW2");
 
-                    if (this.m_eccAno != null && this.m_AlphaW0 != null && this.m_AlphaW1 != null
+                    if (this.m_eccAno != null && this.m_mass != null && this.m_AlphaW0 != null && this.m_AlphaW1 != null
                         && this.m_AlphaW2 != null && this.m_BetaW1 != null && this.m_BetaW2 != null)
                     {
                         return true;
@@ -172,6 +174,7 @@ namespace TFCEnginePlugin
                 //Debug.WriteLine(" Evaluate( " + this.GetHashCode() + " )");
 
                 double eccAno = this.m_eccAno.Evaluate(result);
+                double mass = this.m_mass.Evaluate(result);
 
                 double alphaW0 = this.m_AlphaW0.Evaluate(result);
                 double alphaW1 = this.m_AlphaW1.Evaluate(result);
@@ -184,15 +187,13 @@ namespace TFCEnginePlugin
                 //error on FR,W,S <=0 
 
                 if (FW < 0)
-                {
                     FW = Math.Abs(FW);
-                }
                 else
-                {
                     FW = 0;
-                }
 
-                result.SetThrustAndIsp(FW, Isp);
+                double thrust = FW * mass;
+
+                result.SetThrustAndIsp(thrust, Isp);
             }
 
             return true;
